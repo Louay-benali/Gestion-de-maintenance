@@ -13,7 +13,6 @@ dotenv.config();
 
 const app = express();
 
-// Utilisation du port défini dans le fichier .env ou du port par défaut
 const port = process.env.PORT || 3000;
 
 // Middleware pour traiter les requêtes JSON

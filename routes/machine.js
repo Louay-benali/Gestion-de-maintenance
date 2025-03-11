@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post('/', createMachine);
 router.get('/', getMachines);
-router.get('/:id', getMachineById);
-router.put('/:id', updateMachine);
-router.delete('/:id', deleteMachine);
+router.get('/:idMachine', getMachineById);
+router.put('/:idMachine', updateMachine);
+router.delete('/:idMachine', deleteMachine);
 
 export default router;

@@ -7,6 +7,7 @@ import machineRoutes from "./routes/machine.js"
 import panneRoutes from "./routes/panne.js";
 import pieceRoutes from "./routes/piece.js";
 import utilisateurRoutes from "./routes/user.js";
+import authRoutes from "./routes/auth.js";
 
 // Charger les variables d'environnement à partir du fichier .env
 dotenv.config();
@@ -26,9 +27,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log("Connecté à MongoDB"))
 .catch((error) => console.log("Erreur de connexion à MongoDB", error));
 
-// Utilisation des routes pour les utilisateurs
-app.use("/user", utilisateurRoutes);
+// Routes d'authentification (publiques)
+app.use("/auth", authRoutes);
 
+// Routes protégées (nécessitant une authentification)
+app.use("/user", utilisateurRoutes);
 app.use("/piece", pieceRoutes);
 app.use("/panne", panneRoutes);
 app.use("/machine", machineRoutes);

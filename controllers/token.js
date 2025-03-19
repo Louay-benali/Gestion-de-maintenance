@@ -20,14 +20,14 @@ export async function generateAuthTokens({ userId, roleId }) {
     
 
     // Générer l'expiration du RefreshToken en millisecondes (en jours)
-    //const refreshTokenExpires = generateExpires(config.jwt.refreshExpirationDays, 'days');
+    const refreshTokenExpires = generateExpires(config.jwt.refreshExpirationDays, 'days');
   
     // Générer le Refresh Token
-    /* const refreshToken = generateToken(
+     const refreshToken = generateToken(
       { userId },
       refreshTokenExpires,
       config.jwt.secret
-    );*/
+    );
 
     // Retourner les deux tokens avec leurs dates d'expiration
     return {
@@ -35,11 +35,11 @@ export async function generateAuthTokens({ userId, roleId }) {
         token: accessToken,
         expiresAt: new Date(accessTokenExpires).toISOString(),
       },
-      /*
+      
       refreshToken: {
         token: refreshToken,
         expiresAt: new Date(refreshTokenExpires).toISOString(),
-      },*/
+      },
     };
   } catch (error) {
     console.error("Erreur lors de la génération des tokens :", error.message);

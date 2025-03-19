@@ -59,6 +59,8 @@ export function generateExpires(value, type) {
 
   if (type === 'minutes') {
     expiresIn = now + value * 60 * 1000; // Convertir les minutes en millisecondes
+  } else if (type === 'hours') {
+    expiresIn = now + value * 60 * 60 * 1000; // Convertir les heures en millisecondes
   } else if (type === 'days') {
     expiresIn = now + value * 24 * 60 * 60 * 1000; // Convertir les jours en millisecondes
   } else {

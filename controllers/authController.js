@@ -1,6 +1,6 @@
 import { Utilisateur } from '../models/user.js';
 import { generateAuthTokens } from '../controllers/token.js';
-import { encryptData, decryptData } from '../utils/auth.js';
+import { generateExpires, encryptData, decryptData, setCookie } from '../utils/auth.js';
 import config from '../config/config.js';
 
 /**
@@ -36,6 +36,14 @@ export async function register(req, res) {
 
     // Générer les tokens d'authentification
     const tokens = await generateAuthTokens({ userId: utilisateur._id, roleId: utilisateur.role });
+
+    // Enregistrer le refreshToken dans l'utilisateur
+    utilisateur.refreshToken = tokens.refreshToken.token;
+    await utilisateur.save();
+
+    // Enregistrer le refreshToken dans un cookie
+    const cookieExpires = generateExpires(config.cookie.expirationHours, 'hours');
+    setCookie(res, 'refreshToken', tokens.refreshToken.token, cookieExpires);
 
     // Renvoyer les tokens et les informations de l'utilisateur
     return res.status(201).json({
@@ -79,6 +87,15 @@ export async function handleLogin(req, res) {
 
     // Générer les tokens d'authentification
     const tokens = await generateAuthTokens({ userId: utilisateur._id, roleId: utilisateur.role });
+
+    // Enregistrer le refreshToken dans l'utilisateur
+    utilisateur.refreshToken = tokens.refreshToken.token;
+    await utilisateur.save();
+
+    // Enregistrer le refreshToken dans un cookie
+    const cookieExpires = generateExpires(config.cookie.expirationHours, 'hours');
+    setCookie(res, 'refreshToken', tokens.refreshToken.token, cookieExpires);
+
 
     // Renvoyer les tokens et les informations de l'utilisateur
     return res.status(200).json({

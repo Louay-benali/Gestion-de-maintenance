@@ -15,6 +15,7 @@ const utilisateurSchema = new Schema(
       enum: [RolesEnum.OPERATEUR, RolesEnum.TECHNICIEN, RolesEnum.MAGASINIER, RolesEnum.RESPONSABLE, RolesEnum.ADMIN],
       required: true,
     },
+    refreshToken: { type: String },
   },
   { timestamps: true }
 );

@@ -43,7 +43,7 @@ export async function register(req, res) {
 
     // Enregistrer le refreshToken dans un cookie
     const cookieExpires = generateExpires(config.cookie.expirationHours, 'hours');
-    setCookie(res, 'refreshToken', tokens.refreshToken.token, cookieExpires);
+    setCookie(res, 'jwt', tokens.refreshToken.token, cookieExpires);
 
     // Renvoyer les tokens et les informations de l'utilisateur
     return res.status(201).json({
@@ -94,7 +94,7 @@ export async function handleLogin(req, res) {
 
     // Enregistrer le refreshToken dans un cookie
     const cookieExpires = generateExpires(config.cookie.expirationHours, 'hours');
-    setCookie(res, 'refreshToken', tokens.refreshToken.token, cookieExpires);
+    setCookie(res, 'jwt', tokens.refreshToken.token, cookieExpires);
 
 
     // Renvoyer les tokens et les informations de l'utilisateur

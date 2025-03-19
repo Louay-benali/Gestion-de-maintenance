@@ -7,6 +7,8 @@ import machineRoutes from "./routes/machine.js"
 import panneRoutes from "./routes/panne.js";
 import pieceRoutes from "./routes/piece.js";
 import utilisateurRoutes from "./routes/user.js";
+import authRoutes from "./routes/auth.js"; 
+import cookieParser from "cookie-parser"; 
 
 // Charger les variables d'environnement à partir du fichier .env
 dotenv.config();
@@ -17,6 +19,9 @@ const port = process.env.PORT || 3000;
 
 // Middleware pour traiter les requêtes JSON
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 
 // Connexion à MongoDB avec l'URL de la base de données définie dans le fichier .env
 mongoose.connect(process.env.MONGODB_URI, {
@@ -27,6 +32,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((error) => console.log("Erreur de connexion à MongoDB", error));
 
 // Utilisation des routes pour les utilisateurs
+app.use("/auth", authRoutes);
 app.use("/user", utilisateurRoutes);
 
 app.use("/piece", pieceRoutes);
@@ -39,3 +45,4 @@ app.use("/commande", commandeRoutes);
 app.listen(port, () => {
   console.log(`Serveur en cours d'exécution sur http://localhost:${port}`);
 });
+

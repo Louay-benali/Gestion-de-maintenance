@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import RolesEnum from "../models/role.js";
 
 const { Schema, model } = mongoose;
@@ -15,6 +15,7 @@ const utilisateurSchema = new Schema(
       enum: [RolesEnum.OPERATOR, RolesEnum.TECHNICIAN, RolesEnum.STOREKEEPER, RolesEnum.MANAGER, RolesEnum.ADMIN],
       required: true,
     },
+    refreshToken: { type: String , default: null },
   },
   { timestamps: true }
 );
@@ -28,7 +29,7 @@ utilisateurSchema.pre("save", async function (next) {
   this.motDePasse = await bcrypt.hash(this.motDePasse, salt);
   next();
 });
-
+  
 // Méthode pour comparer les mots de passe
 utilisateurSchema.methods.compareMotDePasse = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.motDePasse);

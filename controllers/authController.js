@@ -34,17 +34,6 @@ export async function register(req, res) {
     // Sauvegarder l'utilisateur dans la base de données
     await utilisateur.save();
 
-    // Générer les tokens d'authentification
-    const tokens = await generateAuthTokens({ userId: utilisateur._id, roleId: utilisateur.role });
-
-    // Enregistrer le refreshToken dans l'utilisateur
-    utilisateur.refreshToken = tokens.refreshToken.token;
-    await utilisateur.save();
-
-    // Enregistrer le refreshToken dans un cookie
-    const cookieExpires = generateExpires(config.cookie.expirationHours, 'hours');
-    setCookie(res, 'jwt', tokens.refreshToken.token, cookieExpires);
-
     // Renvoyer les tokens et les informations de l'utilisateur
     return res.status(201).json({
       message: 'Utilisateur enregistré avec succès.',
@@ -55,7 +44,6 @@ export async function register(req, res) {
         email: utilisateur.email,
         role: utilisateur.role,
       },
-      tokens,
     });
   } catch (error) {
     console.error("Erreur lors de l'enregistrement de l'utilisateur:", error.message);

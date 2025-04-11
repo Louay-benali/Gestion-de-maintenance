@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+
+body {
+     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+a{
+     font-weight: 600;
+     font-size: larger;
+}
+#a-container{
+     padding-top: 3px;
+}

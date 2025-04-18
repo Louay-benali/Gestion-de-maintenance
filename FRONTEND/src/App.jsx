@@ -2,13 +2,13 @@ import { useState } from "react";
 import HomePage from "./pages/HomePage";
 import Sidebar from "./components/SideBar";
 import OperateurDashboard from "./components/OperateurDashboard";
+import Navbar from "./components/NavBar";
+import NavBarDashboard from "./components/NavBarDashboard";
 
 function App() {
   return (
-    <div className="w-64">
-      <Sidebar />
-    </div>
-  )
+    <OperateurDashboard />
+  );
 }
 
 export default App;

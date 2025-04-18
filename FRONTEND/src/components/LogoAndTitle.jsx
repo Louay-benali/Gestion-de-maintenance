@@ -2,8 +2,6 @@ import React from "react";
 
 const LogoAndTitle = () => {
   return (
-    <div>
-      {/* Logo and Title */}
       <div className="p-4 flex items-center gap-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-blue-500 text-white">
           <svg
@@ -24,7 +22,6 @@ const LogoAndTitle = () => {
         </div>
         <span className="text-xl font-semibold">TailAdmin</span>
       </div>
-    </div>
   );
 };
 

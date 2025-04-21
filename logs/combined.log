@@ -1,0 +1,711 @@
+[2025-04-14 00:02:50] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 00:02:50] INFO: ✅ Connecté à MongoDB
+[2025-04-14 00:06:14] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 00:06:14] INFO: ✅ Connecté à MongoDB
+[2025-04-14 12:39:38] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 12:39:38] INFO: ✅ Connecté à MongoDB
+[2025-04-14 13:02:51] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 13:02:51] INFO: ✅ Connecté à MongoDB
+[2025-04-14 13:03:05] INFO: POST /auth/login 200 - 103ms
+[2025-04-14 13:03:24] INFO: POST /auth/login 200 - 67ms
+[2025-04-14 13:03:34] INFO: POST /auth/login 401 - 74ms
+[2025-04-14 13:04:16] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 13:04:16] INFO: ✅ Connecté à MongoDB
+[2025-04-14 13:04:20] INFO: POST /auth/login 401 - 81ms
+[2025-04-14 13:04:36] INFO: POST /auth/login 200 - 83ms
+[2025-04-14 13:26:52] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 13:26:53] INFO: ✅ Connecté à MongoDB
+[2025-04-14 13:27:15] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 13:27:15] INFO: ✅ Connecté à MongoDB
+[2025-04-14 13:27:25] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 13:27:25] INFO: POST /auth/login 200 - 93ms
+[2025-04-14 13:27:38] WARN: [LOGIN] Mot de passe incorrect pour l'email: louaybenali133@gmail.com
+[2025-04-14 13:27:38] INFO: POST /auth/login 401 - 66ms
+[2025-04-14 16:50:57] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 16:50:57] INFO: ✅ Connecté à MongoDB
+[2025-04-14 16:51:29] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 16:51:29] INFO: POST /auth/login 200 - 157ms
+[2025-04-14 16:51:37] WARN: [LOGIN] Mot de passe incorrect pour l'email: louaybenali133@gmail.com
+[2025-04-14 16:51:37] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 16:51:37] INFO: POST /auth/login 200 - 82ms
+[2025-04-14 16:52:01] WARN: [LOGIN] Mot de passe incorrect pour l'email: louaybenali133@gmail.com
+[2025-04-14 16:52:01] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 16:52:01] INFO: POST /auth/login 200 - 67ms
+[2025-04-14 16:53:32] WARN: [LOGIN] Mot de passe incorrect pour l'email: louaybenali133@gmail.com
+[2025-04-14 16:53:33] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 16:53:33] INFO: POST /auth/login 200 - 68ms
+[2025-04-14 16:55:20] WARN: [LOGIN] Mot de passe incorrect pour l'email: louaybenali133@gmail.com
+[2025-04-14 16:55:20] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 16:55:20] INFO: POST /auth/login 200 - 73ms
+[2025-04-14 16:55:28] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 16:55:28] INFO: ✅ Connecté à MongoDB
+[2025-04-14 16:55:31] INFO: POST /auth/login 401 - 80ms
+[2025-04-14 16:55:50] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 16:55:50] INFO: ✅ Connecté à MongoDB
+[2025-04-14 16:55:55] WARN: [LOGIN] Mot de passe incorrect pour l'email: louaybenali133@gmail.com
+[2025-04-14 16:55:55] INFO: POST /auth/login 401 - 81ms
+[2025-04-14 16:56:42] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 16:56:42] INFO: POST /auth/login 200 - 77ms
+[2025-04-14 16:59:36] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 16:59:36] INFO: ✅ Connecté à MongoDB
+[2025-04-14 16:59:39] INFO: POST /user 401 - 4ms
+[2025-04-14 17:00:22] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:00:22] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:00:27] INFO: [POST] /users → Utilisateur créé: john.doe@example.com
+[2025-04-14 17:02:33] WARN: [POST] /users → Email déjà utilisé: john.doe@example.com
+[2025-04-14 17:02:33] INFO: POST /user 400 - 7ms
+[2025-04-14 17:07:38] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:07:38] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:07:52] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:07:52] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:08:44] INFO: [PIECE] Nouvelle pièce créée : Filtre à air (Quantité: -1)
+[2025-04-14 17:08:45] INFO: POST /piece 201 - 34ms
+[2025-04-14 17:15:02] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:15:02] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:17:35] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:17:35] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:18:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:18:46] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:19:05] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:19:05] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:19:07] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:19:07] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:19:11] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:19:11] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:19:30] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:19:30] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:23:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:23:24] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:23:37] INFO: [PANNE] Nouvelle panne déclarée sur la machine 67c0f232c055cad0bb0e9afa par 67c0edbda2114ae968737c25
+[2025-04-14 17:23:37] INFO: POST /panne 201 - 42ms
+[2025-04-14 17:33:56] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:33:56] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:34:36] WARN: [PANNE] Opérateur non trouvé : ID 67c0edbda2114ae968737c25
+[2025-04-14 17:34:36] INFO: POST /panne 404 - 14ms
+[2025-04-14 17:35:08] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:35:08] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:35:31] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:35:31] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:35:32] WARN: [PANNE] Machine non trouvée : ID 67c0f232c055cad0bb0e9afa
+[2025-04-14 17:35:32] INFO: POST /panne 404 - 18ms
+[2025-04-14 17:35:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:35:59] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:39:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:39:19] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:40:18] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:40:18] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:40:50] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:40:50] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:41:03] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:41:03] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:42:35] INFO: [MACHINE] Machine créée : Machine A
+[2025-04-14 17:42:35] INFO: POST /machine 201 - 17ms
+[2025-04-14 17:44:37] INFO: POST /user 401 - 1ms
+[2025-04-14 17:44:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:44:59] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:45:01] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 17:45:01] INFO: ✅ Connecté à MongoDB
+[2025-04-14 17:45:12] INFO: [POST] /users → Utilisateur créé: maryem@example.com
+[2025-04-14 17:45:12] INFO: POST /user 201 - 133ms
+[2025-04-14 17:47:24] WARN: [PANNE] Machine non trouvée : ID 67c0f232c055cad0bb0e9afa
+[2025-04-14 17:47:24] INFO: POST /panne 404 - 6ms
+[2025-04-14 17:47:35] ERROR: [PANNE] Erreur création panne : Cast to ObjectId failed for value "67fd2d88f141c60ce9ca02d" (type string) at path "_id" for model "Utilisateur"
+[2025-04-14 17:47:35] INFO: POST /panne 400 - 2ms
+[2025-04-14 17:47:43] ERROR: [PANNE] Erreur création panne : Cast to ObjectId failed for value "67fd2d88f141c60ce9ca02dk" (type string) at path "_id" for model "Utilisateur"
+[2025-04-14 17:47:43] INFO: POST /panne 400 - 1ms
+[2025-04-14 17:48:06] ERROR: [PANNE] Erreur création panne : Cast to ObjectId failed for value "67fd2d88f141c60ce9ca02dl" (type string) at path "_id" for model "Utilisateur"
+[2025-04-14 17:48:06] INFO: POST /panne 400 - 2ms
+[2025-04-14 17:48:31] INFO: [PANNE] Nouvelle panne déclarée sur la machine 67fd2ceba6b39d8c0aba945d par 67fd2d88f141c60ce9ca02da
+[2025-04-14 17:48:31] INFO: POST /panne 201 - 8ms
+[2025-04-14 17:48:56] INFO: [PANNE] Détail de la panne récupéré : ID 67fd2e4ff141c60ce9ca02e0
+[2025-04-14 17:48:56] INFO: GET /panne/67fd2e4ff141c60ce9ca02e0 200 - 23ms
+[2025-04-14 17:50:59] INFO: [PANNE] Nouvelle panne déclarée sur la machine 67fd2ceba6b39d8c0aba945d par 67fd230bb2b5b463bbd5736b
+[2025-04-14 17:50:59] INFO: POST /panne 201 - 5ms
+[2025-04-14 18:27:49] ERROR: [PANNE] Erreur création panne : Cast to ObjectId failed for value "67fd230bb2b5b463bbd5736o" (type string) at path "_id" for model "Utilisateur"
+[2025-04-14 18:27:49] INFO: POST /panne 400 - 3ms
+[2025-04-14 18:29:12] WARN: [PANNE] Opérateur non trouvé : ID 661c2be474b1f2f2cd12b703
+[2025-04-14 18:29:12] INFO: POST /panne 404 - 3ms
+[2025-04-14 18:29:57] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:29:57] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:29:58] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:29:58] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:29:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:29:59] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:30:32] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:30:32] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:36:44] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:36:44] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:38:10] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:38:10] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:38:58] INFO: [POST] /users → Utilisateur créé: louay@example.com
+[2025-04-14 18:39:23] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:39:23] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:39:24] WARN: [POST] /users → Email déjà utilisé: louay@example.com
+[2025-04-14 18:39:24] INFO: POST /user 400 - 15ms
+[2025-04-14 18:41:13] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:41:13] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:41:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:41:24] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:41:33] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:41:33] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:41:36] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:41:36] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:41:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:41:46] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:41:57] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:41:57] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:42:13] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:42:13] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:42:17] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:42:17] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:42:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:42:24] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:42:39] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:42:39] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:42:45] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:42:45] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:42:47] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:42:47] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:43:22] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:43:22] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:43:57] WARN: [PANNE] Opérateur non trouvé : ID 67c0edfda2114ae968737c28
+[2025-04-14 18:43:57] INFO: POST /intervention 404 - 13ms
+[2025-04-14 18:44:27] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:44:27] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:44:33] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:44:33] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:44:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:44:37] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:44:54] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:44:54] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:44:56] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:44:56] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:45:08] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 18:45:08] INFO: ✅ Connecté à MongoDB
+[2025-04-14 18:45:10] WARN: [INTERVENTION] technicien non trouvé : ID 67c0edfda2114ae968737c28
+[2025-04-14 18:45:10] INFO: POST /intervention 404 - 15ms
+[2025-04-14 18:45:37] WARN: [INTERVENTION] Machine non trouvée : ID 67c0f232c055cad0bb0e9afa
+[2025-04-14 18:45:37] INFO: POST /intervention 404 - 17ms
+[2025-04-14 18:45:48] INFO: [INTERVENTION] Intervention créée pour la machine 67fd2ceba6b39d8c0aba945d par technicien 67fd2d88f141c60ce9ca02da
+[2025-04-14 18:45:48] INFO: POST /intervention 201 - 16ms
+[2025-04-14 18:47:03] INFO: [INTERVENTION] Intervention récupérée : 67fd3bbce6582c2d6f31a33f
+[2025-04-14 18:47:03] INFO: GET /intervention/67fd3bbce6582c2d6f31a33f 200 - 30ms
+[2025-04-14 19:05:00] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:05:00] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:05:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:05:46] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:06:05] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:06:05] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:06:08] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:06:08] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:06:12] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:06:12] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:06:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:06:24] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:06:30] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:06:30] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:06:39] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:06:39] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:06:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:06:46] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:07:00] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:07:00] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:07:06] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:07:06] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:07:11] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:07:11] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:07:14] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:07:14] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:07:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:07:19] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:07:22] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:07:22] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:08:43] WARN: [COMMANDE] magasinier non trouvé : ID 67c0ee4aa2114ae968737c2e
+[2025-04-14 19:08:43] INFO: POST /commande 404 - 13ms
+[2025-04-14 19:09:15] INFO: [COMMANDE] Nouvelle commande créée par 67fd230bb2b5b463bbd5736b
+[2025-04-14 19:09:15] INFO: POST /commande 201 - 18ms
+[2025-04-14 19:09:35] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:09:35] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:09:45] WARN: [COMMANDE] Commande non trouvée : 67fd230bb2b5b463bbd5736b
+[2025-04-14 19:09:45] INFO: GET /commande/67fd230bb2b5b463bbd5736b 404 - 12ms
+[2025-04-14 19:10:23] INFO: [COMMANDE] Commande récupérée : 67fd413b1556d54f58b01f56
+[2025-04-14 19:10:23] INFO: GET /commande/67fd413b1556d54f58b01f56 200 - 13ms
+[2025-04-14 19:10:55] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:10:55] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:14:29] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:14:29] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:14:42] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:14:42] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:15:00] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:15:00] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:16:54] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:16:54] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:19:08] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 19:19:08] INFO: POST /auth/login 200 - 153ms
+[2025-04-14 19:20:02] INFO: [REGISTER] Nouvel utilisateur enregistré: dorsafessid3@gmail.com
+[2025-04-14 19:20:02] INFO: POST /auth/register 201 - 116ms
+[2025-04-14 19:20:25] INFO: [LOGIN] Connexion réussie: dorsafessid3@gmail.com
+[2025-04-14 19:20:25] INFO: POST /auth/login 200 - 115ms
+[2025-04-14 19:21:49] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:21:49] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:21:53] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:21:53] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:21:56] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:21:56] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:21:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:21:59] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:22:45] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:22:45] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:23:05] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:23:05] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:23:09] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:23:09] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:23:14] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:23:14] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:23:17] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:23:17] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:23:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:23:37] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:23:41] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:23:41] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:23:44] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 19:23:44] INFO: ✅ Connecté à MongoDB
+[2025-04-14 19:47:04] INFO: [COMMANDE] Commande récupérée : 67fd413b1556d54f58b01f56
+[2025-04-14 19:47:04] INFO: GET /commande/67fd413b1556d54f58b01f56 200 - 25ms
+[2025-04-14 19:47:39] INFO: [COMMANDE] Nouvelle commande créée par 67fd230bb2b5b463bbd5736b
+[2025-04-14 19:47:39] INFO: POST /commande 201 - 15ms
+[2025-04-14 19:48:20] INFO: [COMMANDE] Commande récupérée : 67fd4a3bad520d0423ce88c3
+[2025-04-14 19:48:20] INFO: GET /commande/67fd4a3bad520d0423ce88c3 200 - 5ms
+[2025-04-14 20:04:46] WARN: [LOGIN] Utilisateur non trouvé: dorsafessid3@gmail.com
+[2025-04-14 20:04:46] INFO: POST /auth/login 404 - 4ms
+[2025-04-14 20:04:50] WARN: [LOGIN] Utilisateur non trouvé: dorsafessid3@gmail.com
+[2025-04-14 20:04:50] INFO: POST /auth/login 404 - 5ms
+[2025-04-14 20:04:54] WARN: [LOGIN] Utilisateur non trouvé: dorsafessid3@gmail.com
+[2025-04-14 20:04:54] INFO: POST /auth/login 404 - 5ms
+[2025-04-14 20:05:09] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 20:05:09] INFO: POST /auth/login 200 - 167ms
+[2025-04-14 22:46:29] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 22:46:29] INFO: POST /auth/login 200 - 76ms
+[2025-04-14 22:49:36] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: role: `responsable` is not a valid enum value for path `role`.
+[2025-04-14 22:49:36] INFO: POST /auth/register 500 - 72ms
+[2025-04-14 22:49:58] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:49:58] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:50:00] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:50:00] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:50:06] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:50:06] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:50:18] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:50:18] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:50:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:50:19] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:50:23] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:50:23] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:50:49] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:50:49] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:50:51] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:50:51] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:51:00] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:51:00] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:51:09] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:51:09] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:51:12] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:51:12] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:51:17] INFO: [REGISTER] Nouvel utilisateur enregistré: louaybenali133@gmail.com
+[2025-04-14 22:51:17] INFO: POST /auth/register 201 - 97ms
+[2025-04-14 22:51:40] INFO: [REGISTER] Nouvel utilisateur enregistré: dorsafessid3@gmail.com
+[2025-04-14 22:51:40] INFO: POST /auth/register 201 - 75ms
+[2025-04-14 22:52:47] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:52:47] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:52:53] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:52:53] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:52:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:52:59] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:53:01] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:53:01] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:53:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:53:19] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:53:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:53:24] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:53:32] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:53:32] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:53:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:53:46] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:53:50] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:53:50] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:53:55] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:53:55] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:53:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:53:59] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:54:03] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:54:03] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:54:08] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:54:08] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:54:23] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:54:23] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:54:31] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:54:31] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:54:35] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:54:35] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:55:14] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:55:14] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:55:27] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:55:27] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:55:29] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:55:29] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:55:30] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:55:30] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:55:35] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:55:35] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:58:18] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 22:58:18] INFO: ✅ Connecté à MongoDB
+[2025-04-14 22:59:45] INFO: [PANNE] Nouvelle panne déclarée sur la machine 67fd2ceba6b39d8c0aba945d par 67fd2d88f141c60ce9ca02da
+[2025-04-14 22:59:45] INFO: POST /panne 201 - 31ms
+[2025-04-14 23:00:33] INFO: [PANNE] Détail de la panne récupéré : ID 67fd7741a3f35860d7ea3562
+[2025-04-14 23:00:33] INFO: GET /panne/67fd7741a3f35860d7ea3562 200 - 12ms
+[2025-04-14 23:07:54] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:07:54] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:08:05] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:08:05] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:08:32] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:08:32] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:08:34] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:08:34] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:08:45] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:08:45] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:08:49] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:08:49] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:08:57] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:08:57] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:11] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:11] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:13] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:13] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:15] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:15] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:18] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:18] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:28] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:28] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:31] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:31] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:33] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:33] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:36] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:36] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:37] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:52] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:52] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:09:54] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:09:54] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:10:15] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:10:15] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:10:20] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:10:20] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:10:25] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:10:25] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:10:31] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:10:31] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:10:45] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:10:45] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:11:13] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:11:13] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:12:10] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:12:10] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:12:26] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:12:26] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:12:36] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:12:36] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:12:42] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:12:42] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:12:58] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:12:58] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:13:01] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:13:01] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:14:39] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:14:39] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:15:05] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:15:05] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:15:20] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:15:20] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:15:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:15:37] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:15:43] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:15:43] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:00] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:00] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:02] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:02] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:07] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:07] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:12] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:12] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:23] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:23] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:24] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:28] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:28] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:33] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:33] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:37] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:40] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:40] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:43] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:43] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:46] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:16:50] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:16:50] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:18:22] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:18:22] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:18:44] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:18:44] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:18:52] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:18:52] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:19:00] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:19:00] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:19:02] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:19:02] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:19:31] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:19:31] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:28:32] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:28:32] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:35:44] INFO: [REGISTER] Nouvel utilisateur enregistré: louaybenali133@gmail.com
+[2025-04-14 23:35:44] INFO: POST /auth/register 201 - 91ms
+[2025-04-14 23:36:00] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 23:36:00] INFO: POST /auth/login 200 - 79ms
+[2025-04-14 23:36:29] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:36:29] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:37:29] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 23:37:29] INFO: POST /auth/login 200 - 92ms
+[2025-04-14 23:44:35] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:44:35] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:46:31] WARN: [LOGIN] Mot de passe incorrect pour l'email: louaybenali133@gmail.com
+[2025-04-14 23:46:31] INFO: POST /auth/login 401 - 91ms
+[2025-04-14 23:46:43] WARN: [LOGIN] Utilisateur non trouvé: louaybenali13@gmail.com
+[2025-04-14 23:46:43] INFO: POST /auth/login 404 - 3ms
+[2025-04-14 23:46:50] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 23:46:50] INFO: POST /auth/login 200 - 78ms
+[2025-04-14 23:48:16] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 23:48:16] INFO: POST /auth/login 200 - 68ms
+[2025-04-14 23:50:24] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 23:50:24] INFO: POST /auth/login 200 - 71ms
+[2025-04-14 23:51:31] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:51:31] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:51:38] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:51:38] INFO: ✅ Connecté à MongoDB
+[2025-04-14 23:53:09] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-14 23:53:09] INFO: POST /auth/login 200 - 95ms
+[2025-04-14 23:59:11] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-14 23:59:11] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:18:31] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-15 00:18:31] INFO: POST /auth/login 200 - 94ms
+[2025-04-15 00:18:44] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-15 00:18:44] INFO: POST /auth/login 200 - 71ms
+[2025-04-15 00:19:38] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-15 00:19:38] INFO: POST /auth/login 200 - 75ms
+[2025-04-15 00:20:52] INFO: DELETE /user/67f2f2200faa774f8ccddf07 403 - 6ms
+[2025-04-15 00:29:04] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:29:04] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:29:06] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:29:06] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:29:48] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:29:48] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:30:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:30:24] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:30:30] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:30:30] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:31:05] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:31:05] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:32:07] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:32:07] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:32:27] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:32:27] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:32:31] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:32:31] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:32:52] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:32:53] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:33:03] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:33:03] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:34:03] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:34:03] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:34:23] INFO: [REGISTER] Nouvel utilisateur enregistré: louaybenali133@gmail.com
+[2025-04-15 00:34:23] INFO: POST /auth/register 201 - 92ms
+[2025-04-15 00:34:45] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-15 00:34:45] INFO: POST /auth/login 200 - 85ms
+[2025-04-15 00:35:35] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:35:35] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:35:38] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:35:38] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:35:41] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:35:41] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:44:43] INFO: [REGISTER] Nouvel utilisateur enregistré: bchtk@gmail.com
+[2025-04-15 00:44:43] INFO: POST /auth/register 201 - 92ms
+[2025-04-15 00:45:14] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: role: `ok` is not a valid enum value for path `role`.
+[2025-04-15 00:45:14] INFO: POST /auth/register 500 - 75ms
+[2025-04-15 00:45:23] INFO: [REGISTER] Nouvel utilisateur enregistré: bchtk1@gmail.com
+[2025-04-15 00:45:23] INFO: POST /auth/register 201 - 72ms
+[2025-04-15 00:48:34] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:48:34] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:48:43] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:48:43] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:49:41] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:49:41] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:49:42] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:49:42] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:49:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:49:46] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:49:49] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:49:49] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:50:05] INFO: GET /user 401 - 8ms
+[2025-04-15 00:50:29] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:50:29] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:50:38] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:50:38] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:50:43] INFO: GET /user 200 - 26ms
+[2025-04-15 00:52:41] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:52:41] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:52:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:52:46] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:52:55] INFO: GET /user 200 - 26ms
+[2025-04-15 00:55:52] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 00:55:52] INFO: ✅ Connecté à MongoDB
+[2025-04-15 00:55:58] INFO: GET /user 200 - 17ms
+[2025-04-15 01:11:05] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:11:05] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:11:08] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:11:08] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:11:10] INFO: GET /user 200 - 26ms
+[2025-04-15 01:20:06] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:20:06] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:20:07] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:20:07] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:20:16] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:20:16] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:20:28] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:20:28] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:20:32] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:20:32] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:20:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:20:37] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:20:38] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:20:38] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:20:43] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:20:43] INFO: ✅ Connecté à MongoDB
+[2025-04-15 01:20:47] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-15 01:20:47] INFO: ✅ Connecté à MongoDB
+[2025-04-16 12:09:48] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-16 12:09:48] INFO: ✅ Connecté à MongoDB
+[2025-04-16 12:10:02] INFO: POST /user/send-approval 200 - 3183ms
+[2025-04-16 12:10:58] INFO: POST /user/send-approval 404 - 9ms
+[2025-04-16 12:11:44] INFO: POST /user/send-approval 404 - 8ms
+[2025-04-16 12:15:57] INFO: POST /user/send-approval 404 - 4ms
+[2025-04-16 12:16:07] INFO: POST /user/send-approval 404 - 6ms
+[2025-04-16 12:19:26] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-16 12:19:26] INFO: ✅ Connecté à MongoDB
+[2025-04-16 12:19:29] INFO: POST /user/send-approval 404 - 23ms
+[2025-04-16 12:20:12] INFO: POST /user/send-approval 500 - 53ms
+[2025-04-16 12:20:42] INFO: POST /user/send-approval 500 - 19ms
+[2025-04-16 12:21:27] INFO: POST /user/send-approval 200 - 5524ms
+[2025-04-16 12:22:19] INFO: POST /user/send-approval 404 - 4ms
+[2025-04-16 12:36:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-16 12:36:59] INFO: ✅ Connecté à MongoDB
+[2025-04-16 12:39:12] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-16 12:39:12] INFO: ✅ Connecté à MongoDB
+[2025-04-16 12:42:42] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-16 12:42:42] INFO: ✅ Connecté à MongoDB
+[2025-04-16 12:43:35] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-16 12:43:35] INFO: ✅ Connecté à MongoDB
+[2025-04-16 12:46:43] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-16 12:46:43] INFO: ✅ Connecté à MongoDB
+[2025-04-16 12:46:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-16 12:46:46] INFO: ✅ Connecté à MongoDB
+[2025-04-17 14:42:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-17 14:42:46] INFO: ✅ Connecté à MongoDB
+[2025-04-17 15:36:00] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-17 15:36:00] INFO: ✅ Connecté à MongoDB
+[2025-04-17 15:39:23] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-04-17 15:39:23] INFO: POST /auth/register 201 - 10605ms
+[2025-04-17 15:47:21] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-17 15:47:21] INFO: ✅ Connecté à MongoDB
+[2025-04-17 15:48:32] WARN: [REGISTER] Tentative d'inscription avec email existant: louaybenali133@gmail.com
+[2025-04-17 15:48:32] INFO: POST /auth/register 400 - 28ms
+[2025-04-17 15:48:33] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-04-17 15:48:33] INFO: POST /auth/register 201 - 28507ms
+[2025-04-17 16:10:07] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-04-17 16:10:07] INFO: POST /auth/register 201 - 10856ms
+[2025-04-17 16:38:47] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-17 16:38:47] INFO: ✅ Connecté à MongoDB
+[2025-04-17 18:10:58] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-17 18:10:58] INFO: ✅ Connecté à MongoDB
+[2025-04-17 18:13:07] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-04-17 18:13:07] INFO: POST /auth/register 201 - 2116ms
+[2025-04-19 15:12:09] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:12:09] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:12:13] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:12:13] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:12:17] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:12:17] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:12:30] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:12:30] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:12:56] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:12:56] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:20:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:20:59] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:21:15] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:21:15] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:21:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:21:19] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:22:31] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:22:31] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:22:36] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:22:36] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:24:02] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:24:02] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:24:07] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:24:07] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:24:09] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:24:09] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:24:25] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 15:24:25] INFO: ✅ Connecté à MongoDB
+[2025-04-19 15:25:58] INFO: GET /auth/google 302 - 4ms
+[2025-04-19 15:26:06] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlmss70LINrHAeZkCoI-fx-WnQRSD-2eE-K0vSRtmE4f4KwE0Ut8uGq8bWMNT2K1lA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent 200 - 493ms
+[2025-04-19 15:26:06] INFO: GET /favicon.ico 404 - 1ms
+[2025-04-19 16:47:17] INFO: GET /auth/google 302 - 3ms
+[2025-04-19 16:47:24] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlnty3X3Pu1MJAQdk2ZWsv-mrZGUxYZIpX37IlEgPqE0abQ_4Y-fpBLX4iJZPv09Dw&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent 200 - 474ms
+[2025-04-19 16:47:25] INFO: GET /favicon.ico 404 - 4ms
+[2025-04-19 16:48:47] INFO: GET /auth/google/callback?code=4%2F0Ab_5qln6RUz7FEXBzMgCnOex0MLFrzkGPWsj6vqEdJFMt1KH-_rugXw9cmrElvSoN_WP6w&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 344ms
+[2025-04-19 16:49:28] INFO: GET /auth/google 302 - 1ms
+[2025-04-19 16:49:29] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlmLYY3WMkTTEuQg47WvblkLLB-YEc06uBCDzELJj3YlH1EmUQZmGCJrxP8EE9Ve4Q&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&prompt=none 200 - 351ms
+[2025-04-19 17:35:01] INFO: GET /auth/google 302 - 2ms
+[2025-04-19 17:35:03] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlnykc05Alyv1YZf6pJWeRIO3Dw-CwrbSMxe7KoypCecwNDseF4AbNAH_gg2aX_94A&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 640ms
+[2025-04-19 17:36:50] INFO: GET /auth/google 302 - 2ms
+[2025-04-19 17:36:51] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlnMi9lmEthO6gOTSb7eC6nmnCtlHr9vpSnVClSWS4E9RXIDC2VNVG9pF9gk3k9nEA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&prompt=none 200 - 546ms
+[2025-04-19 17:37:25] INFO: GET /auth/google 302 - 2ms
+[2025-04-19 17:37:26] INFO: GET /auth/google/callback?code=4%2F0Ab_5qllUH0P7umgOkfFeowZGgthvVAIsB-IS6rJ1ZrsCnDNN7t8CEDzcIGMi6Z2PYNhtBQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 360ms
+[2025-04-19 17:37:40] INFO: GET /auth/google 302 - 2ms
+[2025-04-19 17:37:40] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlnc-S4471kXDdaXDdMxaj5s4vS7MN8303fGuocZcMfzHOjRgq759_spoMt3SSdCsg&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 347ms
+[2025-04-19 17:38:15] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 17:38:15] INFO: ✅ Connecté à MongoDB
+[2025-04-19 17:38:24] INFO: GET /auth/google 302 - 15ms
+[2025-04-19 17:38:25] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlmQeu8gx5aUnNzFjDXfxw7wqsSPOqgZuswIB-p0chsqq1Ov9wRKkPBb5ftJiZ10Bg&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none 200 - 540ms
+[2025-04-19 17:38:50] INFO: GET /auth/google 302 - 2ms
+[2025-04-19 17:38:50] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlmt8k180NU05Nrcy4v9sDbP_FV6-s5E0HubPZMmUIsJFngHX_mHGnqvq10_f-w1RA&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 400ms
+[2025-04-19 17:39:35] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 17:39:35] INFO: ✅ Connecté à MongoDB
+[2025-04-19 17:40:09] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlmt8k180NU05Nrcy4v9sDbP_FV6-s5E0HubPZMmUIsJFngHX_mHGnqvq10_f-w1RA&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 500 - 574ms
+[2025-04-19 17:40:28] INFO: GET /auth/google 302 - 4ms
+[2025-04-19 17:40:28] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlmoKoOybPrO-RCxQciRz6zOzyJ1UPgw9DbpEDgN_AZaqkvImHok3xTPHqze9ezvzA&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 417ms
+[2025-04-19 17:40:29] INFO: GET /favicon.ico 404 - 11ms
+[2025-04-19 17:40:42] INFO: GET /auth/google 302 - 3ms
+[2025-04-19 17:40:42] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlkwWocHgeQlzk5e6aD8Z06QIityb8QGgReAOboux2NIetPt2gTeRD6rdLAc0ATmbQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 426ms
+[2025-04-19 17:55:14] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-19 17:55:14] INFO: ✅ Connecté à MongoDB
+[2025-04-19 17:55:21] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-04-19 17:55:21] INFO: POST /auth/register 201 - 2608ms
+[2025-04-19 17:55:25] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-04-19 17:55:25] INFO: POST /auth/login 200 - 268ms
+[2025-04-19 17:58:48] INFO: GET /auth/google 302 - 6ms
+[2025-04-19 17:58:49] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlnaOh0xHGq7hhRX50digHEvTP4Pr0sezdq06fC1zGellZ5pwZXb3lk7lwvkqs-baw&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 426ms

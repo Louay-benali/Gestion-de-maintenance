@@ -15,6 +15,13 @@ const utilisateurSchema = new Schema(
       enum: [RolesEnum.OPERATEUR, RolesEnum.TECHNICIEN, RolesEnum.MAGASINIER, RolesEnum.RESPONSABLE, RolesEnum.ADMIN],
       required: true,
     },
+    approvalCode: {
+      type: String,
+    },
+    isApproved: {
+      type: Boolean,
+      default: false,
+    },
     refreshToken: { type: String },
   },
   { timestamps: true }

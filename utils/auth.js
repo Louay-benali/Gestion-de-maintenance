@@ -1,7 +1,12 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';  // Utilisation de bcryptjs au lieu de bcrypt
 import config from '../config/config.js';
+import dotenv from "dotenv";
 
+dotenv.config();
+
+
+const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS)
 // Fonction pour générer un token JWT
 export function generateToken(data, expiresMs, secret) {
   const token = jwt.sign(
@@ -23,7 +28,7 @@ export async function verifyToken(token) {
 
 // Fonction pour chiffrer des données (ex: mot de passe)
 export async function encryptData(string) {
-  const salt = await bcrypt.genSalt(10);  // bcryptjs génère un sel
+  const salt = await bcrypt.genSalt(saltRounds);   // bcryptjs génère un sel
   const hashedString = await bcrypt.hash(string, salt);  // bcryptjs effectue le hachage
   return hashedString;
 }

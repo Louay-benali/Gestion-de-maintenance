@@ -1,0 +1,6 @@
+[2025-04-14 17:47:35] ERROR: [PANNE] Erreur création panne : Cast to ObjectId failed for value "67fd2d88f141c60ce9ca02d" (type string) at path "_id" for model "Utilisateur"
+[2025-04-14 17:47:43] ERROR: [PANNE] Erreur création panne : Cast to ObjectId failed for value "67fd2d88f141c60ce9ca02dk" (type string) at path "_id" for model "Utilisateur"
+[2025-04-14 17:48:06] ERROR: [PANNE] Erreur création panne : Cast to ObjectId failed for value "67fd2d88f141c60ce9ca02dl" (type string) at path "_id" for model "Utilisateur"
+[2025-04-14 18:27:49] ERROR: [PANNE] Erreur création panne : Cast to ObjectId failed for value "67fd230bb2b5b463bbd5736o" (type string) at path "_id" for model "Utilisateur"
+[2025-04-14 22:49:36] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: role: `responsable` is not a valid enum value for path `role`.
+[2025-04-15 00:45:14] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: role: `ok` is not a valid enum value for path `role`.

@@ -1,31 +1,58 @@
 // controllers/panneController.js
-import Panne from '../models/panne.js';
+import Panne from "../models/panne.js";
+import Machine from '../models/machine.js';
+import { Utilisateur } from '../models/user.js';
+import logger from "../utils/logger.js";
 
 // Créer une nouvelle panne
 export const createPanne = async (req, res) => {
   try {
-    const { description, operateur, machine , dateDeclaration, etat } = req.body;
+    const { description, operateur, machine, dateDeclaration, etat } = req.body;
+
+    // Vérification existence opérateur
+    const existingOperateur = await Utilisateur.findById(operateur);
+    if (!existingOperateur) {
+      logger.warn(`[PANNE] Opérateur non trouvé : ID ${operateur}`);
+      return res.status(404).json({ message: "Opérateur non trouvé" });
+    }
+
+    // Vérification existence machine
+    const existingMachine = await Machine.findById(machine);
+    if (!existingMachine) {
+      logger.warn(`[PANNE] Machine non trouvée : ID ${machine}`);
+      return res.status(404).json({ message: "Machine non trouvée" });
+    }
+
+    // Création de la panne
     const newPanne = new Panne({
       description,
       operateur,
       machine,
       dateDeclaration,
-      etat
+      etat,
     });
+
     await newPanne.save();
-    res.status(201).json({ message: 'Panne créée avec succès', newPanne });
+
+    logger.info(`[PANNE] Nouvelle panne déclarée sur la machine ${machine} par ${operateur}`);
+    res.status(201).json({ message: "Panne créée avec succès", panne: newPanne });
   } catch (error) {
-    res.status(400).json({ message: 'Erreur lors de la création de la panne', error });
+    logger.error(`[PANNE] Erreur création panne : ${error.message}`);
+    res.status(400).json({ message: "Erreur lors de la création de la panne", error });
   }
 };
 
 // Obtenir toutes les pannes
 export const getPannes = async (req, res) => {
   try {
-    const pannes = await Panne.find().populate('operateur machine');
+    const pannes = await Panne.find().populate("operateur machine");
+    logger.info("[PANNE] Récupération de toutes les pannes");
     res.status(200).json(pannes);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la récupération des pannes', error });
+    logger.error(`[PANNE] Erreur récupération pannes : ${error.message}`);
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la récupération des pannes", error });
   }
 };
 
@@ -33,13 +60,20 @@ export const getPannes = async (req, res) => {
 export const getPanneById = async (req, res) => {
   try {
     const { idPanne } = req.params;
-    const panne = await Panne.findById(idPanne).populate('operateur machine');
+    const panne = await Panne.findById(idPanne).populate("operateur machine");
     if (!panne) {
-      return res.status(404).json({ message: 'Panne non trouvée' });
+      logger.warn(`[PANNE] Panne non trouvée pour ID : ${idPanne}`);
+      return res.status(404).json({ message: "Panne non trouvée" });
     }
+    logger.info(`[PANNE] Détail de la panne récupéré : ID ${idPanne}`);
     res.status(200).json(panne);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la récupération de la panne', error });
+    logger.error(
+      `[PANNE] Erreur récupération panne ID ${req.params.idPanne} : ${error.message}`
+    );
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la récupération de la panne", error });
   }
 };
 
@@ -48,17 +82,42 @@ export const updatePanne = async (req, res) => {
   try {
     const { idPanne } = req.params;
     const { description, etat, operateur, machine, dateDeclaration } = req.body;
+
+    const existingOperateur = await Utilisateur.findById(operateur);
+    if (!existingOperateur) {
+      logger.warn(`[PANNE] Opérateur non trouvé : ID ${operateur}`);
+      return res.status(404).json({ message: "Opérateur non trouvé" });
+    }
+
+    // Vérification existence machine
+    const existingMachine = await Machine.findById(machine);
+    if (!existingMachine) {
+      logger.warn(`[PANNE] Machine non trouvée : ID ${machine}`);
+      return res.status(404).json({ message: "Machine non trouvée" });
+    }
+
     const updatedPanne = await Panne.findByIdAndUpdate(
       idPanne,
       { description, etat, operateur, machine, dateDeclaration },
       { new: true }
     );
     if (!updatedPanne) {
-      return res.status(404).json({ message: 'Panne non trouvée' });
+      logger.warn(
+        `[PANNE] Mise à jour échouée, panne non trouvée : ID ${idPanne}`
+      );
+      return res.status(404).json({ message: "Panne non trouvée" });
     }
-    res.status(200).json({ message: 'Panne mise à jour avec succès', updatedPanne });
+    logger.info(`[PANNE] Panne mise à jour : ID ${idPanne}`);
+    res
+      .status(200)
+      .json({ message: "Panne mise à jour avec succès", panne: updatedPanne });
   } catch (error) {
-    res.status(400).json({ message: 'Erreur lors de la mise à jour de la panne', error });
+    logger.error(
+      `[PANNE] Erreur mise à jour panne ID ${req.params.idPanne} : ${error.message}`
+    );
+    res
+      .status(400)
+      .json({ message: "Erreur lors de la mise à jour de la panne", error });
   }
 };
 
@@ -68,10 +127,19 @@ export const deletePanne = async (req, res) => {
     const { idPanne } = req.params;
     const deletedPanne = await Panne.findByIdAndDelete(idPanne);
     if (!deletedPanne) {
-      return res.status(404).json({ message: 'Panne non trouvée' });
+      logger.warn(
+        `[PANNE] Suppression échouée, panne non trouvée : ID ${idPanne}`
+      );
+      return res.status(404).json({ message: "Panne non trouvée" });
     }
-    res.status(200).json({ message: 'Panne supprimée avec succès' });
+    logger.info(`[PANNE] Panne supprimée : ID ${idPanne}`);
+    res.status(200).json({ message: "Panne supprimée avec succès" });
   } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la suppression de la panne', error });
+    logger.error(
+      `[PANNE] Erreur suppression panne ID ${req.params.idPanne} : ${error.message}`
+    );
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la suppression de la panne", error });
   }
 };

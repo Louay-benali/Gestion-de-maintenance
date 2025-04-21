@@ -1,42 +1,132 @@
 import { Utilisateur } from '../models/user.js';
 import { generateAuthTokens } from '../controllers/token.js';
-import { generateExpires, encryptData, decryptData, setCookie } from '../utils/auth.js';
+import { encryptData, decryptData } from '../utils/auth.js';
+import { sendApprovalCode } from "../services/email.service.js";
 import config from '../config/config.js';
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import logger from '../utils/logger.js';
 
 /**
- * Fonction pour enregistrer un nouvel utilisateur.
- * @param {Object} req - La requête contenant les données d'inscription.
- * @param {Object} res - La réponse qui sera envoyée.
- * @returns {void}
+ * Enregistrer un nouvel utilisateur.
  */
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: config.google.clientId,
+      clientSecret: config.google.clientSecret,
+      callbackURL: "http://localhost:3001/auth/google/callback",
+    },
+    async (token, tokenSecret, profile, done) => {
+      try {
+        // Recherche d’un utilisateur existant avec ce Google ID
+        let utilisateur = await Utilisateur.findOne({ email: profile.emails[0].value });
+
+        if (!utilisateur) {
+          // Si l'utilisateur n'existe pas, on le crée
+          utilisateur = new Utilisateur({
+            nom: profile.name.familyName ,
+            prenom: profile.name.givenName ,
+            email: profile.emails[0].value,
+            motDePasse: "00112233@Ab", // mot de passe temporaire (sera hashé automatiquement avec le pre-save)
+            role: "operateur", // ou un autre rôle par défaut
+            isApproved: true, 
+          });
+
+          await utilisateur.save();
+        }
+
+        return done(null, utilisateur);
+      } catch (err) {
+        return done(err, null);
+      }
+    }
+  )
+);
+// Sérialisation de l’utilisateur (stockage en session)
+passport.serializeUser((utilisateur, done) => {
+  done(null, utilisateur.id);
+});
+
+// Désérialisation (récupération de l'utilisateur via l'ID stocké)
+passport.deserializeUser(async (id, done) => {
+  try {
+    const utilisateur = await Utilisateur.findById(id);
+    done(null, utilisateur);
+  } catch (err) {
+    done(err, null);
+  }
+});
+
+export const googleLogin = passport.authenticate("google", {
+  scope: ["profile", "email"],
+});
+
+export const googleCallback = (req, res, next) => {
+  passport.authenticate(
+    "google",
+    { failureRedirect: "/login" },
+    async (err, user) => {
+      if (err) {
+        console.error("Erreur lors de l'authentification Google :", err);
+        return res.status(500).send({ message: "Échec de l'authentification" });
+      }
+
+      if (!user) {
+        return res.redirect("/login");
+      }
+
+      try {
+        // Générer les tokens d'accès (par exemple JWT)
+        const tokens = await generateAuthTokens({
+          userId: user._id,
+          role: user.role,
+        });
+
+
+      return res.status(200).json({ utilisateur: user, tokens });
+
+      } catch (tokenError) {
+        console.error("Erreur lors de la génération des tokens :", tokenError);
+        return res.status(500).send({ message: "Erreur lors de la génération des tokens" });
+      }
+    }
+  )(req, res, next);
+};
+
 export async function register(req, res) {
   const { nom, prenom, email, motDePasse, role } = req.body;
 
   try {
-    // Vérifier si l'email est déjà pris
     const utilisateurExist = await Utilisateur.findOne({ email });
     if (utilisateurExist) {
-      return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
+      logger.warn(`[REGISTER] Tentative d'inscription avec email existant: ${email}`);
+      return res.status(400).json({ message: "Cet email est déjà utilisé." });
     }
 
-    // Hacher le mot de passe
     const hashedPassword = await encryptData(motDePasse);
 
-    // Créer un nouvel utilisateur
+    // 🔐 Génération du code d'approbation
+    const approvalCode = Math.floor(100000 + Math.random() * 900000).toString();
+
     const utilisateur = new Utilisateur({
       nom,
       prenom,
       email,
       motDePasse: hashedPassword,
       role,
+      approvalCode,
+      isApproved: false,
     });
 
-    // Sauvegarder l'utilisateur dans la base de données
     await utilisateur.save();
 
-    // Renvoyer les tokens et les informations de l'utilisateur
+    // 📧 Envoi de l'e-mail
+    await sendApprovalCode(email, approvalCode);
+    logger.info(`[REGISTER] Utilisateur enregistré: ${email}, code d'approbation envoyé.`);
+
     return res.status(201).json({
-      message: 'Utilisateur enregistré avec succès.',
+      message: "Utilisateur enregistré. Code d'approbation envoyé par e-mail.",
       utilisateur: {
         id: utilisateur._id,
         nom: utilisateur.nom,
@@ -46,46 +136,37 @@ export async function register(req, res) {
       },
     });
   } catch (error) {
-    console.error("Erreur lors de l'enregistrement de l'utilisateur:", error.message);
-    return res.status(500).json({ message: 'Erreur serveur lors de l\'enregistrement.' });
+    logger.error(`[REGISTER] Erreur serveur: ${error.message}`);
+    return res.status(500).json({ message: "Erreur serveur lors de l'enregistrement." });
   }
 }
 
 /**
- * Fonction pour connecter un utilisateur et générer Access Token et Refresh Token.
- * @param {Object} req - La requête contenant les informations de connexion.
- * @param {Object} res - La réponse qui sera envoyée.
- * @returns {void}
+ * Connexion utilisateur.
  */
 export async function handleLogin(req, res) {
   const { email, motDePasse } = req.body;
 
   try {
-    // Vérifier si l'utilisateur existe
     const utilisateur = await Utilisateur.findOne({ email });
     if (!utilisateur) {
+      logger.warn(`[LOGIN] Utilisateur non trouvé: ${email}`);
       return res.status(404).json({ message: 'Utilisateur non trouvé.' });
     }
 
-    // Comparer le mot de passe
     const isPasswordValid = await decryptData(motDePasse, utilisateur.motDePasse);
     if (!isPasswordValid) {
+      logger.warn(`[LOGIN] Mot de passe incorrect pour l'email: ${email}`);
       return res.status(401).json({ message: 'Mot de passe incorrect.' });
     }
 
-    // Générer les tokens d'authentification
     const tokens = await generateAuthTokens({ userId: utilisateur._id, roleId: utilisateur.role });
 
-    // Enregistrer le refreshToken dans l'utilisateur
     utilisateur.refreshToken = tokens.refreshToken.token;
     await utilisateur.save();
 
-    // Enregistrer le refreshToken dans un cookie
-    const cookieExpires = generateExpires(config.cookie.expirationHours, 'hours');
-    setCookie(res, 'jwt', tokens.refreshToken.token, cookieExpires);
+    logger.info(`[LOGIN] Connexion réussie: ${email}`);
 
-
-    // Renvoyer les tokens et les informations de l'utilisateur
     return res.status(200).json({
       message: 'Connexion réussie.',
       utilisateur: {
@@ -98,7 +179,42 @@ export async function handleLogin(req, res) {
       tokens,
     });
   } catch (error) {
-    console.error("Erreur lors de la connexion de l'utilisateur:", error.message);
+    logger.error(`[LOGIN] Erreur serveur: ${error.message}`);
     return res.status(500).json({ message: 'Erreur serveur lors de la connexion.' });
   }
 }
+
+export const signInUsingToken = async (req, res, next) => {
+  try {
+    const { accessToken } = req.body;
+
+    if (!accessToken) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Access token is required");
+    }
+
+    let decodedToken;
+    try {
+      decodedToken = jwt.verify(accessToken, process.env.JWT_SECRET);
+    } catch (error) {
+      throw new ApiError(
+        httpStatus.UNAUTHORIZED,
+        "Invalid or expired access token"
+      );
+    }
+
+    const user = await User.findById(decodedToken.sub);
+
+    if (!user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "User not found");
+    }
+
+    const tokens = await generateAuthTokens({
+      userId: user.id,
+      roleId: user.role_id,
+    });
+
+    res.status(200).send({ user, tokens });
+  } catch (error) {
+    next(error);
+  }
+};

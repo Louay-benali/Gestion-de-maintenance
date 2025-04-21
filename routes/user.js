@@ -17,4 +17,6 @@ router.post("/", authorize(["ADMIN"]), createUser); // Créer un utilisateur
 router.put("/:id", authorize(["ADMIN"]), updateUser); // Mettre à jour un utilisateur
 router.delete("/:id", authorize(["ADMIN"]), deleteUser); // Supprimer un utilisateur
 
+
+
 export default router;

@@ -1,11 +1,18 @@
 import mongoose from "mongoose";
+import EtatEnum from "../models/etatpanne.js";
+
 const panneSchema = new mongoose.Schema({
     description: { type: String, required: true },
-    dateDeclaration: { type: Date, default: Date.now },
-    etat: { type: String, enum: ["ouverte", "en cours", "résolue"], default: "ouverte" },
+    etat: {
+      type: String,
+      enum: [EtatEnum.OUVERTE, EtatEnum.ENCOURS, EtatEnum.RESOLUE],
+      required: true,
+    },
     operateur: { type: mongoose.Schema.Types.ObjectId, ref: "Utilisateur", required: true },
     machine: { type: mongoose.Schema.Types.ObjectId, ref: "Machine", required: true },
-  });
+  },
+  { timestamps: true }
+);
   
   const Panne = mongoose.model("Panne", panneSchema);
   export default Panne;

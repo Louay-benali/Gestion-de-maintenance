@@ -3,6 +3,9 @@ import cors from 'cors';
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
 import dotenv from "dotenv";
+import logger from './utils/logger.js'; // <<-- Import du logger
+import requestLogger from './middleware/requestLogger.js';
+import errorHandler from './middleware/errorHandler.js';
 import commandeRoutes from "./routes/commande.js";
 import interventionRoutes from "./routes/intervention.js";
 import machineRoutes from "./routes/machine.js"
@@ -11,36 +14,31 @@ import pieceRoutes from "./routes/piece.js";
 import utilisateurRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
 
-// Charger les variables d'environnement à partir du fichier .env
 dotenv.config();
 
 const app = express();
-
-const port = process.env.PORT || 3000;
+const port = process.env.PORT
+const portfront = process.env.PORTFRONT ;
 
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true, // pour les cookies si tu utilises les tokens en cookie
+  origin: portfront,
+  credentials: true,
 }));
 
-// Middleware pour traiter les requêtes JSON
 app.use(express.json());
-
-// Middleware pour parser les cookies
 app.use(cookieParser());
+app.use(requestLogger);
 
-// Connexion à MongoDB avec l'URL de la base de données définie dans le fichier .env
+// Connexion à MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log("Connecté à MongoDB"))
-.catch((error) => console.log("Erreur de connexion à MongoDB", error));
+.then(() => logger.info("✅ Connecté à MongoDB"))
+.catch((error) => logger.error(`❌ Erreur de connexion à MongoDB : ${error.message}`));
 
-// Routes d'authentification (publiques)
+// Routes
 app.use("/auth", authRoutes);
-
-// Routes protégées (nécessitant une authentification)
 app.use("/user", utilisateurRoutes);
 app.use("/piece", pieceRoutes);
 app.use("/panne", panneRoutes);
@@ -48,7 +46,9 @@ app.use("/machine", machineRoutes);
 app.use("/intervention", interventionRoutes);
 app.use("/commande", commandeRoutes);
 
+app.use(errorHandler);
+
 // Démarrer le serveur
 app.listen(port, () => {
-  console.log(`Serveur en cours d'exécution sur http://localhost:${port}`);
+  logger.info(`🚀 Serveur lancé sur http://localhost:${port}`);
 });

@@ -20,7 +20,7 @@ const LogoAndTitle = () => {
             <path d="M8 17v-3" />
           </svg>
         </div>
-        <span className="text-xl font-semibold">TailAdmin</span>
+        <span className="text-xl font-semibold">EMKA-MEd</span>
       </div>
   );
 };

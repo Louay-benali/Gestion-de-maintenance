@@ -7,17 +7,17 @@ import { AiOutlineSchedule } from "react-icons/ai";
 import { TbForms } from "react-icons/tb";
 import { IoChevronDownOutline } from "react-icons/io5";
 
-const Sidebar = () => {
+const Sidebar = ({ setSelectedPage }) => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
   const sidebarRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState("Dashboard");
 
   const toggleDropdown = () => {
     setIsOpen((v) => !v);
   };
 
-  // Handle click outside to close the sidebar
+  // Fermer la sidebar quand on clique à l'extérieur
   useEffect(() => {
     function handleClickOutside(event) {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -33,7 +33,6 @@ const Sidebar = () => {
     {
       icon: <MdDashboard size={24} />,
       label: "Dashboard",
-      isActive: true,
     },
     {
       icon: <BsCalendarEvent size={24} />,
@@ -53,8 +52,16 @@ const Sidebar = () => {
     },
   ];
 
+  const handleItemClick = (label) => {
+    setActiveItem(label);
+    setSelectedPage(label); // ✅ Envoie l'information au parent
+  };
+
   return (
-    <aside className="sticky top-0 w-72 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
+    <aside
+      ref={sidebarRef}
+      className="sticky top-0 w-72 bg-white border-r border-gray-200 flex flex-col overflow-y-auto"
+    >
       {/* Logo and Title */}
       <LogoAndTitle />
 
@@ -69,16 +76,19 @@ const Sidebar = () => {
             <nav key={index} className="rounded-lg">
               <a
                 href="#"
+                onClick={() => handleItemClick(item.label)}
                 className={`rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2 ${
-                  item.isActive
-                    ? "text-blue-500"
+                  activeItem === item.label
+                    ? "text-blue-500 bg-gray-100"
                     : "text-gray-500 hover:text-gray-600"
                 } hover:bg-gray-100`}
               >
                 {item.icon}
                 <span
                   className={`text-sm font-medium ${
-                    item.isActive ? "text-blue-500" : "text-gray-600"
+                    activeItem === item.label
+                      ? "text-blue-500"
+                      : "text-gray-600"
                   }`}
                 >
                   {item.label}
@@ -87,7 +97,7 @@ const Sidebar = () => {
             </nav>
           ))}
 
-          {/* Table item with dropdown */}
+          {/* Dropdown Table */}
           <nav className="rounded-lg flex flex-col">
             <button
               onClick={toggleDropdown}
@@ -108,21 +118,27 @@ const Sidebar = () => {
                 <li className="pl-10">
                   <a
                     href="#"
-                    className="rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2 text-gray-500 hover:text-gray-600 hover:bg-gray-100"
+                    onClick={() => handleItemClick("Basic Table")} // ✅ Affiche Basic Table
+                    className={`rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2 ${
+                      activeItem === "Basic Table"
+                        ? "text-blue-500 bg-gray-100"
+                        : "text-gray-500 hover:text-gray-600"
+                    }`}
                   >
-                    <span className="text-sm font-medium text-gray-600">
-                      Basic Table
-                    </span>
+                    <span className="text-sm font-medium">Basic Table</span>
                   </a>
                 </li>
                 <li className="pl-10">
                   <a
                     href="#"
-                    className="rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2 text-gray-500 hover:text-gray-600 hover:bg-gray-100"
+                    onClick={() => handleItemClick("Data Table")}
+                    className={`rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2 ${
+                      activeItem === "Data Table"
+                        ? "text-blue-500 bg-gray-100"
+                        : "text-gray-500 hover:text-gray-600"
+                    }`}
                   >
-                    <span className="text-sm font-medium text-gray-600">
-                      Data Table
-                    </span>
+                    <span className="text-sm font-medium">Data Table</span>
                   </a>
                 </li>
               </div>

@@ -3,7 +3,13 @@
 
 body {
      font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+     
 }
+
+main{
+     background-color: #f3f4f6;
+}
+
 
 
 a{
@@ -12,4 +18,13 @@ a{
 }
 #a-container{
      padding-top: 3px;
+}
+
+table{
+     font-family: "outfit" , sans-serif;
+     font-size: 14px;
+}
+
+.font-style{
+     font-family: "outfit" , sans-serif;
 }

@@ -14,7 +14,7 @@ const LeftBar = () => {
       <button className="text-gray-600 hover:text-indigo-600 border border-gray-200 rounded-md p-2">
         <HiOutlineMenuAlt1 size={24} />
       </button>
-      <SearchInput />
+      <SearchInput className=" w-[400px] " placeholder="Search or type a command..." />
     </div>
   );
 };

@@ -40,7 +40,7 @@ const Sidebar = ({ setSelectedPage }) => {
     },
     {
       icon: <FiUser size={24} />,
-      label: "User Profile",
+      label: "UserProfile",
     },
     {
       icon: <AiOutlineSchedule size={24} />,

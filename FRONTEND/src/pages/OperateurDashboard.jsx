@@ -5,6 +5,7 @@ import QuickStats from "../components/QuickStats";
 import StatisticsSection from "../components/StatisticsSection";
 import RevenueCard from "../components/RevenueCard";
 import MachineTable from "../components/MachineTable"; // ✅ Import du tableau
+import UserProfile from "./UserProfile.jsx";
 
 const OperateurDashboard = () => {
   // ✅ État pour suivre quelle page est sélectionnée
@@ -27,6 +28,8 @@ const OperateurDashboard = () => {
             </div>
           </>
         );
+      case "UserProfile":
+        return <UserProfile /> ;
       case "Basic Table":
         return <MachineTable />; // ✅ Affiche la table
       default:

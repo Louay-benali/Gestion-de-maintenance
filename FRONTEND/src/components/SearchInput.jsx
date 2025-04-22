@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-const SearchInput = () => {
+const SearchInput = ({ className ,  placeholder }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e) => {
@@ -19,8 +19,8 @@ const SearchInput = () => {
         type="text"
         value={searchQuery}
         onChange={handleSearch}
-        className="h-10 w-[400px] rounded-lg border border-gray-200 bg-transparent pl-10 pr-4 text-sm shadow-theme-xs transition-colors duration-200 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-        placeholder="Search or type command..."
+        className={`h-10 ${className} rounded-lg border border-gray-300 bg-transparent pl-10 pr-4 text-sm shadow-theme-xs transition-colors duration-200 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10`}
+        placeholder={`${placeholder}`}
       />
     </div>
   );

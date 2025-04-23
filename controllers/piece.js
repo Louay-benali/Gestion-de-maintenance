@@ -17,12 +17,32 @@ export const createPiece = async (req, res) => {
   }
 };
 
-// Obtenir toutes les pièces de rechange
+// Obtenir toutes les pièces de rechange avec pagination
 export const getPieces = async (req, res) => {
   try {
-    const pieces = await PieceRechange.find();
-    logger.info('[PIECE] Récupération de toutes les pièces');
-    res.status(200).json(pieces);
+    // 1. Lire les paramètres de pagination (ou mettre des valeurs par défaut)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    // 2. Récupérer les pièces avec pagination
+    const pieces = await PieceRechange.find()
+      .skip(skip)
+      .limit(limit);
+
+    // 3. Compter le nombre total de pièces
+    const totalPieces = await PieceRechange.countDocuments();
+
+    // 4. Répondre avec les données paginées + infos
+    res.status(200).json({
+      results: pieces,
+      totalPieces,
+      totalPages: Math.ceil(totalPieces / limit),
+      page,
+      limit,
+    });
+
+    logger.info(`[PIECE] Récupération de toutes les pièces (${pieces.length}) avec pagination`);
   } catch (error) {
     logger.error(`[PIECE] Erreur récupération pièces : ${error.message}`);
     res.status(500).json({ message: 'Erreur lors de la récupération des pièces de rechange', error });

@@ -5,7 +5,7 @@ const panneSchema = new mongoose.Schema({
     description: { type: String, required: true },
     etat: {
       type: String,
-      enum: [EtatEnum.OUVERTE, EtatEnum.ENCOURS, EtatEnum.RESOLUE],
+      enum: [EtatEnum.ouverte, EtatEnum.encours, EtatEnum.resolue],
       required: true,
     },
     operateur: { type: mongoose.Schema.Types.ObjectId, ref: "Utilisateur", required: true },

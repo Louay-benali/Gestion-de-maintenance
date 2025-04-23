@@ -6,7 +6,7 @@ import logger from "../utils/logger.js"; // Vérifie que le chemin est correct
 // ✅ 1️⃣ Créer une nouvelle intervention
 export const creerIntervention = async (req, res) => {
   try {
-    const { technicien, machine, rapport } = req.body;
+    const { technicien, machine, rapport, type } = req.body;
 
     const existingTechnicien = await Utilisateur.findById(technicien);
     if (!existingTechnicien) {
@@ -25,29 +25,60 @@ export const creerIntervention = async (req, res) => {
       technicien,
       machine,
       rapport,
+      type
     });
 
     await nouvelleIntervention.save();
 
-    logger.info(`[INTERVENTION] Intervention créée pour la machine ${machine} par technicien ${technicien}`);
-    res.status(201).json({ message: "Intervention créée avec succès", intervention: nouvelleIntervention });
+    logger.info(
+      `[INTERVENTION] Intervention créée pour la machine ${machine} par technicien ${technicien}`
+    );
+    res
+      .status(201)
+      .json({
+        message: "Intervention créée avec succès",
+        intervention: nouvelleIntervention,
+      });
   } catch (error) {
     logger.error(`[INTERVENTION] Erreur création : ${error.message}`);
     res.status(500).json({ message: "Erreur serveur", error });
   }
 };
 
-// ✅ 2️⃣ Récupérer toutes les interventions
+// ✅ 2️⃣ Récupérer toutes les interventions avec pagination
 export const getAllInterventions = async (req, res) => {
   try {
+    // 1. Lire les paramètres de pagination (ou mettre des valeurs par défaut)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    // 2. Récupérer les interventions avec pagination
     const interventions = await Intervention.find()
       .populate("technicien", "nom prenom email")
-      .populate("machine", "nomMachine etat");
+      .populate("machine", "nomMachine etat")
+      .skip(skip)
+      .limit(limit);
 
-    logger.info(`[INTERVENTION] Récupération de toutes les interventions (${interventions.length})`);
-    res.status(200).json(interventions);
+    // 3. Compter le nombre total d'interventions
+    const totalInterventions = await Intervention.countDocuments();
+
+    // 4. Répondre avec les données paginées + infos
+    res.status(200).json({
+      results: interventions,
+      totalInterventions,
+      totalPages: Math.ceil(totalInterventions / limit),
+      page,
+      limit,
+    });
+
+    logger.info(
+      `[INTERVENTION] Récupération de toutes les interventions (${interventions.length}) avec pagination`
+    );
   } catch (error) {
-    logger.error(`[INTERVENTION] Erreur récupération toutes interventions : ${error.message}`);
+    logger.error(
+      `[INTERVENTION] Erreur récupération toutes interventions : ${error.message}`
+    );
     res.status(500).json({ message: "Erreur serveur", error });
   }
 };
@@ -60,14 +91,18 @@ export const getInterventionById = async (req, res) => {
       .populate("machine", "nomMachine etat");
 
     if (!intervention) {
-      logger.warn(`[INTERVENTION] Intervention non trouvée avec l'ID : ${req.params.id}`);
+      logger.warn(
+        `[INTERVENTION] Intervention non trouvée avec l'ID : ${req.params.id}`
+      );
       return res.status(404).json({ message: "Intervention non trouvée." });
     }
 
     logger.info(`[INTERVENTION] Intervention récupérée : ${req.params.id}`);
     res.status(200).json(intervention);
   } catch (error) {
-    logger.error(`[INTERVENTION] Erreur récupération intervention : ${error.message}`);
+    logger.error(
+      `[INTERVENTION] Erreur récupération intervention : ${error.message}`
+    );
     res.status(500).json({ message: "Erreur serveur", error });
   }
 };
@@ -92,7 +127,9 @@ export const updateIntervention = async (req, res) => {
 
     const intervention = await Intervention.findById(req.params.id);
     if (!intervention) {
-      logger.warn(`[INTERVENTION] Intervention non trouvée pour mise à jour : ${req.params.id}`);
+      logger.warn(
+        `[INTERVENTION] Intervention non trouvée pour mise à jour : ${req.params.id}`
+      );
       return res.status(404).json({ message: "Intervention non trouvée." });
     }
 
@@ -101,9 +138,16 @@ export const updateIntervention = async (req, res) => {
 
     const interventionModifiee = await intervention.save();
     logger.info(`[INTERVENTION] Intervention mise à jour : ${req.params.id}`);
-    res.status(200).json({ message: "Intervention mise à jour avec succès", intervention: interventionModifiee });
+    res
+      .status(200)
+      .json({
+        message: "Intervention mise à jour avec succès",
+        intervention: interventionModifiee,
+      });
   } catch (error) {
-    logger.error(`[INTERVENTION] Erreur mise à jour intervention : ${error.message}`);
+    logger.error(
+      `[INTERVENTION] Erreur mise à jour intervention : ${error.message}`
+    );
     res.status(500).json({ message: "Erreur serveur", error });
   }
 };
@@ -113,7 +157,9 @@ export const deleteIntervention = async (req, res) => {
   try {
     const intervention = await Intervention.findById(req.params.id);
     if (!intervention) {
-      logger.warn(`[INTERVENTION] Intervention non trouvée pour suppression : ${req.params.id}`);
+      logger.warn(
+        `[INTERVENTION] Intervention non trouvée pour suppression : ${req.params.id}`
+      );
       return res.status(404).json({ message: "Intervention non trouvée." });
     }
 
@@ -121,7 +167,58 @@ export const deleteIntervention = async (req, res) => {
     logger.info(`[INTERVENTION] Intervention supprimée : ${req.params.id}`);
     res.status(200).json({ message: "Intervention supprimée avec succès" });
   } catch (error) {
-    logger.error(`[INTERVENTION] Erreur suppression intervention : ${error.message}`);
+    logger.error(
+      `[INTERVENTION] Erreur suppression intervention : ${error.message}`
+    );
+    res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
+
+// ✅ 6️⃣ Filtrer les interventions avec pagination
+export const filterInterventions = async (req, res) => {
+  const { date, type, technician, page = 1, limit = 5 } = req.query; // Extract filters and pagination parameters
+
+  try {
+    // Build the filter object explicitly
+    let filters = {};
+    if (date) filters.date = date; // Assuming 'date' is stored as a string or Date in the database
+    if (type) filters.type = type; // Map 'type' query parameter to the 'type' field in the database
+    if (technician) {
+      // Validate that 'technician' is a valid ObjectId
+      if (!mongoose.Types.ObjectId.isValid(technician)) {
+        return res.status(400).json({ message: "Invalid technician ID." });
+      }
+      filters.technicien = technician; // Add to filters if valid
+    }
+
+    // Pagination logic
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    // Query the database with the constructed filters and pagination
+    const interventions = await Intervention.find(filters)
+      .populate("technicien", "nom prenom email") // Populate technician details
+      .populate("machine", "nomMachine etat") // Populate machine details
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    // Count total interventions matching the filters
+    const totalInterventions = await Intervention.countDocuments(filters);
+
+    // Log and return the filtered interventions with pagination info
+    logger.info(
+      `[INTERVENTION] ${interventions.length} interventions trouvées avec les filtres : ${JSON.stringify(filters)}`
+    );
+    res.status(200).json({
+      results: interventions,
+      totalInterventions,
+      totalPages: Math.ceil(totalInterventions / limit),
+      page: parseInt(page),
+      limit: parseInt(limit),
+    });
+  } catch (error) {
+    logger.error(
+      `[INTERVENTION] Erreur lors du filtrage des interventions : ${error.message}`
+    );
     res.status(500).json({ message: "Erreur serveur", error });
   }
 };

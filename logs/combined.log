@@ -709,3 +709,214 @@
 [2025-04-19 17:55:25] INFO: POST /auth/login 200 - 268ms
 [2025-04-19 17:58:48] INFO: GET /auth/google 302 - 6ms
 [2025-04-19 17:58:49] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlnaOh0xHGq7hhRX50digHEvTP4Pr0sezdq06fC1zGellZ5pwZXb3lk7lwvkqs-baw&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 426ms
+[2025-04-22 11:22:44] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-22 11:22:44] INFO: ✅ Connecté à MongoDB
+[2025-04-22 11:22:44] INFO: GET /auth/google 302 - 4ms
+[2025-04-22 11:22:45] INFO: GET /auth/google/callback?code=4%2F0Ab_5qllC39TLIsr-fvJ_hGyH79zh_WWnHDOpksHvxs_sUDRkoC1PbZ6d_vSwhwZlpNHBGQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none 200 - 520ms
+[2025-04-22 11:22:45] INFO: GET /favicon.ico 404 - 2ms
+[2025-04-22 11:22:49] INFO: GET /auth/google/callback?code=4%2F0Ab_5qllC39TLIsr-fvJ_hGyH79zh_WWnHDOpksHvxs_sUDRkoC1PbZ6d_vSwhwZlpNHBGQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none 500 - 99ms
+[2025-04-22 11:22:50] INFO: GET /auth/google/callback?code=4%2F0Ab_5qllC39TLIsr-fvJ_hGyH79zh_WWnHDOpksHvxs_sUDRkoC1PbZ6d_vSwhwZlpNHBGQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none 500 - 83ms
+[2025-04-22 11:22:55] INFO: GET /auth/google 302 - 0ms
+[2025-04-22 11:22:56] INFO: GET /auth/google/callback?code=4%2F0Ab_5qllILcJ-825Trn_TNYIAcNW7wqtYHz4ZK7PVKpjPWLIssbe7PPBFLRPiNZQxbBReLA&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none 200 - 499ms
+[2025-04-22 11:23:27] INFO: GET /auth/google 302 - 1ms
+[2025-04-22 11:23:28] INFO: GET /auth/google/callback?code=4%2F0Ab_5qllzmQIPq5BJmK1yHveLw3Zldz-xzlkY1tXp4-1w4sZwW5DrRxBr19ZSQKs7fDaoDg&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&prompt=none 200 - 594ms
+[2025-04-23 10:28:23] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:28:23] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:29:38] WARN: [LOGIN] Mot de passe incorrect pour l'email: azizbentanfous1106@gmail.com
+[2025-04-23 10:29:38] INFO: POST /auth/login 401 - 95ms
+[2025-04-23 10:30:33] INFO: [REGISTER] Utilisateur enregistré: azizbentanfous1106@gmail.com, code d'approbation envoyé.
+[2025-04-23 10:30:33] INFO: POST /auth/register 201 - 1663ms
+[2025-04-23 10:30:38] INFO: [LOGIN] Connexion réussie: azizbentanfous1106@gmail.com
+[2025-04-23 10:30:38] INFO: POST /auth/login 200 - 123ms
+[2025-04-23 10:33:10] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "filter" (type string) at path "_id" for model "Intervention"
+[2025-04-23 10:33:10] INFO: GET /intervention/filter?type=Maintenance 500 - 3ms
+[2025-04-23 10:34:21] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:34:21] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:35:11] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "filter" (type string) at path "_id" for model "Intervention"
+[2025-04-23 10:35:11] INFO: GET /intervention/filter?type=Maintenance 500 - 11ms
+[2025-04-23 10:36:45] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:36:45] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:36:54] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "filter" (type string) at path "_id" for model "Intervention"
+[2025-04-23 10:36:54] INFO: GET /intervention/filter?type=Maintenance 500 - 11ms
+[2025-04-23 10:38:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:38:24] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:38:26] INFO: GET /intervention/filter?type=Maintenance 401 - 8ms
+[2025-04-23 10:38:56] INFO: [LOGIN] Connexion réussie: azizbentanfous1106@gmail.com
+[2025-04-23 10:38:56] INFO: POST /auth/login 200 - 151ms
+[2025-04-23 10:39:17] INFO: GET /intervention/filter?type=Maintenance 403 - 14ms
+[2025-04-23 10:39:20] INFO: GET /intervention/filter?type=Maintenance 403 - 7ms
+[2025-04-23 10:40:12] INFO: [INTERVENTION] 0 interventions trouvées avec les filtres : {"type":"Maintenance"}
+[2025-04-23 10:40:12] INFO: GET /intervention/filter?type=Maintenance 200 - 16ms
+[2025-04-23 10:47:12] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:12] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:47:18] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:18] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:47:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:19] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:47:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:24] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:47:29] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:29] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:47:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:37] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:47:41] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:41] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:47:45] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:45] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:47:53] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:53] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:47:57] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:47:57] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:48:12] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:48:12] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:48:15] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:48:15] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:48:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:48:19] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:48:23] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:48:23] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:48:27] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:48:27] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:48:33] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:48:33] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:48:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:48:37] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:48:41] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:48:41] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:49:52] WARN: [INTERVENTION] technicien non trouvé : ID 67fd2d88f141c60ce9ca02da
+[2025-04-23 10:49:52] INFO: POST /intervention 404 - 14ms
+[2025-04-23 10:51:19] INFO: [REGISTER] Utilisateur enregistré: maryemaloui@gmail.com, code d'approbation envoyé.
+[2025-04-23 10:51:19] INFO: POST /auth/register 201 - 1781ms
+[2025-04-23 10:51:36] INFO: [LOGIN] Connexion réussie: maryemaloui@gmail.com
+[2025-04-23 10:51:36] INFO: POST /auth/login 200 - 123ms
+[2025-04-23 10:52:31] ERROR: [INTERVENTION] Erreur création : Intervention validation failed: type: Path `type` is required.
+[2025-04-23 10:52:31] INFO: POST /intervention 500 - 10ms
+[2025-04-23 10:53:14] ERROR: [INTERVENTION] Erreur création : Intervention validation failed: type: Path `type` is required.
+[2025-04-23 10:53:14] INFO: POST /intervention 500 - 8ms
+[2025-04-23 10:53:43] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:53:43] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:53:45] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:53:45] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:53:49] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:53:49] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:54:06] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:54:06] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:54:08] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:54:08] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:54:29] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:54:29] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:54:40] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:54:40] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:54:49] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:54:49] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:54:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:54:59] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:55:03] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:55:03] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:55:09] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:55:09] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:55:57] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:55:57] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:56:00] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:56:00] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:56:06] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:56:06] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:56:08] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:56:08] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:56:11] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:56:11] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:56:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:56:19] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:56:23] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:56:23] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:56:27] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:56:27] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:58:50] ERROR: [INTERVENTION] Erreur création : Intervention validation failed: type: Path `type` is required.
+[2025-04-23 10:58:50] INFO: POST /intervention 500 - 23ms
+[2025-04-23 10:59:42] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:59:42] INFO: ✅ Connecté à MongoDB
+[2025-04-23 10:59:55] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 10:59:55] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:00:09] INFO: [INTERVENTION] Intervention créée pour la machine 67fd2ceba6b39d8c0aba945d par technicien 6808aa05bbf5026c0e9c4b42
+[2025-04-23 11:00:09] INFO: POST /intervention 201 - 35ms
+[2025-04-23 11:01:27] INFO: GET /intervention/filter?type=Maintenance 401 - 4ms
+[2025-04-23 11:01:39] ERROR: [LOGIN] Erreur serveur: Utilisateur validation failed: role: `RESPONSABLE` is not a valid enum value for path `role`.
+[2025-04-23 11:01:39] INFO: POST /auth/login 500 - 126ms
+[2025-04-23 11:02:16] INFO: [LOGIN] Connexion réussie: azizbentanfous1106@gmail.com
+[2025-04-23 11:02:16] INFO: POST /auth/login 200 - 155ms
+[2025-04-23 11:02:36] INFO: GET /intervention/filter?type=Maintenance 403 - 3ms
+[2025-04-23 11:02:54] INFO: GET /intervention/filter?type=maintenance 403 - 4ms
+[2025-04-23 11:03:21] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:03:21] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:03:32] INFO: [LOGIN] Connexion réussie: azizbentanfous1106@gmail.com
+[2025-04-23 11:03:32] INFO: POST /auth/login 200 - 143ms
+[2025-04-23 11:03:48] INFO: [INTERVENTION] 1 interventions trouvées avec les filtres : {"type":"maintenance"}
+[2025-04-23 11:03:48] INFO: GET /intervention/filter?type=maintenance 200 - 28ms
+[2025-04-23 11:04:42] ERROR: [INTERVENTION] Erreur lors du filtrage des interventions : mongoose is not defined
+[2025-04-23 11:04:42] INFO: GET /intervention/filter?technician=661fbe12a87dd2b5f8892f40 500 - 6ms
+[2025-04-23 11:04:57] INFO: [INTERVENTION] 2 interventions trouvées avec les filtres : {}
+[2025-04-23 11:04:57] INFO: GET /intervention/filter?technicien=661fbe12a87dd2b5f8892f40 200 - 12ms
+[2025-04-23 11:05:19] INFO: [INTERVENTION] 2 interventions trouvées avec les filtres : {}
+[2025-04-23 11:05:19] INFO: GET /intervention/filter?technicien=6808aa05bbf5026c0e9c4b42 200 - 20ms
+[2025-04-23 11:06:17] INFO: [INTERVENTION] 2 interventions trouvées avec les filtres : {}
+[2025-04-23 11:06:17] INFO: GET /intervention/filter?technicien=6808aa05bbf5026c0e9c4b42 200 - 8ms
+[2025-04-23 11:07:04] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:07:04] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:07:15] INFO: [INTERVENTION] 2 interventions trouvées avec les filtres : {}
+[2025-04-23 11:07:15] INFO: GET /intervention/filter?technicien=6808aa05bbf5026c0e9c4b42 200 - 34ms
+[2025-04-23 11:08:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:08:19] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:08:45] INFO: [INTERVENTION] 2 interventions trouvées avec les filtres : {}
+[2025-04-23 11:08:45] INFO: GET /intervention/filter?technicien=6808aa05bbf5026c0e9c4b42 200 - 43ms
+[2025-04-23 11:09:16] INFO: [INTERVENTION] 1 interventions trouvées avec les filtres : {}
+[2025-04-23 11:09:16] INFO: GET /intervention/filter?technicien=6808aa05bbf5026c0e9c4b42 200 - 15ms
+[2025-04-23 11:19:29] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:19:29] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:27:23] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:27:23] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:35:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:35:46] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:36:21] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:36:21] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:36:51] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:36:51] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:38:32] INFO: GET /commande 200 - 36ms
+[2025-04-23 11:39:48] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:39:48] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:40:53] INFO: [INTERVENTION] Récupération de toutes les interventions (1) avec pagination
+[2025-04-23 11:40:53] INFO: GET /intervention 200 - 31ms
+[2025-04-23 11:42:16] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:42:16] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:43:07] INFO: GET /intervention/filter?type=Maintenance 401 - 7ms
+[2025-04-23 11:43:27] INFO: [LOGIN] Connexion réussie: azizbentanfous1106@gmail.com
+[2025-04-23 11:43:27] INFO: POST /auth/login 200 - 201ms
+[2025-04-23 11:43:41] INFO: [INTERVENTION] 0 interventions trouvées avec les filtres : {"type":"Maintenance"}
+[2025-04-23 11:43:41] INFO: GET /intervention/filter?type=Maintenance 200 - 22ms
+[2025-04-23 11:43:52] INFO: [INTERVENTION] 1 interventions trouvées avec les filtres : {"type":"maintenance"}
+[2025-04-23 11:43:52] INFO: GET /intervention/filter?type=maintenance 200 - 16ms
+[2025-04-23 11:44:44] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:44:44] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:45:32] INFO: GET /machine 401 - 5ms
+[2025-04-23 11:45:56] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:45:56] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:45:59] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:45:59] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:46:03] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:46:03] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:46:06] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:46:06] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:46:09] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:46:09] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:46:54] WARN: [LOGIN] Mot de passe incorrect pour l'email: louaybenali133@gmail.com
+[2025-04-23 11:46:54] INFO: POST /auth/login 401 - 30ms
+[2025-04-23 11:47:10] INFO: GET /auth/google 302 - 1ms
+[2025-04-23 11:47:11] INFO: GET /auth/google/callback?code=4%2F0Ab_5qlktmZidVeSaoqgD1d2AycnnClEW-jW3KaCJPIBoav_qCB9L4cgNGGfJtBjZPkZZSQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 200 - 533ms
+[2025-04-23 11:47:11] INFO: GET /favicon.ico 404 - 2ms
+[2025-04-23 11:47:37] INFO: [MACHINE] Liste des machines récupérée (1) avec pagination
+[2025-04-23 11:47:37] INFO: GET /machine 200 - 9ms
+[2025-04-23 11:48:49] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:48:49] INFO: ✅ Connecté à MongoDB
+[2025-04-23 11:53:31] INFO: [PANNE] Récupération de toutes les pannes (2) avec pagination
+[2025-04-23 11:53:31] INFO: GET /panne 200 - 38ms
+[2025-04-23 11:54:42] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-04-23 11:54:43] INFO: ✅ Connecté à MongoDB

@@ -1,11 +1,11 @@
 // models/role.js
 const RolesEnum = {
-  OPERATEUR: "operateur",
-  TECHNICIEN: "technicien",
-  MAGASINIER: "magasinier",
-  RESPONSABLE: "responsable",
-  ADMIN: "admin",
-  USER: "user",
+  operateur: "operateur",
+  technicien: "technicien",
+  magasinier: "magasinier",
+  responsable: "responsable",
+  admin: "admin",
+  user: "user",
 };
 
 export default RolesEnum;

@@ -12,7 +12,7 @@ const utilisateurSchema = new Schema(
     motDePasse: { type: String, required: true },
     role: {
       type: String,
-      enum: [RolesEnum.OPERATEUR, RolesEnum.TECHNICIEN, RolesEnum.MAGASINIER, RolesEnum.RESPONSABLE, RolesEnum.ADMIN],
+      enum: [RolesEnum.operateur, RolesEnum.technicien, RolesEnum.magasinier, RolesEnum.responsable, RolesEnum.admin],
       required: true,
     },
     approvalCode: {

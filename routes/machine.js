@@ -5,10 +5,11 @@ import { authorize } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post('/', authorize(["ADMIN"]), createMachine);
-router.get('/', authorize(["ADMIN"]), getMachines);
-router.get('/:idMachine', authorize(["ADMIN"]), getMachineById);
-router.put('/:idMachine', authorize(["ADMIN"]), updateMachine);
-router.delete('/:idMachine', authorize(["ADMIN"]), deleteMachine);
+router.post('/', authorize(["admin"]), createMachine);
+router.get('/', authorize(["admin"]), getMachines);
+router.get('/:idMachine', authorize(["admin"]), getMachineById);
+router.put('/:idMachine', authorize(["admin"]), updateMachine);
+router.delete('/:idMachine', authorize(["admin"]), deleteMachine);
+
 
 export default router;

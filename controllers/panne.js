@@ -42,12 +42,33 @@ export const createPanne = async (req, res) => {
   }
 };
 
-// Obtenir toutes les pannes
+// Obtenir toutes les pannes avec pagination
 export const getPannes = async (req, res) => {
   try {
-    const pannes = await Panne.find().populate("operateur machine");
-    logger.info("[PANNE] Récupération de toutes les pannes");
-    res.status(200).json(pannes);
+    // 1. Lire les paramètres de pagination (ou mettre des valeurs par défaut)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    // 2. Récupérer les pannes avec pagination
+    const pannes = await Panne.find()
+      .populate("operateur machine")
+      .skip(skip)
+      .limit(limit);
+
+    // 3. Compter le nombre total de pannes
+    const totalPannes = await Panne.countDocuments();
+
+    // 4. Répondre avec les données paginées + infos
+    res.status(200).json({
+      results: pannes,
+      totalPannes,
+      totalPages: Math.ceil(totalPannes / limit),
+      page,
+      limit,
+    });
+
+    logger.info(`[PANNE] Récupération de toutes les pannes (${pannes.length}) avec pagination`);
   } catch (error) {
     logger.error(`[PANNE] Erreur récupération pannes : ${error.message}`);
     res

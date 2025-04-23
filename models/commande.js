@@ -6,7 +6,7 @@ const commandeSchema = new mongoose.Schema({
     fournisseur: { type: String, required: true },
     statut: {
       type: String,
-      enum: [StatutEnum.ENATTENTE, StatutEnum.VALIDEE, StatutEnum.LIVREE],
+      enum: [StatutEnum.enattente, StatutEnum.validee, StatutEnum.livree],
       required: true,
     },
   },

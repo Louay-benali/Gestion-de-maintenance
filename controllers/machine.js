@@ -21,12 +21,32 @@ export const createMachine = async (req, res) => {
   }
 };
 
-// Lire toutes les machines
+// Lire toutes les machines avec pagination
 export const getMachines = async (req, res) => {
   try {
-    const machines = await Machine.find();
-    logger.info(`[MACHINE] Liste des machines récupérée (${machines.length})`);
-    res.status(200).json(machines);
+    // 1. Lire les paramètres de pagination (ou mettre des valeurs par défaut)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    // 2. Récupérer les machines avec pagination
+    const machines = await Machine.find()
+      .skip(skip)
+      .limit(limit);
+
+    // 3. Compter le nombre total de machines
+    const totalMachines = await Machine.countDocuments();
+
+    // 4. Répondre avec les données paginées + infos
+    res.status(200).json({
+      results: machines,
+      totalMachines,
+      totalPages: Math.ceil(totalMachines / limit),
+      page,
+      limit,
+    });
+
+    logger.info(`[MACHINE] Liste des machines récupérée (${machines.length}) avec pagination`);
   } catch (error) {
     logger.error(`[MACHINE] Erreur récupération machines : ${error.message}`);
     res

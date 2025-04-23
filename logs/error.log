@@ -4,3 +4,11 @@
 [2025-04-14 18:27:49] ERROR: [PANNE] Erreur création panne : Cast to ObjectId failed for value "67fd230bb2b5b463bbd5736o" (type string) at path "_id" for model "Utilisateur"
 [2025-04-14 22:49:36] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: role: `responsable` is not a valid enum value for path `role`.
 [2025-04-15 00:45:14] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: role: `ok` is not a valid enum value for path `role`.
+[2025-04-23 10:33:10] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "filter" (type string) at path "_id" for model "Intervention"
+[2025-04-23 10:35:11] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "filter" (type string) at path "_id" for model "Intervention"
+[2025-04-23 10:36:54] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "filter" (type string) at path "_id" for model "Intervention"
+[2025-04-23 10:52:31] ERROR: [INTERVENTION] Erreur création : Intervention validation failed: type: Path `type` is required.
+[2025-04-23 10:53:14] ERROR: [INTERVENTION] Erreur création : Intervention validation failed: type: Path `type` is required.
+[2025-04-23 10:58:50] ERROR: [INTERVENTION] Erreur création : Intervention validation failed: type: Path `type` is required.
+[2025-04-23 11:01:39] ERROR: [LOGIN] Erreur serveur: Utilisateur validation failed: role: `RESPONSABLE` is not a valid enum value for path `role`.
+[2025-04-23 11:04:42] ERROR: [INTERVENTION] Erreur lors du filtrage des interventions : mongoose is not defined

@@ -5,11 +5,32 @@ import logger from "../utils/logger.js";
 // 📌 Obtenir toutes les commandes
 export const getAllCommandes = async (req, res) => {
   try {
-    const commandes = await Commande.find().populate("magasinier", "nom prenom email");
-    logger.info(`[COMMANDE] Récupération de toutes les commandes (${commandes.length})`);
-    res.status(200).json(commandes);
+    // 1. Lire les paramètres de pagination (ou mettre des valeurs par défaut)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    // 2. Récupérer les commandes avec pagination
+    const commandes = await Commande.find()
+      .populate("magasinier", "nom prenom email")
+      .skip(skip)
+      .limit(limit);
+
+    // 3. Compter le nombre total de commandes
+    const totalCommandes = await Commande.countDocuments();
+
+    // 4. Répondre avec les données paginées + infos
+    res.status(200).json({
+      results: commandes,
+      totalCommandes,
+      totalPages: Math.ceil(totalCommandes / limit),
+      page,
+      limit,
+    });
   } catch (error) {
-    logger.error(`[COMMANDE] Erreur récupération toutes les commandes : ${error.message}`);
+    logger.error(
+      `[COMMANDE] Erreur récupération toutes les commandes : ${error.message}`
+    );
     res.status(500).json({ message: "Erreur serveur", error });
   }
 };
@@ -17,7 +38,10 @@ export const getAllCommandes = async (req, res) => {
 // 📌 Obtenir une commande par ID
 export const getCommandeById = async (req, res) => {
   try {
-    const commande = await Commande.findById(req.params.id).populate("magasinier", "nom prenom email");
+    const commande = await Commande.findById(req.params.id).populate(
+      "magasinier",
+      "nom prenom email"
+    );
     if (!commande) {
       logger.warn(`[COMMANDE] Commande non trouvée : ${req.params.id}`);
       return res.status(404).json({ message: "Commande non trouvée" });
@@ -49,12 +73,17 @@ export const createCommande = async (req, res) => {
     const nouvelleCommande = new Commande({
       magasinier,
       fournisseur,
-      statut
+      statut,
     });
 
     await nouvelleCommande.save();
     logger.info(`[COMMANDE] Nouvelle commande créée par ${magasinier}`);
-    res.status(201).json({ message: "Commande créée avec succès", commande: nouvelleCommande });
+    res
+      .status(201)
+      .json({
+        message: "Commande créée avec succès",
+        commande: nouvelleCommande,
+      });
   } catch (error) {
     logger.error(`[COMMANDE] Erreur création commande : ${error.message}`);
     res.status(500).json({ message: "Erreur serveur", error });
@@ -74,7 +103,9 @@ export const updateCommande = async (req, res) => {
 
     const commande = await Commande.findById(req.params.id);
     if (!commande) {
-      logger.warn(`[COMMANDE] Commande à mettre à jour non trouvée : ${req.params.id}`);
+      logger.warn(
+        `[COMMANDE] Commande à mettre à jour non trouvée : ${req.params.id}`
+      );
       return res.status(404).json({ message: "Commande non trouvée" });
     }
 
@@ -84,7 +115,9 @@ export const updateCommande = async (req, res) => {
 
     await commande.save();
     logger.info(`[COMMANDE] Commande mise à jour : ${req.params.id}`);
-    res.status(200).json({ message: "Commande mise à jour avec succès", commande });
+    res
+      .status(200)
+      .json({ message: "Commande mise à jour avec succès", commande });
   } catch (error) {
     logger.error(`[COMMANDE] Erreur mise à jour commande : ${error.message}`);
     res.status(500).json({ message: "Erreur serveur", error });
@@ -96,7 +129,9 @@ export const deleteCommande = async (req, res) => {
   try {
     const commande = await Commande.findByIdAndDelete(req.params.id);
     if (!commande) {
-      logger.warn(`[COMMANDE] Commande à supprimer non trouvée : ${req.params.id}`);
+      logger.warn(
+        `[COMMANDE] Commande à supprimer non trouvée : ${req.params.id}`
+      );
       return res.status(404).json({ message: "Commande non trouvée" });
     }
 

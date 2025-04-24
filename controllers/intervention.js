@@ -2,6 +2,7 @@ import Intervention from "../models/intervention.js";
 import Machine from "../models/machine.js";
 import { Utilisateur } from "../models/user.js";
 import logger from "../utils/logger.js"; // Vérifie que le chemin est correct
+import mongoose from "mongoose";
 
 // ✅ 1️⃣ Créer une nouvelle intervention
 export const creerIntervention = async (req, res) => {
@@ -25,7 +26,7 @@ export const creerIntervention = async (req, res) => {
       technicien,
       machine,
       rapport,
-      type
+      type,
     });
 
     await nouvelleIntervention.save();
@@ -33,12 +34,10 @@ export const creerIntervention = async (req, res) => {
     logger.info(
       `[INTERVENTION] Intervention créée pour la machine ${machine} par technicien ${technicien}`
     );
-    res
-      .status(201)
-      .json({
-        message: "Intervention créée avec succès",
-        intervention: nouvelleIntervention,
-      });
+    res.status(201).json({
+      message: "Intervention créée avec succès",
+      intervention: nouvelleIntervention,
+    });
   } catch (error) {
     logger.error(`[INTERVENTION] Erreur création : ${error.message}`);
     res.status(500).json({ message: "Erreur serveur", error });
@@ -138,12 +137,10 @@ export const updateIntervention = async (req, res) => {
 
     const interventionModifiee = await intervention.save();
     logger.info(`[INTERVENTION] Intervention mise à jour : ${req.params.id}`);
-    res
-      .status(200)
-      .json({
-        message: "Intervention mise à jour avec succès",
-        intervention: interventionModifiee,
-      });
+    res.status(200).json({
+      message: "Intervention mise à jour avec succès",
+      intervention: interventionModifiee,
+    });
   } catch (error) {
     logger.error(
       `[INTERVENTION] Erreur mise à jour intervention : ${error.message}`
@@ -206,7 +203,9 @@ export const filterInterventions = async (req, res) => {
 
     // Log and return the filtered interventions with pagination info
     logger.info(
-      `[INTERVENTION] ${interventions.length} interventions trouvées avec les filtres : ${JSON.stringify(filters)}`
+      `[INTERVENTION] ${
+        interventions.length
+      } interventions trouvées avec les filtres : ${JSON.stringify(filters)}`
     );
     res.status(200).json({
       results: interventions,
@@ -220,5 +219,92 @@ export const filterInterventions = async (req, res) => {
       `[INTERVENTION] Erreur lors du filtrage des interventions : ${error.message}`
     );
     res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
+
+// ✅ 7️⃣ Définir un calendrier pour une intervention
+export const defineInterventionSchedule = async (req, res) => {
+  try {
+    const { interventionId, scheduledDate } = req.body;
+
+    // Validate input
+    if (!interventionId || !scheduledDate) {
+      return res
+        .status(400)
+        .json({ message: "Intervention ID and scheduled date are required." });
+    }
+
+    // Validate that interventionId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(interventionId)) {
+      return res.status(400).json({ message: "Invalid Intervention ID." });
+    }
+
+    // Find the intervention
+    const intervention = await Intervention.findById(interventionId);
+    if (!intervention) {
+      return res.status(404).json({ message: "Intervention not found." });
+    }
+
+    // Update the intervention with the scheduled date
+    intervention.scheduledDate = scheduledDate;
+    await intervention.save();
+
+    res.status(200).json({
+      message: "Intervention schedule defined successfully.",
+      intervention,
+    });
+  } catch (error) {
+    logger.error(`[INTERVENTION] Error defining schedule: ${error.message}`);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// ✅ 8️⃣ Assigner un technicien à une intervention
+export const assignTechnician = async (req, res) => {
+  try {
+    const { interventionId, technicianId } = req.body;
+
+    // Validate input
+    if (!interventionId || !technicianId) {
+      return res
+        .status(400)
+        .json({ message: "Intervention ID and Technician ID are required." });
+    }
+
+    // Validate that interventionId and technicianId are valid ObjectIds
+    if (
+      !mongoose.Types.ObjectId.isValid(interventionId) ||
+      !mongoose.Types.ObjectId.isValid(technicianId)
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Invalid Intervention ID or Technician ID." });
+    }
+
+    // Find the intervention
+    const intervention = await Intervention.findById(interventionId);
+    if (!intervention) {
+      return res.status(404).json({ message: "Intervention not found." });
+    }
+
+    // Find the technician
+    const technician = await Utilisateur.findById(technicianId);
+    if (!technician || technician.role !== "technicien") {
+      return res
+        .status(404)
+        .json({ message: "Technician not found or invalid role." });
+    }
+
+    // Assign the technician to the intervention
+    intervention.technicien = technicianId;
+    await intervention.save();
+
+    res.status(200).json({
+      message: "Technician assigned successfully.",
+      intervention,
+    });
+  } catch (error) {
+    logger.error(`[INTERVENTION] Error assigning technician: ${error.message}`);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

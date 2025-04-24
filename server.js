@@ -1,41 +1,53 @@
 import express from "express";
-import cors from 'cors';
+import cors from "cors";
 import mongoose from "mongoose";
-import cookieParser from 'cookie-parser';
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import logger from './utils/logger.js'; // <<-- Import du logger
-import requestLogger from './middleware/requestLogger.js';
-import errorHandler from './middleware/errorHandler.js';
+import logger from "./utils/logger.js"; // <<-- Import du logger
+import requestLogger from "./middleware/requestLogger.js";
+import errorHandler from "./middleware/errorHandler.js";
 import commandeRoutes from "./routes/commande.js";
 import interventionRoutes from "./routes/intervention.js";
-import machineRoutes from "./routes/machine.js"
+import machineRoutes from "./routes/machine.js";
 import panneRoutes from "./routes/panne.js";
 import pieceRoutes from "./routes/piece.js";
 import utilisateurRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
+import demandeRoutes from "./routes/demande.js";
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT
-const portfront = process.env.PORTFRONT ;
+const port = process.env.PORT;
+const portfront = process.env.PORTFRONT;
 
-app.use(cors({
-  origin: portfront,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: portfront,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
 
+// Middleware to sanitize request URLs and remove double slashes
+app.use((req, res, next) => {
+  req.url = req.url.replace(/\/+/g, "/"); // Replace multiple slashes with a single slash
+  next();
+});
+
 // Connexion à MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => logger.info("✅ Connecté à MongoDB"))
-.catch((error) => logger.error(`❌ Erreur de connexion à MongoDB : ${error.message}`));
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => logger.info("✅ Connecté à MongoDB"))
+  .catch((error) =>
+    logger.error(`❌ Erreur de connexion à MongoDB : ${error.message}`)
+  );
 
 // Routes
 app.use("/auth", authRoutes);
@@ -45,6 +57,7 @@ app.use("/panne", panneRoutes);
 app.use("/machine", machineRoutes);
 app.use("/intervention", interventionRoutes);
 app.use("/commande", commandeRoutes);
+app.use("/demande", demandeRoutes);
 
 app.use(errorHandler);
 

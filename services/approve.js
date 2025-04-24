@@ -1,4 +1,4 @@
-import Utilisateur from "../models/user.js";
+import {Utilisateur} from "../models/user.js";
 import logger from "../utils/logger.js";
 
 export const approveUser = async (req, res) => {

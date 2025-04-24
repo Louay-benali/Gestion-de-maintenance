@@ -7,13 +7,14 @@ import {
   updatePiece, 
   deletePiece 
 } from '../controllers/piece.js';
+import { authorize } from "../middleware/auth.js";
 
 const router = express.Router();
 
 router.post('/', createPiece);
-router.get('/', getPieces);
+router.get('/', authorize(["magasinier"]), getPieces);
 router.get('/:idPiece', getPieceById);
-router.put('/:idPiece', updatePiece);
+router.put('/:idPiece', authorize(["magasinier"]), updatePiece);
 router.delete('/:idPiece', deletePiece);
 
 export default router;

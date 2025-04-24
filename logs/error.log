@@ -12,3 +12,31 @@
 [2025-04-23 10:58:50] ERROR: [INTERVENTION] Erreur création : Intervention validation failed: type: Path `type` is required.
 [2025-04-23 11:01:39] ERROR: [LOGIN] Erreur serveur: Utilisateur validation failed: role: `RESPONSABLE` is not a valid enum value for path `role`.
 [2025-04-23 11:04:42] ERROR: [INTERVENTION] Erreur lors du filtrage des interventions : mongoose is not defined
+[2025-04-23 12:55:57] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 12:56:29] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 12:58:04] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:01:12] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:05:23] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:24:51] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:34:49] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:35:30] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:47:40] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:47:53] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:48:51] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:48:55] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:49:11] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:49:35] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:57:37] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 13:58:39] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 14:00:22] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 14:02:34] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 14:02:35] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-23 14:05:19] ERROR: [INTERVENTION] Erreur récupération intervention : Cast to ObjectId failed for value "schedule" (type string) at path "_id" for model "Intervention"
+[2025-04-24 16:13:35] ERROR: [LOGIN] Erreur serveur: Impossible de générer les tokens.
+[2025-04-24 16:14:06] ERROR: [LOGIN] Erreur serveur: Impossible de générer les tokens.
+[2025-04-24 16:14:07] ERROR: [LOGIN] Erreur serveur: Impossible de générer les tokens.
+[2025-04-24 16:21:54] ERROR: [PIECE] Erreur lors de la vérification du stock bas : Cannot read properties of undefined (reading 'email')
+[2025-04-24 16:23:19] ERROR: [PIECE] Erreur lors de la vérification du stock bas : Cannot read properties of undefined (reading 'email')
+[2025-04-24 16:23:44] ERROR: [PIECE] Erreur lors de la vérification du stock bas : Cannot read properties of undefined (reading 'email')
+[2025-04-24 16:24:14] ERROR: [PIECE] Erreur lors de la vérification du stock bas : Cannot read properties of undefined (reading 'email')
+[2025-04-24 16:36:05] ERROR: [LOGIN] Erreur serveur: Impossible de générer les tokens.

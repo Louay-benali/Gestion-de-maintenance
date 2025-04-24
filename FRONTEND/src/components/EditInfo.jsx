@@ -1,13 +1,9 @@
 import React from "react";
 import { IoCloseOutline } from "react-icons/io5";
 
-
 const EditInfo = ({
-  firstName,
-  lastName,
-  email,
-  phone,
-  bio,
+  userInfo,
+  addressInfo,
   onChange,
   onClose,
   onSave,
@@ -19,103 +15,65 @@ const EditInfo = ({
         <div className="flex justify-between items-start mb-6">
           <div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-1">
-              Edit Personal Information
+              Edit Profile Information
             </h2>
             <p className="text-sm text-gray-500">
-              Update your details to keep your profile up-to-date.
+              Update your personal and address details.
             </p>
           </div>
-          <div className="border border-gray-300 p-2 flex items-center rounded-4xl hover:bg-gray-50">
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 text-xl "
-            >
-              <IoCloseOutline />
-            </button>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 text-xl"
+          >
+            <IoCloseOutline />
+          </button>
+        </div>
+
+        {/* Personal Info Fields */}
+        <div className="space-y-4">
+          <h3 className="font-medium text-gray-700">Personal Info</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {["firstName", "lastName", "email", "phone", "bio"].map((field) => (
+              <div key={field}>
+                <label className="block text-sm text-gray-600 capitalize">
+                  {field}
+                </label>
+                <input
+                  type="text"
+                  name={field}
+                  value={userInfo[field]}
+                  onChange={onChange}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Address Info Fields */}
+          <h3 className="font-medium text-gray-700 pt-6">Address Info</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {["Country", "City", "PostalCode", "Id"].map((field) => (
+              <div key={field}>
+                <label className="block text-sm text-gray-600">{field}</label>
+                <input
+                  type="text"
+                  name={field}
+                  value={addressInfo[field]}
+                  onChange={onChange}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Form Content */}
-        <div className="space-y-6">
-          <h4 className="text-lg font-medium text-gray-700">
-            Personal Information
-          </h4>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="text-sm font-medium text-gray-600 block mb-2">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={firstName}
-                onChange={onChange}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-600 block mb-2">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={lastName}
-                onChange={onChange}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-600 block mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={onChange}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-600 block mb-2">
-                Phone
-              </label>
-              <input
-                type="text"
-                name="phone"
-                value={phone}
-                onChange={onChange}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium text-gray-600 block mb-2">
-              Bio
-            </label>
-            <input
-              type="text"
-              name="bio"
-              value={bio}
-              onChange={onChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        </div>
-
-        {/* Footer Buttons */}
+        {/* Actions */}
         <div className="mt-8 flex justify-end gap-3">
           <button
             onClick={onClose}
             className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
           >
-            Close
+            Cancel
           </button>
           <button
             onClick={onSave}

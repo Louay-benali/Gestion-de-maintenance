@@ -10,8 +10,7 @@ import DeclarePanneForm from "../components/DeclarePanneForm.jsx";
 import Task from "../components/Task.jsx";
 import Calendar from "../components/Calender.jsx";
 
-
-const OperateurDashboard = () => {
+const TechnicienDashboard = () => {
   // ✅ État pour suivre quelle page est sélectionnée
   const [selectedPage, setSelectedPage] = useState("Dashboard");
 
@@ -33,15 +32,15 @@ const OperateurDashboard = () => {
           </>
         );
       case "UserProfile":
-        return <UserProfile /> ;
+        return <UserProfile />;
       case "Basic Table":
         return <MachineTable />; // ✅ Affiche la table
       case "Forms":
-        return <DeclarePanneForm />
+        return <DeclarePanneForm />;
       case "Task":
-        return <Task />
+        return <Task />;
       case "Calendar":
-        return <Calendar />
+        return <Calendar />;
       default:
         return <div>Page not found</div>; // ✅ Optionnel : pour les pages non reconnues
     }
@@ -63,4 +62,4 @@ const OperateurDashboard = () => {
   );
 };
 
-export default OperateurDashboard;
+export default TechnicienDashboard;

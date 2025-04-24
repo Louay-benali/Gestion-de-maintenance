@@ -6,6 +6,7 @@ import { FiUser } from "react-icons/fi";
 import { AiOutlineSchedule } from "react-icons/ai";
 import { TbForms } from "react-icons/tb";
 import { IoChevronDownOutline } from "react-icons/io5";
+import { PiChatCircleDots } from "react-icons/pi";
 
 const Sidebar = ({ setSelectedPage }) => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
@@ -44,7 +45,7 @@ const Sidebar = ({ setSelectedPage }) => {
     },
     {
       icon: <AiOutlineSchedule size={24} />,
-      label: "Tasks",
+      label: "Task",
     },
     {
       icon: <TbForms size={24} />,
@@ -60,7 +61,7 @@ const Sidebar = ({ setSelectedPage }) => {
   return (
     <aside
       ref={sidebarRef}
-      className="sticky top-0 w-72 bg-white border-r border-gray-200 flex flex-col overflow-y-auto"
+      className="sticky top-0 w-72 bg-white border-r border-gray-200 flex flex-col overflow-y-auto font-style"
     >
       {/* Logo and Title */}
       <LogoAndTitle />
@@ -145,6 +146,21 @@ const Sidebar = ({ setSelectedPage }) => {
             )}
           </nav>
         </ul>
+        <div className="px-4 py-2">
+          <p className="text-xs font-medium text-gray-500">SUPPORT</p>
+        </div>
+        <nav className="rounded-lg">
+          <button
+            className={`rounded-lg mx-4 flex items-center gap-3 px-4 py-2 w-[calc(100%-2rem)] ${
+              activeItem === "Chat"
+                ? "text-blue-500 bg-gray-100"
+                : "text-gray-500 hover:text-gray-600"
+            } hover:bg-gray-100`}
+          >
+            <PiChatCircleDots size={24} />
+            <span className="text-sm font-medium">Chat</span>
+          </button>
+        </nav>
       </div>
     </aside>
   );

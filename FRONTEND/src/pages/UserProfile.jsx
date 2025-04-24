@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Profile from "../components/Profile";
 import PersonalInfo from "../components/PersonalInfo";
+import Address from "../components/Address";
 import EditInfo from "../components/EditInfo";
-import Adress from "../components/Address";
 
 const UserProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [userInfo, setUserInfo] = useState({
     firstName: "Samira",
     lastName: "Wasouf",
@@ -14,12 +15,21 @@ const UserProfile = () => {
     bio: "Employer",
   });
 
+  const [addressInfo, setAddressInfo] = useState({
+    PostalCode: "12345",
+    Country: "Tunisia",
+    City: "Monastir/Werdanine",
+    Id: "#99079",
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserInfo((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    if (name in userInfo) {
+      setUserInfo((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setAddressInfo((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleEdit = () => {
@@ -28,6 +38,7 @@ const UserProfile = () => {
 
   const handleSave = () => {
     console.log("✅ Saved user info:", userInfo);
+    console.log("✅ Saved address info:", addressInfo);
     setIsModalOpen(false);
   };
 
@@ -35,30 +46,12 @@ const UserProfile = () => {
     <div className="py-2 mb-6 border border-gray-300 rounded-2xl bg-white lg:p-6 font-style">
       <h1 className="py-6 text-xl font-medium">Profile</h1>
       <Profile />
-
-      <PersonalInfo
-        firstName={userInfo.firstName}
-        lastName={userInfo.lastName}
-        email={userInfo.email}
-        phone={userInfo.phone}
-        bio={userInfo.bio}
-        onEdit={handleEdit}
-      />
-
-      <Adress
-        PostalCode="12345"
-        Country="Tunisia"
-        City="Monastir/Werdanine"
-        Id="#99079"
-      />
+      <PersonalInfo {...userInfo} onEdit={handleEdit} />
+      <Address {...addressInfo} onEdit={handleEdit} />
       {isModalOpen && (
         <EditInfo
-          isOpen={isModalOpen}
-          firstName={userInfo.firstName}
-          lastName={userInfo.lastName}
-          email={userInfo.email}
-          phone={userInfo.phone}
-          bio={userInfo.bio}
+          userInfo={userInfo}
+          addressInfo={addressInfo}
           onChange={handleChange}
           onClose={() => setIsModalOpen(false)}
           onSave={handleSave}

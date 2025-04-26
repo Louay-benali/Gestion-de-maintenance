@@ -1,7 +1,9 @@
 import React from "react";
 import SearchInput from "./SearchInput";
 import { VscSettings } from "react-icons/vsc";
-import { Calendar, Tool, Clock } from "lucide-react";
+import { Calendar, Clock } from "lucide-react";
+import { Wrench } from "lucide-react"; // ✔️ existe
+
 
 const interventions = [
   {
@@ -71,13 +73,13 @@ const getInterventionTypeIcon = (type) => {
     case "Preventive":
       return <Calendar size={16} className="text-blue-600" />;
     case "Corrective":
-      return <Tool size={16} className="text-orange-600" />;
+      return <Wrench size={16} className="text-orange-600" />;
     case "Emergency":
       return <Clock size={16} className="text-red-600" />;
     case "Inspection":
-      return <Tool size={16} className="text-gray-600" />;
+      return <Wrench size={16} className="text-gray-600" />;
     default:
-      return <Tool size={16} className="text-gray-600" />;
+      return <Wrench size={16} className="text-gray-600" />;
   }
 };
 

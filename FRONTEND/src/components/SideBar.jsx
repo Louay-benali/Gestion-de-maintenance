@@ -1,14 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import LogoAndTitle from "./LogoAndTitle";
-import { MdDashboard, MdTableChart } from "react-icons/md";
-import { BsCalendarEvent } from "react-icons/bs";
-import { FiUser } from "react-icons/fi";
-import { AiOutlineSchedule } from "react-icons/ai";
-import { TbForms } from "react-icons/tb";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { PiChatCircleDots } from "react-icons/pi";
 
-const Sidebar = ({ setSelectedPage }) => {
+const Sidebar = ({ setSelectedPage, menuItems, tableMenuItems = [] }) => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const sidebarRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
@@ -29,29 +24,6 @@ const Sidebar = ({ setSelectedPage }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const menuItems = [
-    {
-      icon: <MdDashboard size={24} />,
-      label: "Dashboard",
-    },
-    {
-      icon: <BsCalendarEvent size={24} />,
-      label: "Calendar",
-    },
-    {
-      icon: <FiUser size={24} />,
-      label: "UserProfile",
-    },
-    {
-      icon: <AiOutlineSchedule size={24} />,
-      label: "Task",
-    },
-    {
-      icon: <TbForms size={24} />,
-      label: "Forms",
-    },
-  ];
 
   const handleItemClick = (label) => {
     setActiveItem(label);
@@ -98,59 +70,55 @@ const Sidebar = ({ setSelectedPage }) => {
             </nav>
           ))}
 
-          {/* Dropdown Table */}
-          <nav className="rounded-lg flex flex-col">
-            <button
-              onClick={toggleDropdown}
-              className="rounded-lg cursor-pointer z-full mr-4 ml-4 flex items-center gap-3 px-4 py-2 text-gray-500 hover:text-gray-600 hover:bg-gray-100"
-            >
-              <MdTableChart size={24} />
-              <span className="text-sm font-medium text-gray-600">Tables</span>
-              <IoChevronDownOutline
-                size={20}
-                className={`ml-auto transition-transform ${
-                  isOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+          {/* Dropdown Table - Only render if tableMenuItems exist and are not empty */}
+          {tableMenuItems.length > 0 && (
+            <nav className="rounded-lg flex flex-col">
+              <button
+                onClick={toggleDropdown}
+                className="rounded-lg cursor-pointer z-full mr-4 ml-4 flex items-center gap-3 px-4 py-2 text-gray-500 hover:text-gray-600 hover:bg-gray-100"
+              >
+                {tableMenuItems[0].icon}
+                <span className="text-sm font-medium text-gray-600">
+                  Tables
+                </span>
+                <IoChevronDownOutline
+                  size={20}
+                  className={`ml-auto transition-transform ${
+                    isOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-            {isOpen && (
-              <div>
-                <li className="pl-10">
-                  <a
-                    href="#"
-                    onClick={() => handleItemClick("Basic Table")} // ✅ Affiche Basic Table
-                    className={`rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2 ${
-                      activeItem === "Basic Table"
-                        ? "text-blue-500 bg-gray-100"
-                        : "text-gray-500 hover:text-gray-600"
-                    }`}
-                  >
-                    <span className="text-sm font-medium">Basic Table</span>
-                  </a>
-                </li>
-                <li className="pl-10">
-                  <a
-                    href="#"
-                    onClick={() => handleItemClick("Data Table")}
-                    className={`rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2 ${
-                      activeItem === "Data Table"
-                        ? "text-blue-500 bg-gray-100"
-                        : "text-gray-500 hover:text-gray-600"
-                    }`}
-                  >
-                    <span className="text-sm font-medium">Data Table</span>
-                  </a>
-                </li>
-              </div>
-            )}
-          </nav>
+              {isOpen && (
+                <div>
+                  {tableMenuItems.map((item, index) => (
+                    <li key={index} className="pl-10">
+                      <a
+                        href="#"
+                        onClick={() => handleItemClick(item.label)}
+                        className={`rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2 ${
+                          activeItem === item.label
+                            ? "text-blue-500 bg-gray-100"
+                            : "text-gray-500 hover:text-gray-600"
+                        }`}
+                      >
+                        <span className="text-sm font-medium">
+                          {item.label}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </div>
+              )}
+            </nav>
+          )}
         </ul>
         <div className="px-4 py-2">
           <p className="text-xs font-medium text-gray-500">SUPPORT</p>
         </div>
         <nav className="rounded-lg">
           <button
+            onClick={() => handleItemClick("Chat")}
             className={`rounded-lg mx-4 flex items-center gap-3 px-4 py-2 w-[calc(100%-2rem)] ${
               activeItem === "Chat"
                 ? "text-blue-500 bg-gray-100"

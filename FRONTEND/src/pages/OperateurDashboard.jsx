@@ -34,7 +34,7 @@ const OperateurDashboard = () => {
         );
       case "UserProfile":
         return <UserProfile /> ;
-      case "Basic Table":
+      case "Machine Table":
         return <MachineTable />; // ✅ Affiche la table
       case "Forms":
         return <DeclarePanneForm />

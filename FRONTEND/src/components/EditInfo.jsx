@@ -1,15 +1,9 @@
 import React from "react";
 import { IoCloseOutline } from "react-icons/io5";
 
-const EditInfo = ({
-  userInfo,
-  addressInfo,
-  onChange,
-  onClose,
-  onSave,
-}) => {
-  return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
+const EditInfo = ({ userInfo, addressInfo, onChange, onClose, onSave }) => {
+    return (
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl w-full max-w-3xl p-8 shadow-lg">
         {/* Header */}
         <div className="flex justify-between items-start mb-6">

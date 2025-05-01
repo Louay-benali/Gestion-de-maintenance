@@ -59,10 +59,10 @@ const RevenueCard = () => {
   ];
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm w-full max-w-sm">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm h-full w-full">
       <h3 className="text-lg font-semibold text-gray-800">Estimated Revenue</h3>
       <p className="text-sm text-gray-500 mt-1">
-        Target you’ve set for each month
+        Target you've set for each month
       </p>
 
       <div className="mt-6 flex items-center justify-center">
@@ -76,15 +76,13 @@ const RevenueCard = () => {
         </div>
       </div>
 
-      <div className="border-t border-gray-300 mt-6 space-y-5 pt-6 ">
+      <div className="border-t border-gray-300 mt-6 space-y-5 pt-6">
         {stats.map((item) => (
           <div key={item.label}>
-            <p className="mb-2 text-sm text-gray-500 ">
-              {item.label}
-            </p>
+            <p className="mb-2 text-sm text-gray-500">{item.label}</p>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <p className="text-base font-sans font-bold text-gray-800 ">
+                <p className="text-base font-sans font-bold text-gray-800">
                   {item.value}
                 </p>
               </div>
@@ -95,7 +93,7 @@ const RevenueCard = () => {
                     style={{ width: `${item.progress}%` }}
                   ></div>
                 </div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-600">
+                <p className="text-sm font-medium text-gray-700">
                   {item.progress}%
                 </p>
               </div>

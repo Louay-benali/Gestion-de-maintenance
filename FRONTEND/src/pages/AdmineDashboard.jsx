@@ -6,12 +6,10 @@ import StatisticsSection from "../components/StatisticsSection";
 import RevenueCard from "../components/RevenueCard";
 import MachineTable from "../components/MachineTable";
 import UserProfile from "../layout/UserProfile.jsx";
-import DeclarePanneForm from "../components/DeclarePanneForm.jsx";
-import Task from "../components/Task.jsx";
 import Calendar from "../layout/Calender.jsx";
 import InterventionTable from "../components/InterventionTable.jsx";
-
-
+import UserManagement from "../components/UserManagement.jsx";
+import MachineManagement from "../components/MachineManagement.jsx";
 
 // Importez les icônes nécessaires
 import {
@@ -23,7 +21,8 @@ import {
 } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
 
-const OperateurDashboard = () => {
+
+const AdmineDashboard = () => {
   // État pour suivre quelle page est sélectionnée
   const [selectedPage, setSelectedPage] = useState("Dashboard");
 
@@ -34,22 +33,23 @@ const OperateurDashboard = () => {
   const menuItems = [
     { label: "Dashboard", icon: <MdDashboard size={24} /> },
     { label: "Calendar", icon: <MdCalendarMonth size={24} /> },
-    { label: "Task", icon: <MdAssignment size={24} /> },
-    { label: "Déclarer Panne", icon: <IoDocumentText size={24} /> },
-    { label: "UserProfile", icon: <MdPerson size={24} /> },
+    { label: "User Profile", icon: <MdPerson size={24} /> },
+    { label: "User Management", icon: <IoDocumentText size={24} /> },
+    { label: "Machine Management", icon: <IoDocumentText size={24} /> },
   ];
 
-  // Définition des éléments du menu de table (si nécessaire)
- const tableMenuItems = [
-     {
-       icon: <MdTableChart size={24} />,
-       label: "Machine Table",
-     },
-     {
-       icon: <MdTableChart size={24} />,
-       label: "Intervention Table",
-     },
-   ];
+  // Définition des éléments du menu de table 
+   const tableMenuItems = [
+       {
+         icon: <MdTableChart size={24} />,
+         label: "Machine Table",
+       },
+       {
+         icon: <MdTableChart size={24} />,
+         label: "Intervention Table",
+       },
+     ];
+
   // Fonction qui affiche le contenu selon la page sélectionnée
   const renderContent = () => {
     switch (selectedPage) {
@@ -67,19 +67,18 @@ const OperateurDashboard = () => {
             </div>
           </>
         );
-      
-      case "Calendar":
-        return <Calendar />;
-      case "Déclarer Panne":
-        return <DeclarePanneForm />;
-      case "Task":
-        return <Task />;
+      case "User Profile":
+        return <UserProfile />;
       case "Machine Table":
         return <MachineTable />;
+      case "Calendar":
+        return <Calendar />;
+      case "User Management":
+        return <UserManagement />;
+      case "Machine Management":
+        return <MachineManagement />;
       case "Intervention Table":
         return <InterventionTable />;
-      case "UserProfile":
-        return <UserProfile />;
       default:
         return <div>Page not found</div>;
     }
@@ -107,4 +106,4 @@ const OperateurDashboard = () => {
   );
 };
 
-export default OperateurDashboard;
+export default AdmineDashboard;

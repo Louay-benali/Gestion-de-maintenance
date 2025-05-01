@@ -197,7 +197,7 @@ const TaskBoard = () => {
   );
 
   return (
-    <div className="mx-auto max-w-6xl p-4 md:p-6 bg-white">
+    <div className="mx-auto max-w-6xl p-4 md:p-6 bg-white border border-gray-200 rounded-2xl ">
       <h1 className="pb-6 text-2xl font-bold text-gray-700 font-style">
         Tasks
       </h1>
@@ -235,8 +235,8 @@ const TaskBoard = () => {
 
       {/* Task Modal */}
       {isTaskModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 backdrop-blur-sm bg-white/30 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold mb-4">Add New Task</h2>
             <form className="space-y-4" onSubmit={handleAddTask}>
               <div>

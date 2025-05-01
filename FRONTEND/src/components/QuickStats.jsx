@@ -52,36 +52,88 @@ const QuickStats = () => {
   ];
 
   return (
-    <div className="flex flex-wrap justify-start gap-6 p-6">
-      {stats.map((stat, index) => (
-        <div
-          key={index}
-          className="flex-grow basis-[30%] min-w-[300px] bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
-        >
-          <div className="space-y-3">
-            <div className="flex flex-col">
-              <h3 className="text-[32px] font-semibold text-gray-900">
-                {stat.value}
-              </h3>
-              <p className="text-base text-gray-600 mt-1">{stat.title}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span
-                className={`text-sm font-medium ${
-                  stat.changeType === "increase"
-                    ? "text-green-600"
-                    : stat.changeType === "decrease"
-                    ? "text-red-600"
-                    : "text-gray-600"
-                }`}
-              >
-                {stat.change}
-              </span>
-              <span className="text-sm text-gray-500">{stat.subtitle}</span>
-            </div>
-          </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* First row - 3 cards */}
+      <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base text-gray-600">{stats[0].title}</h3>
+          {stats[0].icon}
         </div>
-      ))}
+        <h3 className="text-3xl font-semibold text-gray-900">
+          {stats[0].value}
+        </h3>
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-sm font-medium text-green-600">
+            {stats[0].change}
+          </span>
+          <span className="text-sm text-gray-500">{stats[0].subtitle}</span>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base text-gray-600">{stats[1].title}</h3>
+          {stats[1].icon}
+        </div>
+        <h3 className="text-3xl font-semibold text-gray-900">
+          {stats[1].value}
+        </h3>
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-sm font-medium text-red-600">
+            {stats[1].change}
+          </span>
+          <span className="text-sm text-gray-500">{stats[1].subtitle}</span>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base text-gray-600">{stats[2].title}</h3>
+          {stats[2].icon}
+        </div>
+        <h3 className="text-3xl font-semibold text-gray-900">
+          {stats[2].value}
+        </h3>
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-sm font-medium text-green-600">
+            {stats[2].change}
+          </span>
+          <span className="text-sm text-gray-500">{stats[2].subtitle}</span>
+        </div>
+      </div>
+
+      {/* Second row - 2 cards */}
+      <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow md:col-span-1 lg:col-span-2">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base text-gray-600">{stats[3].title}</h3>
+          {stats[3].icon}
+        </div>
+        <h3 className="text-3xl font-semibold text-gray-900">
+          {stats[3].value}
+        </h3>
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-sm font-medium text-gray-600">
+            {stats[3].change}
+          </span>
+          <span className="text-sm text-gray-500">{stats[3].subtitle}</span>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base text-gray-600">{stats[4].title}</h3>
+          {stats[4].icon}
+        </div>
+        <h3 className="text-3xl font-semibold text-gray-900">
+          {stats[4].value}
+        </h3>
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-sm font-medium text-green-600">
+            {stats[4].change}
+          </span>
+          <span className="text-sm text-gray-500">{stats[4].subtitle}</span>
+        </div>
+      </div>
     </div>
   );
 };

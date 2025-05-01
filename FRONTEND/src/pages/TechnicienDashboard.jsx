@@ -5,9 +5,9 @@ import QuickStats from "../components/QuickStats";
 import StatisticsSection from "../components/StatisticsSection";
 import RevenueCard from "../components/RevenueCard";
 import MachineTable from "../components/MachineTable";
-import UserProfile from "./UserProfile.jsx";
+import UserProfile from "../layout/UserProfile.jsx";
 import Task from "../components/Task.jsx";
-import Calendar from "../components/Calender.jsx";
+import Calendar from "../layout/Calender.jsx";
 import InterventionTable from "../components/InterventionTable.jsx";
 import CreerRapportIntervention from "../components/CreerRapportIntervention.jsx";
 import { MdInventory } from "react-icons/md";
@@ -19,10 +19,12 @@ import { TbForms } from "react-icons/tb";
 import DemanderPieces from "../components/DemanderPieces.jsx";
 
 const TechnicienDashboard = () => {
-  // ✅ État pour suivre quelle page est sélectionnée
+  // State for tracking which page is selected
   const [selectedPage, setSelectedPage] = useState("Dashboard");
+  // New state for sidebar collapse
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  // ✅ Définition des menuItems spécifiques pour le technicien
+  // Definition of menu items specific to the technician
   const technicienMenuItems = [
     {
       icon: <MdDashboard size={24} />,
@@ -50,7 +52,7 @@ const TechnicienDashboard = () => {
     },
   ];
 
-  // ✅ Définition des éléments de menu pour les tables
+  // Definition of menu items for tables
   const tableMenuItems = [
     {
       icon: <MdTableChart size={24} />,
@@ -62,22 +64,29 @@ const TechnicienDashboard = () => {
     },
   ];
 
-  // ✅ Fonction qui affiche le contenu selon la page sélectionnée
+  // Function to handle sidebar toggle
+  const handleToggleSidebar = (isOpen) => {
+    setIsSidebarCollapsed(!isOpen);
+  };
+
+  // Function that displays content according to the selected page
   const renderContent = () => {
     switch (selectedPage) {
       case "Dashboard":
         return (
-          <>
-            <QuickStats />
-            <div className="flex flex-col lg:flex-row gap-6 mt-6">
-              <div className="w-full lg:w-2/3">
+          <div className="flex flex-col w-full gap-6">
+            <div className="w-full">
+              <QuickStats />
+            </div>
+            <div className="flex flex-col lg:flex-row w-full gap-6">
+              <div className="w-full lg:w-2/3 flex">
                 <StatisticsSection />
               </div>
-              <div className="w-full lg:w-1/3">
+              <div className="w-full lg:w-1/3 flex">
                 <RevenueCard />
               </div>
             </div>
-          </>
+          </div>
         );
       case "UserProfile":
         return <UserProfile />;
@@ -92,9 +101,9 @@ const TechnicienDashboard = () => {
       case "Calendar":
         return <Calendar />;
       case "Demande Pièces":
-        return <DemanderPieces />
+        return <DemanderPieces />;
       case "Chat":
-        return <div>Chat Component</div>; // Ajout d'un placeholder pour le Chat
+        return <div>Chat Component</div>; // Placeholder for Chat
       default:
         return <div>Page not found</div>;
     }
@@ -102,17 +111,18 @@ const TechnicienDashboard = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* ✅ Passe les menuItems et tableMenuItems à Sidebar */}
+      {/* Pass menuItems, tableMenuItems, and isCollapsed to Sidebar */}
       <Sidebar
         setSelectedPage={setSelectedPage}
         menuItems={technicienMenuItems}
         tableMenuItems={tableMenuItems}
+        isCollapsed={isSidebarCollapsed}
       />
 
       <div className="flex-1 flex flex-col min-h-screen">
-        <NavBarDashboard />
+        <NavBarDashboard onToggleSidebar={handleToggleSidebar} />
         <main className="flex-1 p-4 sm:p-6 overflow-auto">
-          {/* ✅ Affiche dynamiquement le contenu */}
+          {/* Dynamically display content */}
           {renderContent()}
         </main>
       </div>

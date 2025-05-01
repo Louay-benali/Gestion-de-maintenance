@@ -5,15 +5,15 @@ import { IoTimeOutline } from "react-icons/io5";
 
 const NotificationDropdown = () => {
   return (
-    <div className="absolute right-0 mt-2 w-[320px] rounded-xl bg-white shadow-lg border border-gray-100">
+    <div className="absolute right-0 mt-2 w-[320px] rounded-xl bg-white shadow-lg border border-gray-100 z-50">
       {/* Header Section */}
-      <div className="p-4 border-b border-gray-100">
+      <div className="p-4 border-b border-gray-100 bg-white">
         <h5 className="text-[14px] font-medium text-gray-900">Notifications</h5>
         <p className="text-[14px] text-gray-500">You have 2 unread messages</p>
       </div>
 
       {/* Notifications List */}
-      <div className="p-2">
+      <div className="p-2 bg-white">
         {/* New Notification */}
         <div className="w-full flex items-start px-3 py-2 hover:bg-gray-50 rounded-lg">
           <div className="flex-shrink-0 mt-1">
@@ -48,7 +48,7 @@ const NotificationDropdown = () => {
       </div>
 
       {/* View All Section */}
-      <div className="p-2 border-t border-gray-100">
+      <div className="p-2 border-t border-gray-100 bg-white rounded-b-xl">
         <button className="w-full flex items-center justify-center px-3 py-2 text-[14px] text-indigo-600 hover:bg-gray-50 rounded-lg font-medium">
           View all notifications
         </button>

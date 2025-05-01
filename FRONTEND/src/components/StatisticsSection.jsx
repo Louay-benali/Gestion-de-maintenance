@@ -136,7 +136,7 @@ const StatisticsSection = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 flex flex-col shadow-sm h-full">
+    <div className="bg-white rounded-2xl p-6 flex flex-col shadow-sm h-full w-full">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-lg font-semibold text-gray-900">Statistiques</h2>
@@ -189,7 +189,7 @@ const StatisticsSection = () => {
         </div>
       </div>
 
-      <div className="h-[250px] w-full">
+      <div className="flex-1 h-[250px] min-h-[250px] w-full">
         <Line data={chartData} options={options} />
       </div>
     </div>

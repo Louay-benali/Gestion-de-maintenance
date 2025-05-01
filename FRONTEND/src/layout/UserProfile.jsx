@@ -45,7 +45,7 @@ const UserProfile = () => {
   return (
     <div className="py-2 mb-6 border border-gray-300 rounded-2xl bg-white lg:p-6 font-style">
       <h1 className="py-6 text-xl font-medium">Profile</h1>
-      <Profile />
+      <Profile Name={userInfo.firstName} City={addressInfo.City} Bio={userInfo.bio} />
       <PersonalInfo {...userInfo} onEdit={handleEdit} />
       <Address {...addressInfo} onEdit={handleEdit} />
       {isModalOpen && (

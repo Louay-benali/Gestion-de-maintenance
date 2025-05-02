@@ -30,9 +30,7 @@ export const getMachines = async (req, res) => {
     const skip = (page - 1) * limit;
 
     // 2. Récupérer les machines avec pagination
-    const machines = await Machine.find()
-      .skip(skip)
-      .limit(limit);
+    const machines = await Machine.find().skip(skip).limit(limit);
 
     // 3. Compter le nombre total de machines
     const totalMachines = await Machine.countDocuments();
@@ -46,7 +44,9 @@ export const getMachines = async (req, res) => {
       limit,
     });
 
-    logger.info(`[MACHINE] Liste des machines récupérée (${machines.length}) avec pagination`);
+    logger.info(
+      `[MACHINE] Liste des machines récupérée (${machines.length}) avec pagination`
+    );
   } catch (error) {
     logger.error(`[MACHINE] Erreur récupération machines : ${error.message}`);
     res
@@ -119,5 +119,41 @@ export const deleteMachine = async (req, res) => {
     res
       .status(500)
       .json({ message: "Erreur lors de la suppression de la machine", error });
+  }
+};
+
+// Consulter l'état des machines (statut en temps réel) avec pagination
+export const getMachineStatus = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    const machines = await Machine.find()
+      .select("nomMachine etat")
+      .skip(skip)
+      .limit(limit);
+
+    const totalMachines = await Machine.countDocuments();
+
+    res.status(200).json({
+      results: machines,
+      totalMachines,
+      totalPages: Math.ceil(totalMachines / limit),
+      page,
+      limit,
+    });
+
+    logger.info(
+      `[MACHINE] Récupération du statut des machines (${machines.length}) avec pagination`
+    );
+  } catch (error) {
+    logger.error(
+      `[MACHINE] Erreur récupération statut des machines : ${error.message}`
+    );
+    res.status(500).json({
+      message: "Erreur lors de la récupération du statut des machines",
+      error,
+    });
   }
 };

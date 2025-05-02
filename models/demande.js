@@ -18,6 +18,16 @@ const demandeSchema = new mongoose.Schema(
       ref: "Utilisateur",
       required: true,
     }, // User who made the request
+    pieces: [
+      {
+        pieceId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "PieceRechange",
+          required: true,
+        },
+        quantite: { type: Number, required: true },
+      },
+    ], // List of pieces with their quantities
     dateDemande: { type: Date, default: Date.now }, // Date of the request
   },
   { timestamps: true }

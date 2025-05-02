@@ -40,3 +40,10 @@
 [2025-04-24 16:23:44] ERROR: [PIECE] Erreur lors de la vérification du stock bas : Cannot read properties of undefined (reading 'email')
 [2025-04-24 16:24:14] ERROR: [PIECE] Erreur lors de la vérification du stock bas : Cannot read properties of undefined (reading 'email')
 [2025-04-24 16:36:05] ERROR: [LOGIN] Erreur serveur: Impossible de générer les tokens.
+[2025-04-24 17:11:08] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validée` is not a valid enum value for path `statut`.
+[2025-04-24 17:13:16] ERROR: [COMMANDE] Erreur récupération commande : Cast to ObjectId failed for value "etat" (type string) at path "_id" for model "Commande"
+[2025-04-24 21:10:00] ERROR: [DEMANDE] Erreur vérification disponibilité des pièces : Cannot populate path `pieces.pieceId` because it is not in your schema. Set the `strictPopulate` option to false to override.
+[2025-04-27 16:12:44] ERROR: [PIECE] Erreur récupération pièce ID most-used : Cast to ObjectId failed for value "most-used" (type string) at path "_id" for model "PieceRechange"
+[2025-05-02 02:01:16] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: nom: Path `nom` is required., prenom: Path `prenom` is required., email: Path `email` is required., role: Path `role` is required.
+[2025-05-02 02:04:10] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: nom: Path `nom` is required., prenom: Path `prenom` is required., email: Path `email` is required., role: Path `role` is required.
+[2025-05-02 02:08:14] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: nom: Path `nom` is required., prenom: Path `prenom` is required., email: Path `email` is required., role: Path `role` is required.

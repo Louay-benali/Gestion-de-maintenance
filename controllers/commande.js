@@ -142,3 +142,72 @@ export const deleteCommande = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", error });
   }
 };
+
+export const validerCommande = async (req, res) => {
+  try {
+    const { idCommande } = req.params;
+
+    const commande = await Commande.findById(idCommande);
+    if (!commande) {
+      logger.warn(`[COMMANDE] Commande non trouvée : ${idCommande}`);
+      return res.status(404).json({ message: "Commande non trouvée." });
+    }
+
+    commande.statut = "validee";
+    await commande.save();
+
+    logger.info(`[COMMANDE] Commande validée : ${idCommande}`);
+    res
+      .status(200)
+      .json({ message: "Commande validée avec succès.", commande });
+  } catch (error) {
+    logger.error(`[COMMANDE] Erreur validation commande : ${error.message}`);
+    res
+      .status(500)
+      .json({
+        message: "Erreur serveur lors de la validation de la commande.",
+        error,
+      });
+  }
+};
+
+// 📌 Vérifier la réception des pièces livrées
+export const verifierReceptionPieces = async (req, res) => {
+  try {
+    const { idCommande } = req.params;
+
+    const commande = await Commande.findById(idCommande);
+    if (!commande) {
+      logger.warn(`[COMMANDE] Commande non trouvée : ${idCommande}`);
+      return res.status(404).json({ message: "Commande non trouvée." });
+    }
+
+    if (commande.status !== "livrée") {
+      logger.warn(`[COMMANDE] Commande non livrée : ${idCommande}`);
+      return res
+        .status(400)
+        .json({ message: "La commande n'est pas encore livrée." });
+    }
+
+    commande.receptionVerifiee = true;
+    await commande.save();
+
+    logger.info(
+      `[COMMANDE] Réception vérifiée pour la commande : ${idCommande}`
+    );
+    res
+      .status(200)
+      .json({
+        message: "Réception des pièces vérifiée avec succès.",
+        commande,
+      });
+  } catch (error) {
+    logger.error(`[COMMANDE] Erreur vérification réception : ${error.message}`);
+    res
+      .status(500)
+      .json({
+        message: "Erreur serveur lors de la vérification de la réception.",
+        error,
+      });
+  }
+};

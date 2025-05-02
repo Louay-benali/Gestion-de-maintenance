@@ -308,3 +308,113 @@ export const assignTechnician = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export const getDetailsEquipement = async (req, res) => {
+  try {
+    const { machineId } = req.params;
+
+    const machine = await Machine.findById(machineId);
+    if (!machine) {
+      logger.warn(`[MACHINE] Machine non trouvée : ID ${machineId}`);
+      return res.status(404).json({ message: "Machine non trouvée" });
+    }
+
+    logger.info(`[MACHINE] Détails de la machine récupérés : ID ${machineId}`);
+    res.status(200).json({
+      message: "Détails de la machine récupérés avec succès",
+      machine,
+    });
+  } catch (error) {
+    logger.error(
+      `[MACHINE] Erreur récupération détails machine : ${error.message}`
+    );
+    res.status(500).json({
+      message: "Erreur lors de la récupération des détails de la machine",
+      error,
+    });
+  }
+};
+
+// ✅ 1️⃣1️⃣ Consulter les tâches assignées
+export const getTachesAssignees = async (req, res) => {
+  try {
+    const { technicienId } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    const interventions = await Intervention.find({ technicien: technicienId })
+      .populate("machine", "nomMachine etat")
+      .sort({ scheduledDate: 1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalInterventions = await Intervention.countDocuments({
+      technicien: technicienId,
+    });
+
+    if (!interventions.length) {
+      logger.warn(
+        `[INTERVENTION] Aucune tâche assignée trouvée pour le technicien : ID ${technicienId}`
+      );
+      return res.status(404).json({ message: "Aucune tâche assignée trouvée" });
+    }
+
+    logger.info(
+      `[INTERVENTION] Tâches assignées récupérées pour le technicien : ID ${technicienId}`
+    );
+    res.status(200).json({
+      message: "Tâches assignées récupérées avec succès",
+      results: interventions,
+      totalInterventions,
+      totalPages: Math.ceil(totalInterventions / limit),
+      page,
+      limit,
+    });
+  } catch (error) {
+    logger.error(
+      `[INTERVENTION] Erreur récupération tâches assignées : ${error.message}`
+    );
+    res.status(500).json({
+      message: "Erreur lors de la récupération des tâches assignées",
+      error,
+    });
+  }
+};
+
+// Mentionner des observations
+export const addObservation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { observation } = req.body;
+
+    const intervention = await Intervention.findById(id);
+    if (!intervention) {
+      logger.warn(`[INTERVENTION] Intervention non trouvée : ID ${id}`);
+      return res.status(404).json({ message: "Intervention non trouvée" });
+    }
+
+    if (!observation) {
+      logger.warn(
+        `[INTERVENTION] Observation manquante pour l'intervention : ID ${id}`
+      );
+      return res.status(400).json({ message: "Observation est requise" });
+    }
+
+    intervention.observations = intervention.observations || [];
+    intervention.observations.push(observation);
+    await intervention.save();
+
+    logger.info(
+      `[INTERVENTION] Observation ajoutée pour l'intervention : ID ${id}`
+    );
+    res
+      .status(200)
+      .json({ message: "Observation ajoutée avec succès", intervention });
+  } catch (error) {
+    logger.error(`[INTERVENTION] Erreur ajout observation : ${error.message}`);
+    res
+      .status(500)
+      .json({ message: "Erreur lors de l'ajout de l'observation", error });
+  }
+};

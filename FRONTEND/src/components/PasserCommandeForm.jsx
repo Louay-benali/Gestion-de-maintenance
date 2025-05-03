@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { MdAdd, MdRemove, MdShoppingCart, MdSearch } from "react-icons/md";
+import SearchInput from "./SearchInput";
 
 const PasserCommandeForm = () => {
   // États du formulaire
@@ -139,20 +140,16 @@ const PasserCommandeForm = () => {
         <div className="lg:col-span-2">
           <div className="mb-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
             <div className="relative flex-grow">
-              <input
+              <SearchInput
                 type="text"
                 placeholder="Rechercher une pièce..."
                 className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <MdSearch
-                className="absolute left-3 top-2.5 text-gray-400"
-                size={20}
-              />
             </div>
             <select
-              className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 rounded-lg border border-gray-300 bg-transparent text-sm shadow-theme-xs transition-colors duration-200 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
               value={fournisseur}
               onChange={(e) => setFournisseur(e.target.value)}
             >
@@ -165,15 +162,15 @@ const PasserCommandeForm = () => {
             </select>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg max-h-96 overflow-y-auto">
+          <div className="bg-white p-4 rounded-lg max-h-96 overflow-y-auto">
             <table className="min-w-full">
               <thead>
-                <tr className="border-b">
-                  <th className="py-2 px-3 text-left">Référence</th>
+                <tr className="border-b border-gray-300 text-gray-700 ">
+                  <th className="py-2 px-3 text-left ">Référence</th>
                   <th className="py-2 px-3 text-left">Nom</th>
                   <th className="py-2 px-3 text-left">Prix</th>
                   <th className="py-2 px-3 text-left">Fournisseur</th>
-                  <th className="py-2 px-3 text-left">Action</th>
+                  <th className="py-2 px-3 text-center">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -183,9 +180,9 @@ const PasserCommandeForm = () => {
                     <td className="py-3 px-3">{item.name}</td>
                     <td className="py-3 px-3">{item.price.toFixed(2)} €</td>
                     <td className="py-3 px-3">{item.supplier}</td>
-                    <td className="py-3 px-3">
+                    <td className="py-3 px-3 text-center">
                       <button
-                        className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600"
+                        className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600 inline-flex items-center justify-center"
                         onClick={() => addItemToOrder(item)}
                       >
                         <MdAdd size={18} />
@@ -275,7 +272,7 @@ const PasserCommandeForm = () => {
 
       {/* Modal de confirmation */}
       {isConfirmationModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/40 bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <h3 className="text-lg font-semibold mb-4">
               Confirmer la commande

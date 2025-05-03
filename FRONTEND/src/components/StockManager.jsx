@@ -8,6 +8,7 @@ import {
   MdClose,
   MdWarning,
 } from "react-icons/md";
+import SearchInput from "./SearchInput";
 
 const StockManager = () => {
   // États pour gérer les données et les fonctionnalités
@@ -19,7 +20,7 @@ const StockManager = () => {
     direction: "asc",
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [editingItem, setEditingItem] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -296,17 +297,14 @@ const StockManager = () => {
       {/* Barre de recherche et filtres */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="relative flex-grow">
-          <input
+          <SearchInput
             type="text"
             placeholder="Rechercher par référence, désignation..."
             className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <MdSearch
-            className="absolute left-3 top-2.5 text-gray-400"
-            size={20}
-          />
+          
         </div>
 
         <select

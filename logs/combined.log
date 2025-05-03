@@ -1869,3 +1869,55 @@
 [2025-05-02 11:45:28] INFO: POST /auth/approve 200 - 5ms
 [2025-05-02 11:45:41] INFO: [LOGIN] Connexion réussie: issaoui.zayneb@enis.tn
 [2025-05-02 11:45:41] INFO: POST /auth/login 200 - 81ms
+[2025-05-03 11:53:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 11:53:24] INFO: ✅ Connecté à MongoDB
+[2025-05-03 11:53:26] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 11:53:26] INFO: ✅ Connecté à MongoDB
+[2025-05-03 11:55:36] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 11:55:36] INFO: ✅ Connecté à MongoDB
+[2025-05-03 11:56:06] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 11:56:06] INFO: ✅ Connecté à MongoDB
+[2025-05-03 12:00:24] INFO: [REGISTER] Utilisateur enregistré: azizbentanfous1106@gmail.com, code d'approbation envoyé.
+[2025-05-03 12:00:24] INFO: POST /auth/register 201 - 2999ms
+[2025-05-03 12:00:51] INFO: [APPROVAL] Utilisateur approuvé avec succès : azizbentanfous1106@gmail.com
+[2025-05-03 12:00:51] INFO: POST /auth/approve 200 - 18ms
+[2025-05-03 12:01:17] INFO: [FORGOT PASSWORD] Email de réinitialisation envoyé à : azizbentanfous1106@gmail.com
+[2025-05-03 12:01:17] INFO: POST /auth/forgot-password 200 - 1645ms
+[2025-05-03 13:22:33] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 13:22:33] INFO: ✅ Connecté à MongoDB
+[2025-05-03 13:24:40] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-05-03 13:24:40] INFO: POST /auth/register 201 - 2616ms
+[2025-05-03 13:25:13] INFO: POST /auth/verify-email 404 - 4ms
+[2025-05-03 13:25:18] INFO: POST /auth/verify-email 404 - 1ms
+[2025-05-03 13:28:24] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 13:28:24] INFO: ✅ Connecté à MongoDB
+[2025-05-03 13:28:28] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 13:28:28] INFO: ✅ Connecté à MongoDB
+[2025-05-03 13:28:33] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 13:28:33] INFO: ✅ Connecté à MongoDB
+[2025-05-03 13:28:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 13:28:37] INFO: ✅ Connecté à MongoDB
+[2025-05-03 13:28:40] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 13:28:40] INFO: ✅ Connecté à MongoDB
+[2025-05-03 13:30:12] INFO: POST /auth/verify-email 404 - 2ms
+[2025-05-03 13:34:17] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-03 13:34:17] INFO: ✅ Connecté à MongoDB
+[2025-05-03 13:34:19] INFO: [APPROVAL] Utilisateur approuvé avec succès : louaybenali133@gmail.com
+[2025-05-03 13:34:19] INFO: POST /auth/approve 200 - 27ms
+[2025-05-03 13:35:25] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-05-03 13:35:25] INFO: POST /auth/register 201 - 2064ms
+[2025-05-03 13:37:00] INFO: [APPROVAL] Utilisateur approuvé avec succès : louaybenali133@gmail.com
+[2025-05-03 13:37:00] INFO: POST /auth/approve 200 - 13ms
+[2025-05-03 14:01:45] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-05-03 14:01:45] INFO: POST /auth/register 201 - 1766ms
+[2025-05-03 14:16:28] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-05-03 14:16:28] INFO: POST /auth/register 201 - 1488ms
+[2025-05-03 14:18:55] INFO: [APPROVAL] Utilisateur approuvé avec succès : louaybenali133@gmail.com
+[2025-05-03 14:18:55] INFO: POST /auth/approve 200 - 6ms
+[2025-05-03 14:19:01] INFO: GET /auth/google 302 - 2ms
+[2025-05-03 14:19:02] INFO: GET /auth/google/callback?code=4%2F0Ab_5qllRoTdsZlsgLi1vLo45uX86QQBnmX8qKvJpIfYNljgEJZxzOyArIzwhAKiEvdVQEw&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none 200 - 520ms
+[2025-05-03 14:19:02] INFO: GET /favicon.ico 404 - 1ms
+[2025-05-03 14:23:42] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-05-03 14:23:42] INFO: POST /auth/register 201 - 1481ms
+[2025-05-03 14:23:52] INFO: [APPROVAL] Utilisateur approuvé avec succès : louaybenali133@gmail.com
+[2025-05-03 14:23:52] INFO: POST /auth/approve 200 - 9ms

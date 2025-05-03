@@ -5,6 +5,59 @@ import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+
+// Custom CSS to override default styles
+const customCalendarStyles = `
+  .rbc-calendar {
+    border: none;
+  }
+  .rbc-header {
+    padding: 12px 0;
+    font-weight: 500;
+    color: #6B7280;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  .rbc-month-view {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+  } 
+  .rbc-day-bg {
+    border-right: 1px solid #E5E7EB;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  .rbc-date-cell {
+    padding: 8px;
+    text-align: left;
+    font-weight: normal;
+    font-size: 0.95rem;
+    color: #111827;
+  }
+  .rbc-off-range-bg {
+    background-color: #F9FAFB;
+  }
+  .rbc-off-range {
+    color: #9CA3AF;
+  }
+  .rbc-today {
+    background-color: white !important;
+  }
+  .rbc-row-segment {
+    padding: 1px 4px;
+  }
+  .rbc-event {
+    border-radius: 4px;
+    padding: 2px 5px;
+  }
+`;
+
+// Add the styles to the document
+if (typeof document !== "undefined") {
+  const styleEl = document.createElement("style");
+  styleEl.innerHTML = customCalendarStyles;
+  document.head.appendChild(styleEl);
+}
 import { enUS } from "date-fns/locale";
 
 const locales = {
@@ -20,73 +73,10 @@ const localizer = dateFnsLocalizer({
 });
 
 const Calendar = () => {
-  // Add state for current date
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 3, 24));
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      title: "Event Conf.",
-      start: new Date(2025, 3, 1),
-      end: new Date(2025, 3, 2),
-      type: "danger",
-    },
-    {
-      id: 2,
-      title: "Seminar #4",
-      start: new Date(2025, 3, 7),
-      end: new Date(2025, 3, 10),
-      type: "success",
-    },
-    {
-      id: 3,
-      title: "Meeting #5",
-      start: new Date(2025, 3, 9, 16),
-      end: new Date(2025, 3, 9, 17),
-      type: "primary",
-    },
-    {
-      id: 4,
-      title: "Seminar #6",
-      start: new Date(2025, 3, 11),
-      end: new Date(2025, 3, 13),
-      type: "danger",
-    },
-    {
-      id: 5,
-      title: "10:30a Meeting",
-      start: new Date(2025, 3, 12, 10, 30),
-      end: new Date(2025, 3, 12, 11, 30),
-      type: "success",
-    },
-    {
-      id: 6,
-      title: "12p Meetup #",
-      start: new Date(2025, 3, 12, 12),
-      end: new Date(2025, 3, 12, 13),
-      type: "primary",
-    },
-    {
-      id: 7,
-      title: "2:30p Submission",
-      start: new Date(2025, 3, 12, 14, 30),
-      end: new Date(2025, 3, 12, 15, 30),
-      type: "warning",
-    },
-    {
-      id: 8,
-      title: "7a Attend event",
-      start: new Date(2025, 3, 13, 7),
-      end: new Date(2025, 3, 13, 8),
-      type: "success",
-    },
-    {
-      id: 9,
-      title: "4p Submission #",
-      start: new Date(2025, 3, 16, 16),
-      end: new Date(2025, 3, 16, 17),
-      type: "warning",
-    },
-  ]);
+  // Add state for current date - set to May 2025 to match screenshot
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 4, 1));
+  // Empty events array - all static events removed
+  const [events, setEvents] = useState([]);
 
   // Add modal state
   const [showModal, setShowModal] = useState(false);
@@ -102,7 +92,7 @@ const Calendar = () => {
     const style = {
       backgroundColor: "",
       borderLeft: "",
-      borderRadius: "6px",
+      borderRadius: "4px",
       color: "",
       border: "",
     };
@@ -137,33 +127,36 @@ const Calendar = () => {
     };
   };
 
-  // Custom Toolbar Component with fixed navigation
+  // Custom Toolbar Component with centered title and button on the right
   const CustomToolbar = ({ label, onNavigate, onView }) => {
     const handleNavigate = (action) => {
       onNavigate(action);
     };
 
     return (
-      <div className="mb-4 flex flex-col sm:flex-row justify-between items-center ">
-        <div className="flex items-center gap-4 mb-4 sm:mb-0">
+      <div className="mb-4 flex justify-between items-center px-2 py-2">
+        <div className="flex items-center gap-2">
           <button
-            className="bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+            className="bg-white px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
             onClick={() => handleNavigate("PREV")}
           >
             ‹
           </button>
           <button
-            className="bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+            className="bg-white px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
             onClick={() => handleNavigate("NEXT")}
           >
             ›
           </button>
-          <span className="text-lg font-semibold">{label}</span>
         </div>
 
-        <div className="flex gap-2">
+        <div className="text-center flex-grow">
+          <span className="text-lg font-medium text-gray-800">{label}</span>
+        </div>
+
+        <div>
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
             onClick={() => {
               setNewEvent({
                 id: events.length + 1,
@@ -184,7 +177,7 @@ const Calendar = () => {
 
   // Custom Event Component
   const CustomEvent = ({ event }) => (
-    <div className="p-2 text-sm">
+    <div className="p-1 text-sm">
       <strong>{event.title}</strong>
       {event.start.getHours() > 0 && (
         <div className="text-xs mt-1">
@@ -196,7 +189,7 @@ const Calendar = () => {
 
   // Handle event form submission
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
 
     // Create a new event with the form data
     const startDate = new Date(newEvent.start);
@@ -225,7 +218,8 @@ const Calendar = () => {
   };
 
   return (
-    <div className="h-screen p-8 bg-white rounded-2xl border-gray-200 border">
+    <div className="h-screen p-4 bg-white rounded-lg border-gray-200 border">
+      <h2 className="text-2xl font-medium text-gray-800 mb-4 pl-2">Calendar</h2>
       <BigCalendar
         localizer={localizer}
         events={events}
@@ -240,17 +234,23 @@ const Calendar = () => {
         }}
         eventPropGetter={eventStyleGetter}
         style={{
-          height: "90vh",
-          fontFamily: "Inter, sans-serif",
+          height: "85vh",
+          fontFamily: "system-ui, sans-serif",
+        }}
+        formats={{
+          monthHeaderFormat: "MMMM yyyy",
         }}
         dayPropGetter={(date) => ({
-          className: date.getDate() === 24 ? "current-day" : "",
+          style: {
+            backgroundColor: "white",
+            height: "120px",
+          },
         })}
       />
 
       {/* Event Modal */}
       {showModal && (
-        <div className="fixed inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-lg">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">
@@ -281,7 +281,7 @@ const Calendar = () => {
               track
             </p>
 
-            <form onSubmit={handleSubmit}>
+            <div>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-medium mb-2">
                   Event Title
@@ -293,7 +293,6 @@ const Calendar = () => {
                     setNewEvent({ ...newEvent, title: e.target.value })
                   }
                   className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
                 />
               </div>
 
@@ -373,7 +372,6 @@ const Calendar = () => {
                     }
                     className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="mm/dd/yyyy"
-                    required
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                     <svg
@@ -404,7 +402,6 @@ const Calendar = () => {
                     }
                     className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="mm/dd/yyyy"
-                    required
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                     <svg
@@ -431,13 +428,15 @@ const Calendar = () => {
                   Close
                 </button>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleSubmit}
                   className="px-6 py-3 bg-blue-600 rounded-lg text-white hover:bg-blue-700 focus:outline-none"
+                  disabled={!newEvent.title || !newEvent.start || !newEvent.end}
                 >
                   Add Event
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NavBarDashboard from "../components/NavBarDashboard";
+import NavBarDashboard from "../layout/NavBarDashboard.jsx";
 import Sidebar from "../components/SideBar";
 import QuickStats from "../components/QuickStats";
 import StatisticsSection from "../components/StatisticsSection";
@@ -77,7 +77,7 @@ const ResponsableDashboard = () => {
         return <UserProfile />;
       case "Rapport Général":
         return <RapportGeneral />;
-      case "Valider demandes": // Corrected case name to match the menuItems
+      case "Valider demandes": 
         return <GestionnaireDemandes />;
       default:
         return <div>Page not found</div>;

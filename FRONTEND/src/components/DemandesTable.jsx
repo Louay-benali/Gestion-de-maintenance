@@ -24,6 +24,9 @@ export default function DemandesTable({
               Équipement
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+              Quantité
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
               Priorité
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
@@ -47,6 +50,9 @@ export default function DemandesTable({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {demande.equipement}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {demande.pieces.length}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
@@ -100,7 +106,7 @@ export default function DemandesTable({
             ))
           ) : (
             <tr>
-              <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
+              <td colSpan="8" className="px-6 py-4 text-center text-gray-500">
                 Aucune demande ne correspond aux critères de recherche
               </td>
             </tr>

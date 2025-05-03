@@ -3,7 +3,7 @@ import { getStatusColor, getStatusText, getPriorityColor } from "./utils";
 
 export default function DemandeModal({ demande, onClose, onValidation }) {
   return (
-    <div className="fixed inset-0 bg-white/30 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/40 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl border border-gray-300 max-w-2xl w-full p-6 max-h-screen overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-800">

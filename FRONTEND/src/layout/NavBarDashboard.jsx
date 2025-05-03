@@ -1,6 +1,6 @@
 import React from "react";
-import LeftBar from "./LeftBar";
-import RightBar from "./RightBar";
+import LeftBar from "../components/LeftBar";
+import RightBar from "../components/RightBar";
 
 export default function NavBarDashboard({ onToggleSidebar }) {
   return (

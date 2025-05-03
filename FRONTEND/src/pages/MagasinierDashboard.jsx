@@ -3,25 +3,28 @@ import NavBarDashboard from "../layout/NavBarDashboard.jsx";
 import Sidebar from "../components/SideBar";
 import QuickStats from "../components/QuickStats";
 import StatisticsSection from "../components/StatisticsSection";
-import RevenueCard from "../components/RevenueCard";
-import MachineTable from "../components/MachineTable";
+import StockAlertCard from "../components/StockAlertCard";
+import CommandeTable from "../components/CommandeTable";
 import UserProfile from "../layout/UserProfile.jsx";
-import DeclarePanneForm from "../components/DeclarePanneForm.jsx";
-import Task from "../components/Task.jsx";
-import Calendar from "../layout/Calender.jsx";
-import InterventionTable from "../components/InterventionTable.jsx";
+import StockManager from "../components/StockManager.jsx";
+import DemandesPiecesTable from "../components/DemandesPiecesTable.jsx";
+import PasserCommandeForm from "../components/PasserCommandeForm.jsx";
+import RevenueCard from "../components/RevenueCard.jsx";
 
-// Importez les icônes nécessaires
+// Importation des icônes nécessaires
 import {
   MdDashboard,
   MdPerson,
   MdTableChart,
+  MdInventory,
+  MdShoppingCart,
   MdAssignment,
-  MdCalendarMonth,
+  MdAssessment,
 } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
 
-const OperateurDashboard = () => {
+
+const MagasinierDashboard = () => {
   // État pour suivre quelle page est sélectionnée
   const [selectedPage, setSelectedPage] = useState("Dashboard");
 
@@ -31,23 +34,29 @@ const OperateurDashboard = () => {
   // Définition des éléments du menu principal
   const menuItems = [
     { label: "Dashboard", icon: <MdDashboard size={24} /> },
-    { label: "Calendar", icon: <MdCalendarMonth size={24} /> },
-    { label: "Task", icon: <MdAssignment size={24} /> },
-    { label: "Déclarer Panne", icon: <IoDocumentText size={24} /> },
+    { label: "Gérer Stock", icon: <MdInventory size={24} /> },
+    { label: "Commandes", icon: <MdShoppingCart size={24} /> },
+    { label: "Demandes de Pièces", icon: <MdAssignment size={24} /> },
+    { label: "Rapports", icon: <MdAssessment size={24} /> },
     { label: "UserProfile", icon: <MdPerson size={24} /> },
   ];
 
-  // Définition des éléments du menu de table (si nécessaire)
+  // Définition des éléments du menu de table
   const tableMenuItems = [
     {
       icon: <MdTableChart size={24} />,
-      label: "Machine Table",
+      label: "Stock Table",
     },
     {
       icon: <MdTableChart size={24} />,
-      label: "Intervention Table",
+      label: "Commandes Table",
+    },
+    {
+      icon: <MdTableChart size={24} />,
+      label: "Demandes Table",
     },
   ];
+
   // Fonction qui affiche le contenu selon la page sélectionnée
   const renderContent = () => {
     switch (selectedPage) {
@@ -66,17 +75,17 @@ const OperateurDashboard = () => {
           </>
         );
 
-      case "Calendar":
-        return <Calendar />;
-      case "Déclarer Panne":
-        return <DeclarePanneForm />;
-      case "Task":
-        return <Task />;
-      case "Machine Table":
-        return <MachineTable />;
-      case "Intervention Table":
-        return <InterventionTable />;
-      case "UserProfile":
+      case "Gérer Stock":
+        return <StockManager />;
+      case "Commandes":
+        return <PasserCommandeForm />;
+      case "Commandes Table":
+        return <CommandeTable />;
+      case "Demandes de Pièces":
+        return <DemandesPiecesTable />;
+      case "Alertes de Stock":
+        return <StockAlertCard />;
+      case "User Profile":
         return <UserProfile />;
       default:
         return <div>Page not found</div>;
@@ -90,12 +99,12 @@ const OperateurDashboard = () => {
         setSelectedPage={setSelectedPage}
         menuItems={menuItems}
         tableMenuItems={tableMenuItems}
-        isCollapsed={isSidebarCollapsed} // Utilisez l'état pour gérer le collapse
+        isCollapsed={isSidebarCollapsed}
       />
 
       <div className="flex-1 flex flex-col min-h-screen">
         <NavBarDashboard
-          onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)} // Ajoutez un gestionnaire pour le bouton
+          onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         />
         <main className="flex-1 p-4 sm:p-6 overflow-auto">
           {renderContent()}
@@ -105,4 +114,4 @@ const OperateurDashboard = () => {
   );
 };
 
-export default OperateurDashboard;
+export default MagasinierDashboard;

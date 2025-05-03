@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import NavBarDashboard from "../components/NavBarDashboard";
-import Sidebar from "../components/SideBar";
-import QuickStats from "../components/QuickStats";
-import StatisticsSection from "../components/StatisticsSection";
-import RevenueCard from "../components/RevenueCard";
-import MachineTable from "../components/MachineTable";
+import Sidebar from "../components/SideBar.jsx";
+import QuickStats from "../components/QuickStats.jsx";
+import StatisticsSection from "../components/StatisticsSection.jsx";
+import RevenueCard from "../components/RevenueCard.jsx";
+import MachineTable from "../components/MachineTable.jsx";
 import UserProfile from "../layout/UserProfile.jsx";
 import Calendar from "../layout/Calender.jsx";
 import InterventionTable from "../components/InterventionTable.jsx";
 import UserManagement from "../components/UserManagement.jsx";
 import MachineManagement from "../components/MachineManagement.jsx";
+import NavBarDashboard from "../layout/NavBarDashboard.jsx";
 
 // Importez les icônes nécessaires
 import {
@@ -21,8 +21,7 @@ import {
 } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
 
-
-const AdmineDashboard = () => {
+const AdminDashboard = () => {
   // État pour suivre quelle page est sélectionnée
   const [selectedPage, setSelectedPage] = useState("Dashboard");
 
@@ -38,17 +37,17 @@ const AdmineDashboard = () => {
     { label: "Machine Management", icon: <IoDocumentText size={24} /> },
   ];
 
-  // Définition des éléments du menu de table 
-   const tableMenuItems = [
-       {
-         icon: <MdTableChart size={24} />,
-         label: "Machine Table",
-       },
-       {
-         icon: <MdTableChart size={24} />,
-         label: "Intervention Table",
-       },
-     ];
+  // Définition des éléments du menu de table
+  const tableMenuItems = [
+    {
+      icon: <MdTableChart size={24} />,
+      label: "Machine Table",
+    },
+    {
+      icon: <MdTableChart size={24} />,
+      label: "Intervention Table",
+    },
+  ];
 
   // Fonction qui affiche le contenu selon la page sélectionnée
   const renderContent = () => {
@@ -106,4 +105,4 @@ const AdmineDashboard = () => {
   );
 };
 
-export default AdmineDashboard;
+export default AdminDashboard;

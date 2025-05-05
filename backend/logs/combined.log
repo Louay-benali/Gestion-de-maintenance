@@ -1921,3 +1921,43 @@
 [2025-05-03 14:23:42] INFO: POST /auth/register 201 - 1481ms
 [2025-05-03 14:23:52] INFO: [APPROVAL] Utilisateur approuvé avec succès : louaybenali133@gmail.com
 [2025-05-03 14:23:52] INFO: POST /auth/approve 200 - 9ms
+[2025-05-04 01:28:26] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-04 01:28:26] INFO: ✅ Connecté à MongoDB
+[2025-05-05 11:27:43] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 11:27:43] INFO: ✅ Connecté à MongoDB
+[2025-05-05 11:31:45] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 11:31:45] INFO: ✅ Connecté à MongoDB
+[2025-05-05 11:31:50] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 11:31:50] INFO: ✅ Connecté à MongoDB
+[2025-05-05 11:32:05] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 11:32:05] INFO: ✅ Connecté à MongoDB
+[2025-05-05 11:36:10] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 11:36:10] INFO: ✅ Connecté à MongoDB
+[2025-05-05 11:37:57] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 11:37:57] INFO: ✅ Connecté à MongoDB
+[2025-05-05 11:47:56] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 11:47:56] INFO: ✅ Connecté à MongoDB
+[2025-05-05 11:51:21] INFO: [REGISTER] Utilisateur enregistré: islembaccar3@gmail.com, code d'approbation envoyé.
+[2025-05-05 11:51:21] INFO: POST /auth/register 201 - 1921ms
+[2025-05-05 11:51:38] INFO: [APPROVAL] Utilisateur approuvé avec succès : islembaccar3@gmail.com
+[2025-05-05 11:51:38] INFO: POST /auth/approve 200 - 9ms
+[2025-05-05 11:51:53] INFO: [LOGIN] Connexion réussie: islembaccar3@gmail.com
+[2025-05-05 11:51:53] INFO: POST /auth/login 200 - 96ms
+[2025-05-05 11:54:05] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 11:54:05] INFO: ✅ Connecté à MongoDB
+[2025-05-05 11:57:36] INFO: POST /panne 401 - 4ms
+[2025-05-05 11:57:50] INFO: POST /panne 401 - 1ms
+[2025-05-05 12:06:19] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 12:06:19] INFO: ✅ Connecté à MongoDB
+[2025-05-05 12:06:22] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 12:06:22] INFO: ✅ Connecté à MongoDB
+[2025-05-05 12:06:38] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 12:06:38] INFO: ✅ Connecté à MongoDB
+[2025-05-05 12:06:42] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 12:06:42] INFO: ✅ Connecté à MongoDB
+[2025-05-05 12:14:06] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 12:14:06] INFO: ✅ Connecté à MongoDB
+[2025-05-05 12:19:10] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-05 12:19:10] INFO: ✅ Connecté à MongoDB
+[2025-05-06 01:15:49] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-06 01:15:49] INFO: ✅ Connecté à MongoDB

@@ -16,8 +16,17 @@ const interventionSchema = new mongoose.Schema(
     rapport: { type: String },
     type: {
       type: String,
-      enum: [TypeEnum.maintenance, TypeEnum.repair], 
+      enum: [TypeEnum.maintenance, TypeEnum.repair],
       required: true,
+    },
+    status: {
+      type: String,
+      enum: ["Complete", "En cours", "Reporté"],
+      default: "en cours",
+    },
+    delai: {
+      type: Number, // Assuming delay is stored as a number (e.g., in hours or days)
+      required: false, // Optional field
     },
   },
   { timestamps: true }

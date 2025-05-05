@@ -1,7 +1,7 @@
 const EtatEnum = {
-    ouverte: "ouverte",
-    encours: "en cours",
-    resolue: "resolue",
+    ouverte: "Ouverte",
+    encours: "En cours",
+    resolue: "Resolue",
   };
   
   export default EtatEnum;

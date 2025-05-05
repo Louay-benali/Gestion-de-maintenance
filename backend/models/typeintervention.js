@@ -1,6 +1,6 @@
 const TypeEnum = {
-    maintenance: "maintenance",
-    repair: "reparation",
+    maintenance: "Maintenance",
+    repair: "Reparation",
   };
   
   export default TypeEnum;

@@ -8,15 +8,10 @@ import { sendEmail } from "../services/email.service.js";
 // Créer une nouvelle panne
 export const createPanne = async (req, res) => {
   try {
-    const { description, operateur, machine, dateDeclaration, responsableId } =
-      req.body;
+    const { description, machine, dateDeclaration, responsableNom } = req.body;
 
-    // Vérification existence opérateur
-    const existingOperateur = await Utilisateur.findById(operateur);
-    if (!existingOperateur) {
-      logger.warn(`[PANNE] Opérateur non trouvé : ID ${operateur}`);
-      return res.status(404).json({ message: "Opérateur non trouvé" });
-    }
+    // Récupérer l'ID de l'opérateur depuis le token
+    const operateurId = req.user.id;
 
     // Vérification existence machine
     const existingMachine = await Machine.findById(machine);
@@ -25,27 +20,27 @@ export const createPanne = async (req, res) => {
       return res.status(404).json({ message: "Machine non trouvée" });
     }
 
-    // Saisir les détails d'une panne
-    const newPanne = new Panne({
-      description,
-      operateur,
-      machine,
-      dateDeclaration: dateDeclaration || new Date(),
-      etat: "ouverte", // Par défaut, la panne est ouverte
-    });
-
-    await newPanne.save();
-
-    // Récupérer l'email du responsable spécifié
-    const responsibleUser = await Utilisateur.findById(responsableId);
+    // Vérification existence responsable par son nom
+    const responsibleUser = await Utilisateur.findOne({ nom: responsableNom });
     if (!responsibleUser) {
-      logger.warn(`[PANNE] Responsable non trouvé : ID ${responsableId}`);
+      logger.warn(`[PANNE] Responsable non trouvé : Nom ${responsableNom}`);
       return res
         .status(404)
-        .json({ message: `Responsable non trouvé : ID ${responsableId}` });
+        .json({ message: `Responsable non trouvé : Nom ${responsableNom}` });
     }
 
     const responsibleEmail = responsibleUser.email;
+
+    // Saisir les détails d'une panne
+    const newPanne = new Panne({
+      description,
+      operateur: operateurId,
+      machine,
+      dateDeclaration: dateDeclaration || new Date(),
+      etat: "Ouverte", // Par défaut, la panne est ouverte
+    });
+
+    await newPanne.save();
 
     // Envoyer une alerte au responsable par email
     const emailSubject = `Nouvelle panne déclarée sur la machine ${existingMachine.nomMachine}`;
@@ -54,9 +49,7 @@ export const createPanne = async (req, res) => {
       <ul>
         <li><strong>Description :</strong> ${description}</li>
         <li><strong>Machine :</strong> ${existingMachine.nomMachine}</li>
-        <li><strong>Opérateur :</strong> ${existingOperateur.nom} ${
-      existingOperateur.prenom
-    }</li>
+        <li><strong>Opérateur :</strong> ${req.user.nom} ${req.user.prenom}</li>
         <li><strong>Date :</strong> ${new Date().toLocaleString()}</li>
       </ul>
     `;
@@ -66,30 +59,9 @@ export const createPanne = async (req, res) => {
       `[PANNE] Alerte envoyée pour la panne déclarée sur la machine : ${existingMachine.nomMachine}`
     );
 
-    // Recevoir une confirmation de prise en charge par le responsable
-    const confirmationSubject = `Confirmation de prise en charge de la panne sur la machine ${existingMachine.nomMachine}`;
-    const confirmationBody = `
-      <p>La panne déclarée a été prise en charge par le responsable.</p>
-      <ul>
-        <li><strong>Description :</strong> ${description}</li>
-        <li><strong>Machine :</strong> ${existingMachine.nomMachine}</li>
-        <li><strong>Date :</strong> ${new Date().toLocaleString()}</li>
-      </ul>
-    `;
-    await sendEmail(
-      existingOperateur.email,
-      confirmationSubject,
-      confirmationBody
-    );
-
-    logger.info(
-      `[PANNE] Confirmation de prise en charge envoyée par le responsable à l'opérateur : ${existingOperateur.email}`
-    );
-
     res.status(201).json({
       message: "Panne déclarée avec succès",
       panne: newPanne,
-      confirmation: "La panne a été prise en charge par le responsable.",
     });
 
     logger.info(`[PANNE] Nouvelle panne déclarée : ${newPanne._id}`);
@@ -244,7 +216,43 @@ export const confirmerResolution = async (req, res) => {
     logger.info(`[PANNE] Panne confirmée comme "résolue" : ID ${idPanne}`);
     res.status(200).json({ message: "Panne résolue avec succès", panne });
   } catch (error) {
-    logger.error(`[PANNE] Erreur confirmation résolution panne : ${error.message}`);
-    res.status(500).json({ message: "Erreur lors de la confirmation de la résolution", error });
+    logger.error(
+      `[PANNE] Erreur confirmation résolution panne : ${error.message}`
+    );
+    res.status(500).json({
+      message: "Erreur lors de la confirmation de la résolution",
+      error,
+    });
+  }
+};
+
+// Obtenir les pannes les plus récurrentes
+export const getMostRecurrentPannes = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 5; // Limiter le nombre de résultats (par défaut 5)
+
+    const recurrentPannes = await Panne.aggregate([
+      {
+        $group: {
+          _id: "$description", // Grouper par description
+          count: { $sum: 1 }, // Compter le nombre d'occurrences
+        },
+      },
+      { $sort: { count: -1 } }, // Trier par ordre décroissant de fréquence
+      { $limit: limit }, // Limiter les résultats
+    ]);
+
+    res.status(200).json({
+      message: "Pannes les plus récurrentes récupérées avec succès",
+      results: recurrentPannes,
+    });
+  } catch (error) {
+    logger.error(
+      `[PANNE] Erreur récupération pannes récurrentes : ${error.message}`
+    );
+    res.status(500).json({
+      message: "Erreur lors de la récupération des pannes récurrentes",
+      error,
+    });
   }
 };

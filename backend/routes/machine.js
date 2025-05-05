@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post("/", authorize(["admin"]), createMachine);
 router.get("/status", authorize(["operateur"]), getMachineStatus); 
-router.get("/", authorize(["admin"]), getMachines);
+router.get("/", authorize(["admin", "operateur"]), getMachines);
 router.get("/:idMachine", authorize(["admin"]), getMachineById);
 router.put("/:idMachine", authorize(["admin"]), updateMachine);
 router.delete("/:idMachine", authorize(["admin"]), deleteMachine);

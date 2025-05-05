@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 // ✅ 1️⃣ Créer une nouvelle intervention
 export const creerIntervention = async (req, res) => {
   try {
-    const { technicien, machine, rapport, type } = req.body;
+    const { technicien, machine, rapport, type, status } = req.body;
 
     const existingTechnicien = await Utilisateur.findById(technicien);
     if (!existingTechnicien) {
@@ -27,6 +27,7 @@ export const creerIntervention = async (req, res) => {
       machine,
       rapport,
       type,
+      status: status || "en cours", // Default to "en cours" if not provided
     });
 
     await nouvelleIntervention.save();
@@ -109,12 +110,17 @@ export const getInterventionById = async (req, res) => {
 // ✅ 4️⃣ Modifier une intervention
 export const updateIntervention = async (req, res) => {
   try {
-    const { rapport, machine } = req.body;
+    const { machine, technicienNom, status } = req.body;
 
-    const existingTechnicien = await Utilisateur.findById(technicien);
+    // Vérification existence technicien par son nom
+    const existingTechnicien = await Utilisateur.findOne({
+      nom: technicienNom,
+    });
     if (!existingTechnicien) {
-      logger.warn(`[INTERVENTION] technicien non trouvé : ID ${technicien}`);
-      return res.status(404).json({ message: "technicien non trouvé" });
+      logger.warn(
+        `[INTERVENTION] Technicien non trouvé : Nom ${technicienNom}`
+      );
+      return res.status(404).json({ message: "Technicien non trouvé" });
     }
 
     // Vérification existence machine
@@ -132,8 +138,10 @@ export const updateIntervention = async (req, res) => {
       return res.status(404).json({ message: "Intervention non trouvée." });
     }
 
-    intervention.rapport = rapport || intervention.rapport;
+    // Mise à jour des champs
     intervention.machine = machine || intervention.machine;
+    intervention.technicien = existingTechnicien._id || intervention.technicien;
+    intervention.status = status || intervention.status;
 
     const interventionModifiee = await intervention.save();
     logger.info(`[INTERVENTION] Intervention mise à jour : ${req.params.id}`);
@@ -309,32 +317,6 @@ export const assignTechnician = async (req, res) => {
   }
 };
 
-export const getDetailsEquipement = async (req, res) => {
-  try {
-    const { machineId } = req.params;
-
-    const machine = await Machine.findById(machineId);
-    if (!machine) {
-      logger.warn(`[MACHINE] Machine non trouvée : ID ${machineId}`);
-      return res.status(404).json({ message: "Machine non trouvée" });
-    }
-
-    logger.info(`[MACHINE] Détails de la machine récupérés : ID ${machineId}`);
-    res.status(200).json({
-      message: "Détails de la machine récupérés avec succès",
-      machine,
-    });
-  } catch (error) {
-    logger.error(
-      `[MACHINE] Erreur récupération détails machine : ${error.message}`
-    );
-    res.status(500).json({
-      message: "Erreur lors de la récupération des détails de la machine",
-      error,
-    });
-  }
-};
-
 // ✅ 1️⃣1️⃣ Consulter les tâches assignées
 export const getTachesAssignees = async (req, res) => {
   try {
@@ -386,7 +368,7 @@ export const getTachesAssignees = async (req, res) => {
 export const addObservation = async (req, res) => {
   try {
     const { id } = req.params;
-    const { observation } = req.body;
+    const { observation, nomPiece } = req.body; // Include nomPiece in the request body
 
     const intervention = await Intervention.findById(id);
     if (!intervention) {
@@ -401,8 +383,9 @@ export const addObservation = async (req, res) => {
       return res.status(400).json({ message: "Observation est requise" });
     }
 
+    // Add observation and part name to the intervention
     intervention.observations = intervention.observations || [];
-    intervention.observations.push(observation);
+    intervention.observations.push({ observation, nomPiece }); // Store both observation and nomPiece
     await intervention.save();
 
     logger.info(
@@ -416,5 +399,51 @@ export const addObservation = async (req, res) => {
     res
       .status(500)
       .json({ message: "Erreur lors de l'ajout de l'observation", error });
+  }
+};
+
+// ✅ 1️⃣2️⃣ Récupérer les statistiques par technicien
+export const getTechnicianStatistics = async (req, res) => {
+  try {
+    const statistics = await Intervention.aggregate([
+      {
+        $group: {
+          _id: "$technicien",
+          interventions: { $sum: 1 },
+          avgDelay: { $avg: "$delai" }, // Assuming 'delai' field exists in the schema
+        },
+      },
+      {
+        $lookup: {
+          from: "utilisateurs", // Collection name for technicians
+          localField: "_id",
+          foreignField: "_id",
+          as: "technicienDetails",
+        },
+      },
+      {
+        $unwind: "$technicienDetails",
+      },
+      {
+        $project: {
+          _id: 0,
+          technicien: {
+            nom: "$technicienDetails.nom",
+            prenom: "$technicienDetails.prenom",
+          },
+          interventions: 1,
+          avgDelay: 1,
+        },
+      },
+    ]);
+
+    res
+      .status(200)
+      .json({ message: "Statistiques récupérées avec succès", statistics });
+  } catch (error) {
+    logger.error(
+      `[INTERVENTION] Erreur récupération statistiques : ${error.message}`
+    );
+    res.status(500).json({ message: "Erreur serveur", error });
   }
 };

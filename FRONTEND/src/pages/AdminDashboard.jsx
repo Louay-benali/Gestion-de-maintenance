@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Sidebar from "../components/SideBar.jsx";
 import QuickStats from "../components/QuickStats.jsx";
 import StatisticsSection from "../components/StatisticsSection.jsx";
 import RevenueCard from "../components/RevenueCard.jsx";
@@ -10,13 +9,13 @@ import InterventionTable from "../components/InterventionTable.jsx";
 import UserManagement from "../components/UserManagement.jsx";
 import MachineManagement from "../components/MachineManagement.jsx";
 import NavBarDashboard from "../layout/NavBarDashboard.jsx";
+import Sidebar from "../layout/Sidebar.jsx";
 
 // Importez les icônes nécessaires
 import {
   MdDashboard,
   MdPerson,
   MdTableChart,
-  MdAssignment,
   MdCalendarMonth,
 } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";

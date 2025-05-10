@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import LogoAndTitle from "./LogoAndTitle";
+import LogoAndTitle from "@/components/LogoAndTitle";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { PiChatCircleDots } from "react-icons/pi";
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavBarDashboard from "../layout/NavBarDashboard.jsx";
-import Sidebar from "../components/SideBar";
+import Sidebar from "../layout/SideBar.jsx";
 import QuickStats from "../components/QuickStats";
 import StatisticsSection from "../components/StatisticsSection";
 import RevenueCard from "../components/RevenueCard";

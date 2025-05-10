@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavBarDashboard from "../layout/NavBarDashboard.jsx";
-import Sidebar from "../components/SideBar";
+import Sidebar from "../layout/SideBar.jsx";
 import QuickStats from "../components/QuickStats";
 import StatisticsSection from "../components/StatisticsSection";
 import RevenueCard from "../components/RevenueCard";
@@ -10,13 +10,14 @@ import Task from "../components/Task.jsx";
 import Calendar from "../layout/Calender.jsx";
 import InterventionTable from "../components/InterventionTable.jsx";
 import CreerRapportIntervention from "../components/CreerRapportIntervention.jsx";
-import { MdInventory } from "react-icons/md";
+import { MdInventory, MdAssignment } from "react-icons/md";
 import { MdDashboard, MdTableChart } from "react-icons/md";
 import { BsCalendarEvent } from "react-icons/bs";
 import { FiUser } from "react-icons/fi";
-import { AiOutlineSchedule } from "react-icons/ai";
 import { TbForms } from "react-icons/tb";
 import DemanderPieces from "../components/DemanderPieces.jsx";
+import PanneTable from "../components/PanneTable.jsx";
+import PiecesStockTable from "../components/PiecesStockTable.jsx";
 
 const TechnicienDashboard = () => {
   // State for tracking which page is selected
@@ -39,7 +40,7 @@ const TechnicienDashboard = () => {
       label: "UserProfile",
     },
     {
-      icon: <AiOutlineSchedule size={24} />,
+      icon: <MdAssignment size={24} />,
       label: "Task",
     },
     {
@@ -61,6 +62,14 @@ const TechnicienDashboard = () => {
     {
       icon: <MdTableChart size={24} />,
       label: "Intervention Table",
+    },
+    {
+      icon: <MdTableChart size={24} />,
+      label: "Panne Table",
+    },
+    {
+      icon: <MdTableChart size={24} />,
+      label: "Stock Table",
     },
   ];
 
@@ -102,6 +111,10 @@ const TechnicienDashboard = () => {
         return <Calendar />;
       case "Demande Pièces":
         return <DemanderPieces />;
+      case "Panne Table":
+        return <PanneTable/>
+      case "Stock Table":
+        return <PiecesStockTable  />
       case "Chat":
         return <div>Chat Component</div>; // Placeholder for Chat
       default:

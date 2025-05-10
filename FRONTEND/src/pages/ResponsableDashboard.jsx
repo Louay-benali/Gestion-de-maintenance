@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavBarDashboard from "../layout/NavBarDashboard.jsx";
-import Sidebar from "../components/SideBar";
+import Sidebar from "../layout/SideBar.jsx";
 import QuickStats from "../components/QuickStats";
 import StatisticsSection from "../components/StatisticsSection";
 import RevenueCard from "../components/RevenueCard";
@@ -11,6 +11,7 @@ import InterventionTable from "../components/InterventionTable";
 import UserProfile from "../layout/UserProfile.jsx";
 import RapportGeneral from "../components/RapportGeneral";
 import GestionnaireDemandes from "../layout/GestionnaireDemandes.jsx";
+import CreateIntervention from "../components/CreateIntervention.jsx";
 
 import {
   MdDashboard,
@@ -31,6 +32,7 @@ const ResponsableDashboard = () => {
     { label: "Dashboard", icon: <MdDashboard size={24} /> },
     { label: "Calendar", icon: <MdCalendarMonth size={24} /> },
     { label: "Task", icon: <MdAssignment size={24} /> },
+    { label: "Create Intervention", icon: <MdPerson size={24} /> },
     { label: "Valider demandes", icon: <MdCheckCircle size={24} /> },
     { label: "Rapport Général", icon: <MdAssessment size={24} /> },
     { label: "User Profile", icon: <MdPerson size={24} /> },
@@ -79,6 +81,8 @@ const ResponsableDashboard = () => {
         return <RapportGeneral />;
       case "Valider demandes": 
         return <GestionnaireDemandes />;
+      case "Create Intervention":
+        return <CreateIntervention />;
       default:
         return <div>Page not found</div>;
     }

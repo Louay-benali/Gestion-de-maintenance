@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { MdSearch, MdFilterList, MdVisibility, MdCheck } from "react-icons/md";
+import { MdSearch, MdVisibility, MdCheck } from "react-icons/md";
+import SearchInput from "../components/SearchInput.jsx";
 
 const CommandeTable = () => {
   // États pour la recherche et le filtrage
@@ -123,7 +124,7 @@ const CommandeTable = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-2xl shadow-md p-6">
       <h2 className="text-xl font-bold text-gray-800 mb-6">
         Suivi des Commandes
       </h2>
@@ -131,16 +132,12 @@ const CommandeTable = () => {
       {/* Barre de recherche et filtres */}
       <div className="flex flex-col md:flex-row justify-between mb-6 space-y-4 md:space-y-0">
         <div className="relative w-full md:w-1/2">
-          <input
+          <SearchInput
             type="text"
             placeholder="Rechercher une commande..."
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-[400px] pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <MdSearch
-            className="absolute left-3 top-2.5 text-gray-400"
-            size={20}
           />
         </div>
 
@@ -162,9 +159,9 @@ const CommandeTable = () => {
       {/* Tableau des commandes */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
-          <thead className="bg-gray-100">
+          <thead className="border-b border-b-gray-200 text-gray-700">
             <tr>
-              <th className="py-3 px-4 text-left">Référence</th>
+              <th className="py-3 px-4 text-left ">Référence</th>
               <th className="py-3 px-4 text-left">Date</th>
               <th className="py-3 px-4 text-left">Fournisseur</th>
               <th className="py-3 px-4 text-left">Montant</th>
@@ -221,7 +218,7 @@ const CommandeTable = () => {
 
       {/* Modal de détails */}
       {isDetailsModalOpen && selectedCommande && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/40 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">

@@ -7,8 +7,8 @@ import MagasinierDashboard from "./pages/MagasinierDashboard";
 function App() {
   return (
     //<ResponsableDashboard />
-    <OperateurDashboard />
-    //<TechnicienDashboard />
+    //<OperateurDashboard />
+    <TechnicienDashboard />
     //<AdminDashboard />
     //<MagasinierDashboard />
   );

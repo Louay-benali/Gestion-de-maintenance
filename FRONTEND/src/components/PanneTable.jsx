@@ -1,80 +1,83 @@
 import React, { useState, useEffect } from "react";
 import SearchInput from "./SearchInput";
 import { VscSettings } from "react-icons/vsc";
+import { XCircle } from "lucide-react";
+import { FaRegCheckCircle } from "react-icons/fa";
 
-const machines = [
+const EtatEnum = {
+  ouverte: "Ouverte",
+  encours: "En cours",
+  resolue: "Resolue",
+};
+
+const brokenMachines = [
   {
-    name: "Compressor A1",
-    type: "Compressor",
-    location: "Plant 1",
-    status: "Active",
-    cost: "3.9K",
+    name: "Generator X1",
+    Description: "Power Generator",
+    status: EtatEnum.ouverte,
   },
   {
-    name: "Lathe B2",
-    type: "Lathe Machine",
-    location: "Workshop A",
-    status: "En attente",
-    cost: "24.9K",
+    name: "Drill Y2",
+    Description: "Industrial Drill",
+    status: EtatEnum.encours,
   },
   {
-    name: "Pump C3",
-    type: "Water Pump",
-    location: "Plant 2",
-    status: "Active",
-    cost: "12.7K",
+    name: "Robot Z3",
+    Description: "Assembly Robot",
+    status: EtatEnum.ouverte,
   },
   {
-    name: "Mixer D4",
-    type: "Industrial Mixer",
-    location: "Factory Floor",
-    status: "Cancel",
-    cost: "2.8K",
+    name: "Furnace A4",
+    Description: "Industrial Furnace",
+    status: EtatEnum.encours,
   },
   {
-    name: "Conveyor E5",
-    type: "Conveyor Belt",
-    location: "Loading Dock",
-    status: "Active",
-    cost: "4.5K",
+    name: "Press B5",
+    Description: "Hydraulic Press",
+    status: EtatEnum.ouverte,
   },
 ];
 
 const getStatusStyles = (status) => {
   switch (status) {
-    case "Active":
-      return "bg-emerald-50 dark:bg-emerald-500/15 dark:text-emerald-700";
-    case "En attente":
-      return "bg-orange-50 dark:bg-orange-500/15 dark:text-amber-900";
-    case "Cancel":
+    case EtatEnum.ouverte:
       return "bg-red-50 dark:bg-red-500/15 dark:text-red-700";
+    case EtatEnum.encours:
+      return "bg-orange-50 dark:bg-orange-500/15 dark:text-amber-900";
+    case EtatEnum.resolue:
+      return "bg-green-50 dark:bg-green-500/15 dark:text-green-700";
     default:
       return "";
   }
 };
 
-const MachineTable = () => {
+const PanneTable = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
-    type: "",
+    Description: "",
     location: "",
     status: "",
   });
-  const [filteredMachines, setFilteredMachines] = useState(machines);
+  const [machines, setMachines] = useState(brokenMachines);
+  const [filteredMachines, setFilteredMachines] = useState(brokenMachines);
   const [isAnyFilterActive, setIsAnyFilterActive] = useState(false);
 
-  // Liste des types de machines disponibles
-  const typesList = [...new Set(machines.map((machine) => machine.type))];
+  // Liste des Descriptions de machines disponibles
+  const DescriptionsList = [
+    ...new Set(brokenMachines.map((machine) => machine.Description)),
+  ];
 
   // Liste des emplacements disponibles
   const locationsList = [
-    ...new Set(machines.map((machine) => machine.location)),
+    ...new Set(brokenMachines.map((machine) => machine.location)),
   ];
 
   // Liste des statuts disponibles
-  const statusList = [...new Set(machines.map((machine) => machine.status))];
+  const statusList = [
+    ...new Set(brokenMachines.map((machine) => machine.status)),
+  ];
 
   // Vérification de la taille d'écran lors du montage et du redimensionnement
   useEffect(() => {
@@ -98,18 +101,16 @@ const MachineTable = () => {
       result = result.filter(
         (item) =>
           item.name.toLowerCase().includes(search) ||
-          item.type.toLowerCase().includes(search) ||
+          item.Description.toLowerCase().includes(search) ||
           item.location.toLowerCase().includes(search)
       );
     }
 
     // Appliquer les filtres
-    if (filters.type) {
-      result = result.filter((item) => item.type === filters.type);
-    }
-
-    if (filters.location) {
-      result = result.filter((item) => item.location === filters.location);
+    if (filters.Description) {
+      result = result.filter(
+        (item) => item.Description === filters.Description
+      );
     }
 
     if (filters.status) {
@@ -117,24 +118,40 @@ const MachineTable = () => {
     }
 
     setFilteredMachines(result);
-    setIsAnyFilterActive(
-      filters.type !== "" || filters.location !== "" || filters.status !== ""
-    );
-  }, [searchTerm, filters]);
+    setIsAnyFilterActive(filters.Description !== "" || filters.status !== "");
+  }, [searchTerm, filters, machines]);
 
   // Réinitialiser tous les filtres
   const resetFilters = () => {
     setFilters({
-      type: "",
+      Description: "",
       location: "",
       status: "",
     });
   };
 
+  const handleCheckPanne = (machineId) => {
+    setMachines((prevMachines) =>
+      prevMachines.map((machine) =>
+        machine.name === machineId
+          ? { ...machine, status: EtatEnum.resolue }
+          : machine
+      )
+    );
+    // Update filtered machines as well
+    setFilteredMachines((prevFiltered) =>
+      prevFiltered.map((machine) =>
+        machine.name === machineId
+          ? { ...machine, status: EtatEnum.resolue }
+          : machine
+      )
+    );
+  };
+
   return (
     <div className="border py-4 rounded-3xl dark:border-gray-200 bg-white">
       <div className="px-5 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 className="text-xl font-semibold">Tableau des Machines</h1>
+        <h1 className="text-xl font-semibold">Machines en Panne</h1>
         <div className="flex gap-2 justify-end w-full sm:w-auto">
           <SearchInput
             className="w-full sm:w-48 md:w-72"
@@ -159,43 +176,27 @@ const MachineTable = () => {
         <div className="px-5 pb-4 border-t border-gray-200 dark:border-gray-200 pt-4">
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex flex-col gap-1 min-w-40">
-              <label className="text-sm text-gray-600">Type de machine</label>
+              <label className="text-sm text-gray-600">
+                Description de machine
+              </label>
               <select
                 className="border border-gray-300 rounded-lg p-2 text-sm bg-white"
-                value={filters.type}
+                value={filters.Description}
                 onChange={(e) =>
-                  setFilters({ ...filters, type: e.target.value })
+                  setFilters({ ...filters, Description: e.target.value })
                 }
               >
-                <option value="">Tous les types</option>
-                {typesList.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
+                <option value="">Tous les Descriptions</option>
+                {DescriptionsList.map((Description) => (
+                  <option key={Description} value={Description}>
+                    {Description}
                   </option>
                 ))}
               </select>
             </div>
 
             <div className="flex flex-col gap-1 min-w-40">
-              <label className="text-sm text-gray-600">Emplacement</label>
-              <select
-                className="border border-gray-300 rounded-lg p-2 text-sm bg-white"
-                value={filters.location}
-                onChange={(e) =>
-                  setFilters({ ...filters, location: e.target.value })
-                }
-              >
-                <option value="">Tous les emplacements</option>
-                {locationsList.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex flex-col gap-1 min-w-40">
-              <label className="text-sm text-gray-600">Statut</label>
+              <label className="text-sm text-gray-600">Gravité</label>
               <select
                 className="border border-gray-300 rounded-lg p-2 text-sm bg-white"
                 value={filters.status}
@@ -203,7 +204,7 @@ const MachineTable = () => {
                   setFilters({ ...filters, status: e.target.value })
                 }
               >
-                <option value="">Tous les statuts</option>
+                <option value="">Toutes les gravités</option>
                 {statusList.map((status) => (
                   <option key={status} value={status}>
                     {status}
@@ -217,21 +218,7 @@ const MachineTable = () => {
                 className="mt-6 flex items-center gap-1 text-sm text-red-600 hover:text-red-800"
                 onClick={resetFilters}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="15" y1="9" x2="9" y2="15"></line>
-                  <line x1="9" y1="9" x2="15" y2="15"></line>
-                </svg>
+                <XCircle size={16} />
                 Réinitialiser les filtres
               </button>
             )}
@@ -251,16 +238,13 @@ const MachineTable = () => {
                       Machine
                     </th>
                     <th className="px-5 py-3 text-left sm:px-6 text-gray-600 text-theme-xs">
-                      Type
+                      Description
                     </th>
                     <th className="px-5 py-3 text-left sm:px-6 text-gray-600 text-theme-xs">
-                      Location
+                      État
                     </th>
                     <th className="px-5 py-3 text-left sm:px-6 text-gray-600 text-theme-xs">
-                      Status
-                    </th>
-                    <th className="px-5 py-3 text-left sm:px-6 text-gray-600 text-theme-xs">
-                      Last Maintenance Cost
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -279,10 +263,7 @@ const MachineTable = () => {
                           </div>
                         </td>
                         <td className="px-5 py-4 sm:px-6 text-theme-sm dark:text-gray-500">
-                          {machine.type}
-                        </td>
-                        <td className="px-5 py-4 sm:px-6 text-theme-sm dark:text-gray-500">
-                          {machine.location}
+                          {machine.Description}
                         </td>
                         <td className="px-5 py-4 sm:px-6">
                           <p
@@ -293,18 +274,25 @@ const MachineTable = () => {
                             {machine.status}
                           </p>
                         </td>
-                        <td className="px-5 py-4 sm:px-6 text-theme-sm dark:text-gray-500">
-                          {machine.cost}
+                        <td className="px-5 py-4 sm:px-6">
+                          <button
+                            onClick={() => handleCheckPanne(machine.name)}
+                            className="text-green-600 hover:text-green-800 transition-colors p-2 rounded-full hover:bg-green-50"
+                            title="Marquer comme réparé"
+                          >
+                            <FaRegCheckCircle size={20} />
+                          </button>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td
-                        colSpan="5"
+                        colSpan="6"
                         className="px-5 py-8 text-center text-gray-500"
                       >
-                        Aucune machine trouvée avec les critères sélectionnés
+                        Aucune machine en panne trouvée avec les critères
+                        sélectionnés
                       </td>
                     </tr>
                   )}
@@ -327,32 +315,29 @@ const MachineTable = () => {
                 >
                   <div className="flex justify-between items-start mb-2">
                     <span className="font-medium text-sm">{machine.name}</span>
-                    <p
-                      className={`${getStatusStyles(
-                        machine.status
-                      )} inline-block rounded-full px-2 py-0.5 text-theme-xs font-medium`}
-                    >
-                      {machine.status}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p
+                        className={`${getStatusStyles(
+                          machine.status
+                        )} inline-block rounded-full px-2 py-0.5 text-theme-xs font-medium`}
+                      >
+                        {machine.status}
+                      </p>
+                      <button
+                        onClick={() => handleCheckPanne(machine.name)}
+                        className="text-green-600 hover:text-green-800 transition-colors p-2 rounded-full hover:bg-green-50"
+                        title="Marquer comme réparé"
+                      >
+                        <FaRegCheckCircle size={20} />
+                      </button>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mb-3">
                     <div>
-                      <p className="text-xs text-gray-500">Type</p>
+                      <p className="text-xs text-gray-500">Description</p>
                       <p className="text-sm dark:text-gray-500">
-                        {machine.type}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">Location</p>
-                      <p className="text-sm dark:text-gray-500">
-                        {machine.location}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">Maintenance Cost</p>
-                      <p className="text-sm dark:text-gray-500">
-                        {machine.cost}
+                        {machine.Description}
                       </p>
                     </div>
                   </div>
@@ -360,7 +345,7 @@ const MachineTable = () => {
               ))
             ) : (
               <div className="p-8 text-center text-gray-500 border border-gray-200 rounded-lg">
-                Aucune machine trouvée avec les critères sélectionnés
+                Aucune machine en panne trouvée avec les critères sélectionnés
               </div>
             )}
           </div>
@@ -370,5 +355,4 @@ const MachineTable = () => {
   );
 };
 
-export default MachineTable;
-  
+export default PanneTable;

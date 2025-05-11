@@ -43,10 +43,6 @@ const OperateurDashboard = () => {
       icon: <MdTableChart size={24} />,
       label: "Machine Table",
     },
-    {
-      icon: <MdTableChart size={24} />,
-      label: "Intervention Table",
-    },
   ];
   // Fonction qui affiche le contenu selon la page sélectionnée
   const renderContent = () => {
@@ -74,8 +70,6 @@ const OperateurDashboard = () => {
         return <Task />;
       case "Machine Table":
         return <MachineTable />;
-      case "Intervention Table":
-        return <InterventionTable />;
       case "UserProfile":
         return <UserProfile />;
       default:

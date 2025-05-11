@@ -1,15 +1,20 @@
-import React, { useState } from "react";
-import { MdAdd, MdRemove, MdShoppingCart, MdSearch } from "react-icons/md";
+import React, { useState, useEffect } from "react";
+import { MdAdd, MdRemove, MdShoppingCart } from "react-icons/md";
 import SearchInput from "./SearchInput";
+import axios from "axios"; // Assurez-vous d'installer axios via npm/yarn
+import Cookies from "js-cookie"; // Assurez-vous d'installer js-cookie via npm/yarn
 
-const PasserCommandeForm = () => {
+const PasserCommandeForm = ({ userId }) => {
   // États du formulaire
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
   const [fournisseur, setFournisseur] = useState("");
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
-  // Données simulées pour le catalogue de pièces
+  // Données simulées pour le catalogue de pièces (à remplacer par une API dans une vraie application)
   const catalogItems = [
     {
       id: 1,
@@ -115,18 +120,85 @@ const PasserCommandeForm = () => {
     0
   );
 
-  // Fonction pour soumettre la commande
-  const handleSubmitOrder = () => {
-    // Simulation de l'envoi de la commande
-    console.log("Commande soumise:", {
-      items: selectedItems,
-      totalAmount: orderTotal.toFixed(2),
-      date: new Date().toISOString(),
-    });
+  // Détermine le fournisseur principal pour la commande (si tous les articles sont du même fournisseur)
+  const determineMainSupplier = () => {
+    if (selectedItems.length === 0) return "";
 
-    // Réinitialisation du formulaire
-    setSelectedItems([]);
-    setIsConfirmationModalOpen(false);
+    const suppliers = selectedItems.map((item) => item.supplier);
+    const uniqueSuppliers = [...new Set(suppliers)];
+
+    // Si tous les articles sont du même fournisseur, utiliser ce fournisseur
+    if (uniqueSuppliers.length === 1) {
+      return uniqueSuppliers[0];
+    }
+
+    // Sinon, utiliser le fournisseur avec le plus d'articles
+    const supplierCounts = suppliers.reduce((acc, supplier) => {
+      acc[supplier] = (acc[supplier] || 0) + 1;
+      return acc;
+    }, {});
+
+    return Object.keys(supplierCounts).reduce((a, b) =>
+      supplierCounts[a] > supplierCounts[b] ? a : b
+    );
+  };
+
+  // Fonction pour soumettre la commande au backend
+  const handleSubmitOrder = async () => {
+    if (selectedItems.length === 0) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Créer la commande principale
+      const commandeResponse = await axios.post(
+        "http://localhost:3001/commande",
+        {
+          magasinier: userId,
+          fournisseur: determineMainSupplier(),
+          statut: "En attente",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      const commandeId = commandeResponse.data.commande._id;
+
+      // Ici, vous pourriez ajouter une requête supplémentaire pour ajouter les articles à la commande
+      // Par exemple, si vous avez un modèle LigneCommande ou similar:
+      /*
+      for (const item of selectedItems) {
+        await axios.post('/api/lignes-commande', {
+          commande: commandeId,
+          article: item.id,
+          quantite: item.quantity,
+          prixUnitaire: item.price
+        });
+      }
+      */
+
+      setSuccessMessage("Commande créée avec succès!");
+      setSelectedItems([]);
+      setIsConfirmationModalOpen(false);
+
+      // Afficher le message de succès pendant 3 secondes
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Erreur lors de la création de la commande"
+      );
+      console.error("Erreur lors de la soumission de la commande:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -134,6 +206,20 @@ const PasserCommandeForm = () => {
       <h2 className="text-xl font-bold text-gray-800 mb-6">
         Passer une Commande de Réapprovisionnement
       </h2>
+
+      {/* Message de succès */}
+      {successMessage && (
+        <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
+          {successMessage}
+        </div>
+      )}
+
+      {/* Message d'erreur */}
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+          {error}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Catalogue de pièces */}
@@ -259,11 +345,11 @@ const PasserCommandeForm = () => {
               </div>
 
               <button
-                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-blue-300"
                 onClick={() => setIsConfirmationModalOpen(true)}
-                disabled={selectedItems.length === 0}
+                disabled={selectedItems.length === 0 || isLoading}
               >
-                Passer la commande
+                {isLoading ? "Traitement en cours..." : "Passer la commande"}
               </button>
             </>
           )}
@@ -280,6 +366,12 @@ const PasserCommandeForm = () => {
             <p className="mb-4">
               Êtes-vous sûr de vouloir passer cette commande ?
             </p>
+
+            {error && (
+              <div className="mb-4 p-2 bg-red-100 text-red-700 text-sm rounded">
+                {error}
+              </div>
+            )}
 
             <div className="max-h-40 overflow-y-auto mb-4">
               {selectedItems.map((item) => (
@@ -300,18 +392,24 @@ const PasserCommandeForm = () => {
                 <span>Total:</span>
                 <span>{orderTotal.toFixed(2)} €</span>
               </div>
+              <div className="text-sm text-gray-600 mt-2">
+                Fournisseur principal:{" "}
+                {determineMainSupplier() || "Non spécifié"}
+              </div>
             </div>
 
             <div className="flex justify-end space-x-2">
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
                 onClick={handleSubmitOrder}
+                disabled={isLoading}
               >
-                Confirmer
+                {isLoading ? "Traitement..." : "Confirmer"}
               </button>
               <button
                 className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
                 onClick={() => setIsConfirmationModalOpen(false)}
+                disabled={isLoading}
               >
                 Annuler
               </button>

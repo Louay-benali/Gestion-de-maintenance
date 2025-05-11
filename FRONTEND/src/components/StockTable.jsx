@@ -1,41 +1,75 @@
 import React from "react";
 
-const StockTable = () => {
-  const stockData = [
-    { id: 1, item: "Item A", quantity: 50, status: "In Stock" },
-    { id: 2, item: "Item B", quantity: 0, status: "Out of Stock" },
-    { id: 3, item: "Item C", quantity: 20, status: "Low Stock" },
-  ];
-
+export default function StockTable({ stockItems = [] }) {
   return (
-    <div className="bg-white shadow rounded p-4">
-      <h2 className="text-lg font-bold mb-4">Stock Table</h2>
-      <table className="w-full border-collapse border border-gray-200">
+    <div className="overflow-x-auto bg-white border border-gray-200 rounded-2xl">
+      <table className="min-w-full">
         <thead>
-          <tr>
-            <th className="border border-gray-300 px-4 py-2">ID</th>
-            <th className="border border-gray-300 px-4 py-2">Item</th>
-            <th className="border border-gray-300 px-4 py-2">Quantity</th>
-            <th className="border border-gray-300 px-4 py-2">Status</th>
+          <tr className="text-gray-700">
+            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+              Nom de pièce
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+              Quantité
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+              Référence
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+              Statut
+            </th>
           </tr>
         </thead>
-        <tbody>
-          {stockData.map((stock) => (
-            <tr key={stock.id}>
-              <td className="border border-gray-300 px-4 py-2">{stock.id}</td>
-              <td className="border border-gray-300 px-4 py-2">{stock.item}</td>
-              <td className="border border-gray-300 px-4 py-2">
-                {stock.quantity}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {stock.status}
+        <tbody className="divide-y divide-gray-200">
+          {stockItems.length > 0 ? (
+            stockItems.map((item) => (
+              <tr key={item.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">{item.nom}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span
+                    className={`px-2 py-1 text-xs rounded-full ${getQuantityColor(
+                      item.quantite
+                    )}`}
+                  >
+                    {item.quantite}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {item.reference}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span
+                    className={`px-2 py-1 text-xs rounded-full ${
+                      item.quantite > 0
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {item.quantite > 0 ? "En stock" : "Hors stock"}
+                  </span>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
+                Aucun article en stock
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
   );
-};
+}
 
-export default StockTable;
+// Fonction utilitaire pour colorer les quantités selon leur niveau
+function getQuantityColor(quantite) {
+  if (quantite <= 5) {
+    return "bg-red-100 text-red-800"; // Niveau critique
+  } else if (quantite <= 20) {
+    return "bg-yellow-100 text-yellow-800"; // Niveau bas
+  } else {
+    return "bg-green-100 text-green-800"; // Niveau normal
+  }
+}

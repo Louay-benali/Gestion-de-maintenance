@@ -3,194 +3,271 @@ import SearchInput from "./SearchInput";
 import { Filter, X, Save, XCircle } from "lucide-react";
 import { Calendar, Wrench } from "lucide-react";
 import { MdEdit } from "react-icons/md";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import Cookies from "js-cookie";
 
-const interventions = [
-  {
-    id: "INT-2025-001",
-    machine: "Compressor A1",
-    type: "Maintenance",
-    technician: "Jean Dupont",
-    date: "12 avr. 2025",
-    status: "Completed",
-  },
-  {
-    id: "INT-2025-002",
-    machine: "Lathe B2",
-    type: "Reparation",
-    technician: "Sophie Martin",
-    date: "08 avr. 2025",
-    status: "En cours",
-  },
-  {
-    id: "INT-2025-003",
-    machine: "Pump C3",
-    type: "Maintenance",
-    technician: "Pierre Lefebvre",
-    date: "05 avr. 2025",
-    status: "Completed",
-  },
-  {
-    id: "INT-2025-004",
-    machine: "Mixer D4",
-    type: "Reparation",
-    technician: "Marie Dubois",
-    date: "20 mars 2025",
-    status: "Reporté",
-  },
-  {
-    id: "INT-2025-005",
-    machine: "Conveyor E5",
-    type: "Maintenance",
-    technician: "Lucas Bernard",
-    date: "15 mars 2025",
-    status: "Completed",
-  },
-];
+// Map backend intervention status to UI display status
+const mapInterventionStateToStatus = (status) => {
+  return status || "En cours"; // Default to "En cours" if status is null/undefined
+};
 
-// Liste des techniciens disponibles
-const techniciansList = [
-  "Jean Dupont",
-  "Sophie Martin",
-  "Pierre Lefebvre",
-  "Marie Dubois",
-  "Lucas Bernard",
-  "Thomas Robert",
-  "Emilie Petit",
-];
-
-// Liste des machines disponibles
-const machinesList = [
-  "Compressor A1",
-  "Lathe B2",
-  "Pump C3",
-  "Mixer D4",
-  "Conveyor E5",
-  "Generator F6",
-  "Robot G7",
-];
-
-// Liste des statuts disponibles
-const statusList = ["Completed", "En cours", "Reporté"];
-
+// Status style logic for different intervention states
 const getStatusStyles = (status) => {
   switch (status) {
-    case "Completed":
+    case "Completé":
       return "bg-emerald-50 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400";
     case "En cours":
       return "bg-blue-50 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400";
     case "Reporté":
       return "bg-orange-50 dark:bg-orange-500/15 text-amber-700 dark:text-amber-400";
     default:
-      return "";
+      return "bg-blue-50 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400";
   }
 };
 
+// Helper to get icons for intervention types
 const getInterventionTypeIcon = (type) => {
-  switch (type) {
-    case "Maintenance":
+  // Convert type to lowercase for case-insensitive comparison
+  const lowerType = type ? type.toLowerCase() : "";
+  
+  switch (lowerType) {
+    case "maintenance":
       return <Calendar size={16} className="text-blue-500" />;
-    case "Reparation":
+    case "réparation":
       return <Wrench size={16} className="text-orange-500" />;
-    default:
-      return <Wrench size={16} className="text-gray-500" />;
   }
 };
-
-// Extraction des valeurs uniques pour les filtres
-const uniqueTypes = [...new Set(interventions.map((item) => item.type))];
-const uniqueTechnicians = [
-  ...new Set(interventions.map((item) => item.technician)),
-];
 
 const InterventionTable = () => {
+  const [interventions, setInterventions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 5,
+    totalPages: 1,
+    totalInterventions: 0,
+  });
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     type: "",
-    technician: "",
+    technicien: "",
   });
-  const [interventionsData, setInterventionsData] = useState(interventions);
-  const [filteredInterventions, setFilteredInterventions] =
-    useState(interventions);
-  const [isAnyFilterActive, setIsAnyFilterActive] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editValues, setEditValues] = useState({
     machine: "",
-    technician: "",
+    technicien: "",
     status: "",
-    date: "",
+    type: "",
+  });
+  const [techniciensList, setTechniciensList] = useState([]);
+  const [machinesList, setMachinesList] = useState([]);
+  const [isAnyFilterActive, setIsAnyFilterActive] = useState(false);
+
+  // Fetch interventions from backend
+  const fetchInterventions = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://localhost:3001/intervention?page=${pagination.page}&limit=${pagination.limit}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Process the data to match our component's needs
+      const processedData = data.results.map(intervention => ({
+        ...intervention,
+        machineNom: intervention.machine?.nomMachine || "N/A",
+        technicienNom: intervention.technicien ? 
+          `${intervention.technicien.prenom} ${intervention.technicien.nom}` : "N/A",
+        formattedDate: new Date(intervention.createdAt).toLocaleDateString('fr-FR', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        })
+      }));
+      
+      setInterventions(processedData);
+      setPagination({
+        ...pagination,
+        totalPages: data.totalPages,
+        totalInterventions: data.totalInterventions,
+      });
+
+      setError(null);
+    } catch (err) {
+      setError(`Erreur de chargement des données: ${err.message}`);
+      console.error("Failed to fetch interventions:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch available technicians and machines for the filters and edit form
+  const fetchReferenceData = async () => {
+    try {
+      // Fetch technicians
+      const techResponse = await fetch("http://localhost:3001/user", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        withCredentials: true,
+      });
+      
+      if (techResponse.ok) {
+        const techData = await techResponse.json();
+        setTechniciensList(techData.map(tech => ({
+          id: tech._id,
+          nom: `${tech.prenom} ${tech.nom}`
+        })));
+      }
+
+      // Fetch machines
+      const machineResponse = await fetch("http://localhost:3001/machine", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        withCredentials: true,
+      });
+      
+      if (machineResponse.ok) {
+        const machineData = await machineResponse.json();
+        setMachinesList(machineData.results.map(machine => ({
+          id: machine._id,
+          nom: machine.nomMachine
+        })));
+      }
+    } catch (err) {
+      console.error("Failed to fetch reference data:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchInterventions();
+    fetchReferenceData();
+  }, [pagination.page, pagination.limit]);
+
+  // Filter interventions based on search and filters
+  const filteredInterventions = interventions.filter((intervention) => {
+    const matchesSearch = searchTerm === "" || 
+      (intervention._id && intervention._id.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (intervention.machineNom && intervention.machineNom.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (intervention.technicienNom && intervention.technicienNom.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesTypeFilter = filters.type === "" || 
+      (intervention.type && intervention.type.toLowerCase() === filters.type.toLowerCase());
+    
+    const matchesTechFilter = filters.technicien === "" || 
+      (intervention.technicien && intervention.technicien._id === filters.technicien);
+    
+    return matchesSearch && matchesTypeFilter && matchesTechFilter;
   });
 
-  // Appliquer les filtres et la recherche
-  useEffect(() => {
-    let result = interventionsData;
+  // Handle search input change
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-    // Appliquer la recherche
-    if (searchTerm) {
-      const search = searchTerm.toLowerCase();
-      result = result.filter(
-        (item) =>
-          item.id.toLowerCase().includes(search) ||
-          item.machine.toLowerCase().includes(search) ||
-          item.technician.toLowerCase().includes(search) ||
-          item.type.toLowerCase().includes(search)
-      );
+  // Handle pagination changes
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setPagination({ ...pagination, page: newPage });
     }
+  };
 
-    // Appliquer les filtres
-    if (filters.type) {
-      result = result.filter((item) => item.type === filters.type);
-    }
-
-    if (filters.technician) {
-      result = result.filter((item) => item.technician === filters.technician);
-    }
-
-    setFilteredInterventions(result);
-    setIsAnyFilterActive(filters.type !== "" || filters.technician !== "");
-  }, [searchTerm, filters, interventionsData]);
-
-  // Réinitialiser tous les filtres
+  // Reset all filters
   const resetFilters = () => {
     setFilters({
       type: "",
-      technician: "",
+      technicien: "",
     });
   };
 
-  // Commencer à éditer une ligne
+  // Check if any filter is active
+  useEffect(() => {
+    setIsAnyFilterActive(filters.type !== "" || filters.technicien !== "");
+  }, [filters]);
+
+  // Start editing an intervention
   const startEdit = (intervention) => {
-    setEditingId(intervention.id);
+    setEditingId(intervention._id);
     setEditValues({
-      machine: intervention.machine,
-      technician: intervention.technician,
-      status: intervention.status,
-      date: intervention.date,
+      machine: intervention.machine?._id || "",
+      technicien: intervention.technicien?._id || "",
+      status: intervention.status || "En cours", // Default to "En cours" if status is null/undefined
+      type: intervention.type || "Maintenance", // Default to "Maintenance" if type is null/undefined
     });
   };
 
-  // Annuler l'édition
+  // Cancel editing
   const cancelEdit = () => {
     setEditingId(null);
   };
 
-  // Sauvegarder les modifications
-  const saveEdit = (id) => {
-    const updatedInterventions = interventionsData.map((item) => {
-      if (item.id === id) {
-        return {
-          ...item,
-          machine: editValues.machine,
-          technician: editValues.technician,
-          status: editValues.status,
-          date: editValues.date,
-        };
-      }
-      return item;
-    });
+  // Format the type to match backend expectations (capitalize first letter)
+  const formatTypeForBackend = (type) => {
+    if (!type) return "Maintenance";
+    return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
+  };
 
-    setInterventionsData(updatedInterventions);
-    setEditingId(null);
+  // Save edited intervention
+  const saveEdit = async (id) => {
+    try {
+      // Format the type to match backend expectations
+      const formattedType = formatTypeForBackend(editValues.type);
+
+      const response = await fetch(`http://localhost:3001/intervention/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        body: JSON.stringify({
+          machine: editValues.machine,
+          technicien: editValues.technicien,
+          status: editValues.status,
+          type: formattedType,
+        }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
+      // Refresh the data
+      fetchInterventions();
+      setEditingId(null);
+    } catch (err) {
+      console.error("Failed to update intervention:", err);
+      alert(`Erreur lors de la mise à jour: ${err.message}`);
+    }
+  };
+
+  // Format the displayed type with proper capitalization
+  const formatTypeDisplay = (type) => {
+    if (!type) return "N/A";
+    
+    // Format type for display with first letter capitalized
+    const formattedType = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
+    
+    // Handle special case for "Réparation"
+    if (formattedType.toLowerCase() === "reparation") {
+      return "Réparation";
+    }
+    
+    return formattedType;
   };
 
   return (
@@ -204,7 +281,7 @@ const InterventionTable = () => {
             className="w-full sm:w-48 md:w-72"
             placeholder="Rechercher..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearch}
           />
           <button
             className={`border p-2 rounded-lg sm:w-24 flex flex-row gap-2 items-center justify-center transition-colors ${
@@ -220,7 +297,7 @@ const InterventionTable = () => {
         </div>
       </div>
 
-      {/* Section des filtres */}
+      {/* Filter section */}
       {showFilters && (
         <div className="px-5 pb-4 border-t border-gray-200 dark:border-gray-700 pt-4">
           <div className="flex flex-wrap gap-4 items-center">
@@ -236,11 +313,8 @@ const InterventionTable = () => {
                 }
               >
                 <option value="">Tous les types</option>
-                {uniqueTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
+                <option value="Maintenance">Maintenance</option>
+                <option value="Réparation">Réparation</option>
               </select>
             </div>
 
@@ -250,15 +324,15 @@ const InterventionTable = () => {
               </label>
               <select
                 className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-sm bg-white dark:bg-gray-700 dark:text-white"
-                value={filters.technician}
+                value={filters.technicien}
                 onChange={(e) =>
-                  setFilters({ ...filters, technician: e.target.value })
+                  setFilters({ ...filters, technicien: e.target.value })
                 }
               >
                 <option value="">Tous les techniciens</option>
-                {uniqueTechnicians.map((tech) => (
-                  <option key={tech} value={tech}>
-                    {tech}
+                {techniciensList.map((tech) => (
+                  <option key={tech.id} value={tech.id}>
+                    {tech.nom}
                   </option>
                 ))}
               </select>
@@ -278,177 +352,238 @@ const InterventionTable = () => {
       )}
 
       <div className="border-t border-gray-200 dark:border-gray-700 pt-6 pb-3 px-7">
-        <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-          <div className="max-w-full overflow-x-auto custom-scrollbar">
-            <table className="w-full min-w-[1102px]">
-              <thead>
-                <tr className="border-b border-gray-100 dark:border-gray-700">
-                  <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
-                    ID Intervention
-                  </th>
-                  <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
-                    Machine
-                  </th>
-                  <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
-                    Type
-                  </th>
-                  <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
-                    Technicien
-                  </th>
-                  <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
-                    Date
-                  </th>
-                  <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
-                    Status
-                  </th>
-                  <th className="px-5 py-3 text-right sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredInterventions.length > 0 ? (
-                  filteredInterventions.map((intervention) => (
-                    <tr
-                      key={intervention.id}
-                      className="border-b border-gray-100 dark:border-gray-700"
-                    >
-                      <td className="px-5 py-4 sm:px-6 text-theme-xs dark:text-gray-300">
-                        {intervention.id}
-                      </td>
-                      <td className="px-5 py-4 sm:px-6">
-                        {editingId === intervention.id ? (
-                          <select
-                            className="border border-gray-300 dark:border-gray-600 rounded p-1 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 w-full"
-                            value={editValues.machine}
-                            onChange={(e) =>
-                              setEditValues({
-                                ...editValues,
-                                machine: e.target.value,
-                              })
-                            }
-                          >
-                            {machinesList.map((machine) => (
-                              <option key={machine} value={machine}>
-                                {machine}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <div className="flex items-center gap-3">
-                            <span className="block text-theme-xs dark:text-gray-300">
-                              {intervention.machine}
-                            </span>
-                          </div>
-                        )}
-                      </td>
-                      <td className="px-5 py-4 sm:px-6">
-                        <div className="flex items-center gap-2">
-                          {getInterventionTypeIcon(intervention.type)}
-                          <span className="text-theme-sm dark:text-gray-300">
-                            {intervention.type}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-5 py-4 sm:px-6">
-                        {editingId === intervention.id ? (
-                          <select
-                            className="border border-gray-300 dark:border-gray-600 rounded p-1 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 w-full"
-                            value={editValues.technician}
-                            onChange={(e) =>
-                              setEditValues({
-                                ...editValues,
-                                technician: e.target.value,
-                              })
-                            }
-                          >
-                            {techniciansList.map((tech) => (
-                              <option key={tech} value={tech}>
-                                {tech}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <span className="text-theme-sm dark:text-gray-300">
-                            {intervention.technician}
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-5 py-4 sm:px-6 text-theme-sm dark:text-gray-300">
-                        {intervention.date}
-                      </td>
-                      <td className="px-5 py-4 sm:px-6">
-                        {editingId === intervention.id ? (
-                          <select
-                            className="border border-gray-300 dark:border-gray-600 rounded p-1 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 w-full"
-                            value={editValues.status}
-                            onChange={(e) =>
-                              setEditValues({
-                                ...editValues,
-                                status: e.target.value,
-                              })
-                            }
-                          >
-                            {statusList.map((status) => (
-                              <option key={status} value={status}>
-                                {status}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <p
-                            className={`${getStatusStyles(
-                              intervention.status
-                            )} inline-block rounded-full px-2 py-0.5 text-theme-xs font-medium`}
-                          >
-                            {intervention.status}
-                          </p>
-                        )}
-                      </td>
-                      <td className="px-5 py-4 sm:px-6 text-right">
-                        {editingId === intervention.id ? (
-                          <div className="flex justify-end gap-2">
-                            <button
-                              onClick={() => saveEdit(intervention.id)}
-                              className="p-1 rounded bg-green-100 text-green-600 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50"
-                              title="Enregistrer"
-                            >
-                              <Save size={16} />
-                            </button>
-                            <button
-                              onClick={cancelEdit}
-                              className="p-1 rounded bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
-                              title="Annuler"
-                            >
-                              <XCircle size={16} />
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => startEdit(intervention)}
-                            className="p-1 rounded dark:bg-blue-900/30 dark:text-blue-400"
-                            title="Modifier"
-                          >
-                            <MdEdit size={20} />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan="7"
-                      className="px-5 py-8 text-center text-gray-500 dark:text-gray-400"
-                    >
-                      Aucune intervention trouvée avec les critères sélectionnés
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+        {loading ? (
+          <div className="flex justify-center p-8">
+            <p className="dark:text-gray-300">Chargement des données...</p>
           </div>
-        </div>
+        ) : error ? (
+          <div className="flex justify-center p-8 text-red-500">
+            <p>{error}</p>
+          </div>
+        ) : (
+          <>
+            <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+              <div className="max-w-full overflow-x-auto custom-scrollbar">
+                <table className="w-full min-w-[1102px]">
+                  <thead>
+                    <tr className="border-b border-gray-100 dark:border-gray-700">
+                      <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
+                        ID Intervention
+                      </th>
+                      <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
+                        Machine
+                      </th>
+                      <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
+                        Type
+                      </th>
+                      <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
+                        Technicien
+                      </th>
+                      <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
+                        Date
+                      </th>
+                      <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
+                        Status
+                      </th>
+                      <th className="px-5 py-3 text-right sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredInterventions.length > 0 ? (
+                      filteredInterventions.map((intervention) => (
+                        <tr
+                          key={intervention._id}
+                          className="border-b border-gray-100 dark:border-gray-700"
+                        >
+                          <td className="px-5 py-4 sm:px-6 text-theme-xs dark:text-gray-300">
+                            {intervention._id}
+                          </td>
+                          <td className="px-5 py-4 sm:px-6">
+                            {editingId === intervention._id ? (
+                              <select
+                                className="border border-gray-300 dark:border-gray-600 rounded p-1 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 w-full"
+                                value={editValues.machine}
+                                onChange={(e) =>
+                                  setEditValues({
+                                    ...editValues,
+                                    machine: e.target.value,
+                                  })
+                                }
+                              >
+                                <option value="">Sélectionner une machine</option>
+                                {machinesList.map((machine) => (
+                                  <option key={machine.id} value={machine.id}>
+                                    {machine.nom}
+                                  </option>
+                                ))}
+                              </select>
+                            ) : (
+                              <div className="flex items-center gap-3">
+                                <span className="block text-theme-xs dark:text-gray-300">
+                                  {intervention.machineNom}
+                                </span>
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-5 py-4 sm:px-6">
+                            {editingId === intervention._id ? (
+                              <select
+                                className="border border-gray-300 dark:border-gray-600 rounded p-1 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 w-full"
+                                value={editValues.type}
+                                onChange={(e) =>
+                                  setEditValues({
+                                    ...editValues,
+                                    type: e.target.value,
+                                  })
+                                }
+                              >
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Réparation">Réparation</option>
+                              </select>
+                            ) : (
+                              <div className="flex items-center gap-2">
+                                {getInterventionTypeIcon(intervention.type)}
+                                <span className="text-theme-sm dark:text-gray-300">
+                                  {formatTypeDisplay(intervention.type)}
+                                </span>
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-5 py-4 sm:px-6">
+                            {editingId === intervention._id ? (
+                              <select
+                                className="border border-gray-300 dark:border-gray-600 rounded p-1 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 w-full"
+                                value={editValues.technicien}
+                                onChange={(e) =>
+                                  setEditValues({
+                                    ...editValues,
+                                    technicien: e.target.value,
+                                  })
+                                }
+                              >
+                                <option value="">Sélectionner un technicien</option>
+                                {techniciensList.map((tech) => (
+                                  <option key={tech.id} value={tech.id}>
+                                    {tech.nom}
+                                  </option>
+                                ))}
+                              </select>
+                            ) : (
+                              <span className="text-theme-sm dark:text-gray-300">
+                                {intervention.technicienNom}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-5 py-4 sm:px-6 text-theme-sm dark:text-gray-300">
+                            {intervention.formattedDate}
+                          </td>
+                          <td className="px-5 py-4 sm:px-6">
+                            {editingId === intervention._id ? (
+                              <select
+                                className="border border-gray-300 dark:border-gray-600 rounded p-1 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 w-full"
+                                value={editValues.status}
+                                onChange={(e) =>
+                                  setEditValues({
+                                    ...editValues,
+                                    status: e.target.value,
+                                  })
+                                }
+                              >
+                                <option value="Completé">Completé</option>
+                                <option value="En cours">En cours</option>
+                                <option value="Reporté">Reporté</option>
+                              </select>
+                            ) : (
+                              <p
+                                className={`${getStatusStyles(
+                                  intervention.status
+                                )} inline-block rounded-full px-2 py-0.5 text-theme-xs font-medium`}
+                              >
+                                {mapInterventionStateToStatus(intervention.status)}
+                              </p>
+                            )}
+                          </td>
+                          <td className="px-5 py-4 sm:px-6 text-right">
+                            {editingId === intervention._id ? (
+                              <div className="flex justify-end gap-2">
+                                <button
+                                  onClick={() => saveEdit(intervention._id)}
+                                  className="p-1 rounded bg-green-100 text-green-600 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50"
+                                  title="Enregistrer"
+                                >
+                                  <Save size={16} />
+                                </button>
+                                <button
+                                  onClick={cancelEdit}
+                                  className="p-1 rounded bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+                                  title="Annuler"
+                                >
+                                  <XCircle size={16} />
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => startEdit(intervention)}
+                                className="p-1 rounded bg-blue-100 text-blue-600 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
+                                title="Modifier"
+                              >
+                                <MdEdit size={18} />
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="7"
+                          className="px-5 py-8 text-center text-gray-500 dark:text-gray-400"
+                        >
+                          Aucune intervention trouvée avec les critères sélectionnés
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center mt-6">
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Affichage de {filteredInterventions.length} sur {pagination.totalInterventions} interventions
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handlePageChange(pagination.page - 1)}
+                  disabled={pagination.page <= 1}
+                  className={`p-2 rounded-md ${
+                    pagination.page <= 1
+                      ? "text-gray-300 dark:text-gray-600 cursor-not-allowed"
+                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  <FiChevronLeft size={18} />
+                </button>
+                <span className="text-sm dark:text-gray-300">
+                  Page {pagination.page} sur {pagination.totalPages}
+                </span>
+                <button
+                  onClick={() => handlePageChange(pagination.page + 1)}
+                  disabled={pagination.page >= pagination.totalPages}
+                  className={`p-2 rounded-md ${
+                    pagination.page >= pagination.totalPages
+                      ? "text-gray-300 dark:text-gray-600 cursor-not-allowed"
+                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  <FiChevronRight size={18} />
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

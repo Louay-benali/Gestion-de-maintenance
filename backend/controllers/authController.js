@@ -22,16 +22,22 @@ passport.use(
     },
     async (token, tokenSecret, profile, done) => {
       try {
-        // Recherche d’un utilisateur existant avec ce Google ID
+        console.log("Profil Google reçu:", JSON.stringify(profile));
+        
+        // Recherche d'un utilisateur existant avec ce Google ID
         let utilisateur = await Utilisateur.findOne({
           email: profile.emails[0].value,
         });
 
         if (!utilisateur) {
+          // Extraire le nom et prénom avec des valeurs par défaut
+          const givenName = profile.name?.familyName || profile.displayName?.split(' ').pop() || "Utilisateur";
+          const familyName = profile.name?.givenName || profile.displayName?.split(' ').shift() || "Google";
+          
           // Si l'utilisateur n'existe pas, on le crée
           utilisateur = new Utilisateur({
-            nom: profile.name.familyName,
-            prenom: profile.name.givenName,
+            nom: familyName,
+            prenom: givenName,
             email: profile.emails[0].value,
             motDePasse: "00112233@Ab", // mot de passe temporaire (sera hashé automatiquement avec le pre-save)
             role: "operateur", // ou un autre rôle par défaut
@@ -43,12 +49,13 @@ passport.use(
 
         return done(null, utilisateur);
       } catch (err) {
+        console.error("Erreur dans la stratégie Google:", err);
         return done(err, null);
       }
     }
   )
 );
-// Sérialisation de l’utilisateur (stockage en session)
+// Sérialisation de l'utilisateur (stockage en session)
 passport.serializeUser((utilisateur, done) => {
   done(null, utilisateur.id);
 });
@@ -70,15 +77,15 @@ export const googleLogin = passport.authenticate("google", {
 export const googleCallback = (req, res, next) => {
   passport.authenticate(
     "google",
-    { failureRedirect: "/login" },
+    { failureRedirect: "http://localhost:5173/" },
     async (err, user) => {
       if (err) {
         console.error("Erreur lors de l'authentification Google :", err);
-        return res.status(500).send({ message: "Échec de l'authentification" });
+        return res.redirect("http://localhost:5173/?error=auth_failed");
       }
 
       if (!user) {
-        return res.redirect("/login");
+        return res.redirect("http://localhost:5173/?error=user_not_found");
       }
 
       try {
@@ -88,12 +95,54 @@ export const googleCallback = (req, res, next) => {
           role: user.role,
         });
 
-        return res.status(200).json({ utilisateur: user, tokens });
+        // Déterminer l'URL de redirection en fonction du rôle
+        let redirectUrl = '/';
+        switch (user.role) {
+          case "admin":
+            redirectUrl = "/admin-dashboard";
+            break;
+          case "operateur":
+            redirectUrl = "/operateur-dashboard";
+            break;
+          case "responsable":
+            redirectUrl = "/responsable-dashboard";
+            break;
+          case "technicien":
+            redirectUrl = "/technicien-dashboard";
+            break;
+          case "magasinier":
+            redirectUrl = "/magasinier-dashboard";
+            break;
+          default:
+            redirectUrl = "/";
+        }
+
+        // Créer une page HTML qui stocke les tokens et redirige vers le tableau de bord
+        const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Connexion réussie</title>
+          <script>
+            // Stocker les tokens dans les cookies
+            document.cookie = "accessToken=${tokens.accessToken.token}; path=/; max-age=${60 * 60 * 24 * 7}";
+            document.cookie = "refreshToken=${tokens.refreshToken.token}; path=/; max-age=${60 * 60 * 24 * 30}";
+            
+            // Rediriger vers le frontend avec les tokens
+            window.location.href = "http://localhost:5173${redirectUrl}";
+          </script>
+        </head>
+        <body>
+          <p>Connexion réussie. Redirection en cours...</p>
+        </body>
+        </html>
+        `;
+
+        // Envoyer la page HTML
+        return res.send(html);
       } catch (tokenError) {
         console.error("Erreur lors de la génération des tokens :", tokenError);
-        return res
-          .status(500)
-          .send({ message: "Erreur lors de la génération des tokens" });
+        return res.redirect("http://localhost:5173/login?error=token_generation");
       }
     }
   )(req, res, next);
@@ -326,5 +375,48 @@ export const resetPassword = async (req, res) => {
   } catch (error) {
     logger.error(`[RESET PASSWORD] Erreur serveur : ${error.message}`);
     res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
+
+// 📌 Get User Profile
+export const getProfile = async (req, res) => {
+  try {
+    // L'utilisateur est extrait du middleware d'authentification
+    // Nous devons extraire l'ID utilisateur du token JWT
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: "Token d'authentification requis" });
+    }
+    
+    const token = authHeader.split(' ')[1];
+    
+    // Décodage du token sans vérification (car déjà vérifié par le middleware)
+    const decoded = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+    
+    if (!decoded.userId) {
+      return res.status(401).json({ message: "Token invalide" });
+    }
+    
+    // Récupération de l'utilisateur
+    const utilisateur = await Utilisateur.findById(decoded.userId).select('-motDePasse -refreshToken -approvalCode');
+    
+    if (!utilisateur) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+    
+    return res.status(200).json({
+      utilisateur: {
+        id: utilisateur._id,
+        nom: utilisateur.nom,
+        prenom: utilisateur.prenom,
+        email: utilisateur.email,
+        role: utilisateur.role,
+        isApproved: utilisateur.isApproved
+      }
+    });
+  } catch (error) {
+    logger.error(`[GET PROFILE] Erreur: ${error.message}`);
+    return res.status(500).json({ message: "Erreur lors de la récupération du profil" });
   }
 };

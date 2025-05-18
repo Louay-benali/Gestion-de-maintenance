@@ -9,7 +9,7 @@ const OverlayPanel = ({ isRightPanelActive, setIsRightPanelActive }) => (
     <div className="bg-[#3b80aa] h-full w-full flex items-center justify-center">
       {isRightPanelActive ? (
         <div className="flex flex-col items-center justify-center px-10 text-center">
-          <h1 className="font-bold text-[40px] m-0 mb-5 text-white">
+          <h1 className="font-bold m-0 text-[40px] text-white">
             Welcome Back!
           </h1>
           <p className="text-sm leading-relaxed tracking-wide mb-5">
@@ -24,7 +24,7 @@ const OverlayPanel = ({ isRightPanelActive, setIsRightPanelActive }) => (
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center px-10 text-center">
-          <h1 className="font-bold text-[40px] m-0 mb-5 text-white">
+          <h1 className="font-bold m-0 text-[40px] text-white">
             Hello, Friend!
           </h1>
           <p className="text-sm leading-relaxed tracking-wide mb-5">

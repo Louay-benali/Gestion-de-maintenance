@@ -2,20 +2,19 @@ import { useState } from "react";
 import { register, login, googleAuth } from "../services/authService";
 import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { useAuth as useAuthContext } from "../contexts/AuthContext.jsx";
 
 const useAuth = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-
+  const { login: loginContext } = useAuthContext();
 
   const handleSignUp = async (data) => {
     setLoading(true);
     try {
       await register(data);
-      toast.success("Connexion réussie !", {
+      toast.success("Inscription réussie !", {
         position: "bottom-center",
         autoClose: 2000,
         theme: "light",
@@ -40,15 +39,12 @@ const useAuth = () => {
     try {
       const res = await login(data);
       console.log("res.data", res.data); 
-      const { accessToken, refreshToken } = res.data.tokens;
-      const role = res.data.utilisateur.role; // Assurez-vous que le rôle est dans la réponse
+      const { tokens, utilisateur } = res.data;
+      const role = utilisateur.role;
 
-      Cookies.set("accessToken", accessToken.token);
-      Cookies.set("refreshToken", refreshToken.token);
-
+      // Use the context to store user data and tokens
+      loginContext(utilisateur, tokens);
       
-    
-  
       toast.success("Connexion réussie !", {
         position: "bottom-center",
         autoClose: 2000,
@@ -59,22 +55,22 @@ const useAuth = () => {
       // Redirection en fonction du rôle
       switch (role) {
         case "admin":
-          navigate("/admin-dashboard");
+          navigate("/admin-dashboard", { replace: true });
           break;
         case "operateur":
-          navigate("/operateur-dashboard");
+          navigate("/operateur-dashboard", { replace: true });
           break;
         case "responsable":
-          navigate("/responsable-dashboard");
+          navigate("/responsable-dashboard", { replace: true });
           break;
         case "technicien":
-          navigate("/technicien-dashboard");
+          navigate("/technicien-dashboard", { replace: true });
           break;
         case "magasinier":
-          navigate("/magasinier-dashboard");
+          navigate("/magasinier-dashboard", { replace: true });
           break;
         default:
-          navigate("/"); // redirection par défaut
+          navigate("/", { replace: true }); // redirection par défaut
       }
     } catch (err) {
       const msg = err.response?.data.message || "Erreur serveur";

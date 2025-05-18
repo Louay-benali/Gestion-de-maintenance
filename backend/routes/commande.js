@@ -13,9 +13,10 @@ import { authorize } from "../middleware/auth.js";
 const router = express.Router();
 
 // 📌 Routes CRUD pour les commandes
+router.post("/",authorize(["magasinier"]), createCommande); 
 router.get("/", authorize(["magasinier"]), getAllCommandes);
 router.get("/:id", getCommandeById); // Obtenir une commande par ID
-router.post("/", createCommande); // Créer une commande
+// Créer une commande
 router.put("/:id", updateCommande); // Mettre à jour une commande
 router.delete("/:id", deleteCommande); // Supprimer une commande
 

@@ -1,7 +1,7 @@
 const StatutEnum = {
-    enattente: "en attente",
-    validee: "validee",
-    livree: "livree",
+    enattente: "En attente",
+    validee: "Validée",
+    livree: "Livrée",
   };
   
   export default StatutEnum;

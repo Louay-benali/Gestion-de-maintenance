@@ -15,7 +15,7 @@ const SignInForm = ({ data, setData, onSubmit }) => {
       <div className="my-1">
         <a
           href="#"
-          className="border border-gray-300 rounded-full inline-flex justify-center items-center h-10 w-10 mx-1"
+          className="border border-gray-300 rounded-full inline-flex justify-center items-center h-10 w-10 mx-1 text-gray-700 hover:bg-gray-100 transition"
           onClick={handleGoogleSignIn}
         >
           <i className="fab fa-google-plus-g"></i>
@@ -28,7 +28,7 @@ const SignInForm = ({ data, setData, onSubmit }) => {
         value={data.email}
         onChange={(e) => setData({ ...data, email: e.target.value })}
         required
-        className="bg-gray-100 border-none py-2 px-3 my-1 w-full"
+        className="bg-gray-100 border-none py-2 px-3 my-1 w-full rounded focus:outline-none focus:ring-2 focus:ring-[#3b80aa]"
       />
       <input
         type="password"
@@ -36,7 +36,7 @@ const SignInForm = ({ data, setData, onSubmit }) => {
         value={data.motDePasse}
         onChange={(e) => setData({ ...data, motDePasse: e.target.value })}
         required
-        className="bg-gray-100 border-none py-2 px-3 my-1 w-full"
+        className="bg-gray-100 border-none py-2 px-3 my-1 w-full rounded focus:outline-none focus:ring-2 focus:ring-[#3b80aa]"
       />
       <a
         href="#"
@@ -47,7 +47,7 @@ const SignInForm = ({ data, setData, onSubmit }) => {
       </a>
       <button
         type="submit"
-        className="rounded-full border border-[#3b80aa] bg-[#3b80aa] text-white text-xs font-bold py-3 px-12 uppercase tracking-wider transition duration-75 transform active:scale-95 focus:outline-none"
+        className="rounded-full border border-[#3b80aa] bg-[#3b80aa] text-white text-xs font-bold py-3 px-12 uppercase tracking-wider transition duration-75 transform active:scale-95 focus:outline-none hover:bg-[#35729a]"
       >
         Sign In
       </button>

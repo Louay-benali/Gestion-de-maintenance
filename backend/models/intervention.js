@@ -13,21 +13,51 @@ const interventionSchema = new mongoose.Schema(
       ref: "Machine",
       required: true,
     },
-    rapport: { type: String },
+    rapport: {
+      type: String,
+      default: null,
+    },
     type: {
       type: String,
-      enum: [TypeEnum.maintenance, TypeEnum.repair],
+      enum: [TypeEnum.Maintenance, TypeEnum.Réparation],
       required: true,
     },
     status: {
       type: String,
-      enum: ["Complete", "En cours", "Reporté"],
-      default: "en cours",
+      enum: ["Completé", "En cours", "Reporté"],
+      default: "En cours",
     },
     delai: {
       type: Number, // Assuming delay is stored as a number (e.g., in hours or days)
       required: false, // Optional field
     },
+    scheduledDate: {
+      type: Date,
+      default: null,
+      required: false,
+    },
+    dateDebut: {
+      type: Date,
+      default: null,
+    },
+    dateFin: {
+      type: Date,
+      default: null,
+    },
+    dateAssignation: {
+      type: Date,
+      default: null,
+    },
+    observations: [
+      {
+        observation: String,
+        nomPiece: String,
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

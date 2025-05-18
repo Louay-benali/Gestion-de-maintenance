@@ -8,20 +8,40 @@ import { sendEmail } from "../services/email.service.js";
 // Créer une nouvelle panne
 export const createPanne = async (req, res) => {
   try {
-    const { description, machine, dateDeclaration, responsableNom } = req.body;
+    const { nomMachine, responsableNom, description, dateDeclaration } = req.body;
 
-    // Récupérer l'ID de l'opérateur depuis le token
-    const operateurId = req.user.id;
+    // Récupérer l'ID de l'opérateur et le rôle depuis le token
+    const { role, id: operateurId } = req.user;
 
-    // Vérification existence machine
-    const existingMachine = await Machine.findById(machine);
+    // Vérification si l'utilisateur a un rôle autorisé pour déclarer une panne
+    if (role !== "operateur" && role !== "technicien") {
+      return res.status(403).json({ message: "Accès interdit : rôle non autorisé" });
+    }
+
+    // Vérification existence machine par son nom au lieu de son ID
+    const existingMachine = await Machine.findOne({ nomMachine });
     if (!existingMachine) {
-      logger.warn(`[PANNE] Machine non trouvée : ID ${machine}`);
+      logger.warn(`[PANNE] Machine non trouvée : Nom ${nomMachine}`);
       return res.status(404).json({ message: "Machine non trouvée" });
     }
 
-    // Vérification existence responsable par son nom
-    const responsibleUser = await Utilisateur.findOne({ nom: responsableNom });
+    // Vérification existence responsable par son nom et prénom
+    // Supposons que responsableNom est au format "Nom Prénom" ou "Nom Prénom1 Prénom2"
+    const parts = responsableNom.split(' ');
+    
+    // Le premier élément est le nom, le reste forme le prénom composé
+    if (parts.length < 2) {
+      logger.warn(`[PANNE] Format de nom et prénom invalide : ${responsableNom}`);
+      return res.status(400).json({ message: "Format de nom et prénom invalide. Utilisez le format 'Nom Prénom'" });
+    }
+    
+    const nom = parts[0];
+    const prenom = parts.slice(1).join(' '); // Combine tous les éléments restants en un seul prénom
+    
+    const responsibleUser = await Utilisateur.findOne({ 
+      nom: nom,
+      prenom: prenom
+    });
     if (!responsibleUser) {
       logger.warn(`[PANNE] Responsable non trouvé : Nom ${responsableNom}`);
       return res
@@ -35,7 +55,7 @@ export const createPanne = async (req, res) => {
     const newPanne = new Panne({
       description,
       operateur: operateurId,
-      machine,
+      machine: existingMachine._id, // Utiliser l'ID de la machine trouvée par son nom
       dateDeclaration: dateDeclaration || new Date(),
       etat: "Ouverte", // Par défaut, la panne est ouverte
     });
@@ -50,7 +70,7 @@ export const createPanne = async (req, res) => {
         <li><strong>Description :</strong> ${description}</li>
         <li><strong>Machine :</strong> ${existingMachine.nomMachine}</li>
         <li><strong>Opérateur :</strong> ${req.user.nom} ${req.user.prenom}</li>
-        <li><strong>Date :</strong> ${new Date().toLocaleString()}</li>
+        <li><strong>Date :</strong> ${new Date().toISOString()}</li>
       </ul>
     `;
     await sendEmail(responsibleEmail, emailSubject, emailBody);
@@ -74,43 +94,49 @@ export const createPanne = async (req, res) => {
   }
 };
 
+
+
 // Obtenir toutes les pannes avec pagination
 export const getPannes = async (req, res) => {
   try {
-    // 1. Lire les paramètres de pagination (ou mettre des valeurs par défaut)
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
+    const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-
-    // 2. Récupérer les pannes avec pagination
+    
+    // Récupérer le total des pannes pour la pagination
+    const totalPannes = await Panne.countDocuments();
+    
+    // Récupérer les pannes avec les informations de l'opérateur et de la machine
     const pannes = await Panne.find()
-      .populate("operateur machine")
+      .populate({
+        path: 'operateur',
+        select: 'nom prenom role' // Sélectionnez les champs dont vous avez besoin
+      })
+      .populate({
+        path: 'machine',
+        select: 'nomMachine modele etat' // Sélectionnez les champs dont vous avez besoin
+      })
+      .sort({ createdAt: -1 }) // Tri par date de création (descendant)
       .skip(skip)
       .limit(limit);
-
-    // 3. Compter le nombre total de pannes
-    const totalPannes = await Panne.countDocuments();
-
-    // 4. Répondre avec les données paginées + infos
-    res.status(200).json({
+    
+    return res.status(200).json({
+      success: true,
       results: pannes,
-      totalPannes,
-      totalPages: Math.ceil(totalPannes / limit),
       page,
       limit,
+      totalPannes,
+      totalPages: Math.ceil(totalPannes / limit)
     });
-
-    logger.info(
-      `[PANNE] Récupération de toutes les pannes (${pannes.length}) avec pagination`
-    );
   } catch (error) {
-    logger.error(`[PANNE] Erreur récupération pannes : ${error.message}`);
-    res
-      .status(500)
-      .json({ message: "Erreur lors de la récupération des pannes", error });
+    console.error("Erreur lors de la récupération des pannes:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Erreur lors de la récupération des pannes",
+      error: error.message
+    });
   }
 };
-
 // Obtenir une panne par ID
 export const getPanneById = async (req, res) => {
   try {
@@ -210,7 +236,7 @@ export const confirmerResolution = async (req, res) => {
       return res.status(404).json({ message: "Panne non trouvée" });
     }
 
-    panne.etat = "resolue";
+    panne.etat = "Résolue";
     await panne.save();
 
     logger.info(`[PANNE] Panne confirmée comme "résolue" : ID ${idPanne}`);

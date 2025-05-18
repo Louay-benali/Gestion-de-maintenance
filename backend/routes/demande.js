@@ -3,13 +3,12 @@ import {
   getDemandes,
   validerDemande,
   rejeterDemande,
-  approveDemandeIntervention,
-  updateDemandeIntervention,
   createDemande,
   deleteDemande,
   consulterDemandesTechniciens,
   verifierDisponibilitePieces,
   suivreApprobationDemande,
+  getDemandesByTechnicien,
 } from "../controllers/demande.js";
 import { authorize } from "../middleware/auth.js";
 
@@ -17,7 +16,11 @@ const router = express.Router();
 
 router.post("/", authorize(["technicien"]), createDemande);
 
-router.get("/", authorize(["magasinier", "responsable"]), getDemandes); // Suivre l'état des demandes
+router.get(
+  "/",
+  authorize(["magasinier", "responsable", "technicien"]),
+  getDemandes
+); // Suivre l'état des demandes
 router.put(
   "/:idDemande/valider",
   authorize(["magasinier", "responsable"]),
@@ -28,17 +31,6 @@ router.put(
   authorize(["magasinier", "responsable"]),
   rejeterDemande
 ); // Rejeter une demande
-
-router.put(
-  "/:idDemande/approve",
-  authorize(["responsable"]),
-  approveDemandeIntervention
-);
-router.put(
-  "/:idDemande/update",
-  authorize(["responsable"]),
-  updateDemandeIntervention
-); // Modifier une demande d'intervention
 
 // 📌 Route pour supprimer une demande
 router.delete("/:idDemande", authorize(["responsable"]), deleteDemande); // Supprimer une demande
@@ -60,5 +52,10 @@ router.get(
   authorize(["technicien"]),
   suivreApprobationDemande
 ); // Suivre l'approbation de la demande
+router.get(
+  "/technicien/demandes",
+  authorize(["technicien"]),
+  getDemandesByTechnicien
+); // Consulter les demandes d'un technicien
 
 export default router;

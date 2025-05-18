@@ -7,7 +7,6 @@ import RevenueCard from "../components/RevenueCard";
 import MachineTable from "../components/MachineTable";
 import UserProfile from "../layout/UserProfile.jsx";
 import DeclarePanneForm from "../components/DeclarePanneForm.jsx";
-import Task from "../components/Task.jsx";
 import Calendar from "../layout/Calender.jsx";
 import InterventionTable from "../components/InterventionTable.jsx";
 
@@ -16,10 +15,9 @@ import {
   MdDashboard,
   MdPerson,
   MdTableChart,
-  MdAssignment,
-  MdCalendarMonth,
 } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
+import { BsCalendarEvent } from "react-icons/bs";
 
 const OperateurDashboard = () => {
   // État pour suivre quelle page est sélectionnée
@@ -31,8 +29,7 @@ const OperateurDashboard = () => {
   // Définition des éléments du menu principal
   const menuItems = [
     { label: "Dashboard", icon: <MdDashboard size={24} /> },
-    { label: "Calendar", icon: <MdCalendarMonth size={24} /> },
-    { label: "Task", icon: <MdAssignment size={24} /> },
+    { label: "Calendar", icon: <BsCalendarEvent size={24} /> },
     { label: "Déclarer Panne", icon: <IoDocumentText size={24} /> },
     { label: "UserProfile", icon: <MdPerson size={24} /> },
   ];
@@ -66,8 +63,6 @@ const OperateurDashboard = () => {
         return <Calendar />;
       case "Déclarer Panne":
         return <DeclarePanneForm />;
-      case "Task":
-        return <Task />;
       case "Machine Table":
         return <MachineTable />;
       case "UserProfile":

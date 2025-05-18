@@ -1,7 +1,7 @@
 const EtatDemandeEnum = {
-  enAttente: "en attente",
-  validee: "validée",
-  rejetee: "rejetée",
+  enAttente: "En attente",
+  validee: "Validée",
+  rejetee: "Rejetée",
 };
 
 export default EtatDemandeEnum;

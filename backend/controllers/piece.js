@@ -1,16 +1,16 @@
 // controllers/pieceController.js
-import PieceRechange from "../models/piece.js";
+import Piece from "../models/piece.js"; // Assurez-vous que le modèle est correctement importé
 import logger from "../utils/logger.js";
 
 // Créer une nouvelle pièce de rechange
 export const createPiece = async (req, res) => {
   try {
-    const { nomPiece, quantite } = req.body;
-    const newPiece = new PieceRechange({ nomPiece, quantite });
+    const { nomPiece, quantite, etat } = req.body; // Champs définis dans le modèle
+    const newPiece = new Piece({ nomPiece, quantite, etat });
     await newPiece.save();
 
     logger.info(
-      `[PIECE] Nouvelle pièce créée : ${nomPiece} (Quantité: ${quantite})`
+      `[PIECE] Nouvelle pièce créée : ${nomPiece} (Quantité: ${quantite}, État: ${etat})`
     );
     res
       .status(201)
@@ -33,10 +33,10 @@ export const getPieces = async (req, res) => {
     const skip = (page - 1) * limit;
 
     // 2. Récupérer les pièces avec pagination
-    const pieces = await PieceRechange.find().skip(skip).limit(limit);
+    const pieces = await Piece.find().skip(skip).limit(limit);
 
     // 3. Compter le nombre total de pièces
-    const totalPieces = await PieceRechange.countDocuments();
+    const totalPieces = await Piece.countDocuments();
 
     // 4. Répondre avec les données paginées + infos
     res.status(200).json({
@@ -63,7 +63,7 @@ export const getPieces = async (req, res) => {
 export const getPieceById = async (req, res) => {
   try {
     const { idPiece } = req.params;
-    const piece = await PieceRechange.findById(idPiece);
+    const piece = await Piece.findById(idPiece);
     if (!piece) {
       logger.warn(`[PIECE] Pièce non trouvée pour ID : ${idPiece}`);
       return res.status(404).json({ message: "Pièce de rechange non trouvée" });
@@ -85,10 +85,10 @@ export const getPieceById = async (req, res) => {
 export const updatePiece = async (req, res) => {
   try {
     const { idPiece } = req.params;
-    const { nomPiece, quantite } = req.body;
-    const updatedPiece = await PieceRechange.findByIdAndUpdate(
+    const { nomPiece, quantite, etat } = req.body; // Champs définis dans le modèle
+    const updatedPiece = await Piece.findByIdAndUpdate(
       idPiece,
-      { nomPiece, quantite },
+      { nomPiece, quantite, etat },
       { new: true }
     );
     if (!updatedPiece) {
@@ -98,7 +98,7 @@ export const updatePiece = async (req, res) => {
       return res.status(404).json({ message: "Pièce de rechange non trouvée" });
     }
     logger.info(
-      `[PIECE] Pièce mise à jour : ${updatedPiece.nomPiece} (Quantité: ${updatedPiece.quantite})`
+      `[PIECE] Pièce mise à jour : ${updatedPiece.nomPiece} (Quantité: ${updatedPiece.quantite}, État: ${updatedPiece.etat})`
     );
     res
       .status(200)
@@ -118,7 +118,7 @@ export const updatePiece = async (req, res) => {
 export const deletePiece = async (req, res) => {
   try {
     const { idPiece } = req.params;
-    const deletedPiece = await PieceRechange.findByIdAndDelete(idPiece);
+    const deletedPiece = await Piece.findByIdAndDelete(idPiece);
     if (!deletedPiece) {
       logger.warn(
         `[PIECE] Suppression échouée, pièce non trouvée : ID ${idPiece}`
@@ -145,20 +145,20 @@ export const getMostUsedPieces = async (req, res) => {
     const limit = parseInt(req.query.limit) || 5;
     const skip = (page - 1) * limit;
 
-    // Agrégation pour identifier les pièces les plus utilisées avec pagination
-    const mostUsedPieces = await PieceRechange.aggregate([
+    const mostUsedPieces = await Piece.aggregate([
       {
         $project: {
           nomPiece: 1,
           quantite: 1,
+          etat: 1, // Inclure l'état dans les résultats
         },
       },
-      { $sort: { quantite: -1 } }, // Trier par quantité croissante (les plus utilisées)
-      { $skip: skip }, // Sauter les documents pour la pagination
-      { $limit: limit }, // Limiter le nombre de résultats
+      { $sort: { quantite: -1 } }, // Trier par quantité décroissante
+      { $skip: skip },
+      { $limit: limit },
     ]);
 
-    const totalPieces = await PieceRechange.countDocuments();
+    const totalPieces = await Piece.countDocuments();
 
     res.status(200).json({
       results: mostUsedPieces,

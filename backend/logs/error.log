@@ -47,3 +47,92 @@
 [2025-05-02 02:01:16] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: nom: Path `nom` is required., prenom: Path `prenom` is required., email: Path `email` is required., role: Path `role` is required.
 [2025-05-02 02:04:10] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: nom: Path `nom` is required., prenom: Path `prenom` is required., email: Path `email` is required., role: Path `role` is required.
 [2025-05-02 02:08:14] ERROR: [REGISTER] Erreur serveur: Utilisateur validation failed: nom: Path `nom` is required., prenom: Path `prenom` is required., email: Path `email` is required., role: Path `role` is required.
+[2025-05-07 09:45:27] ERROR: [PANNE] Erreur déclaration panne : Cannot read properties of undefined (reading 'id')
+[2025-05-07 09:47:40] ERROR: [PANNE] Erreur déclaration panne : Cannot read properties of undefined (reading 'id')
+[2025-05-07 09:47:41] ERROR: [PANNE] Erreur déclaration panne : Cannot read properties of undefined (reading 'id')
+[2025-05-07 09:47:43] ERROR: [PANNE] Erreur déclaration panne : Cannot read properties of undefined (reading 'id')
+[2025-05-07 09:50:16] ERROR: [PANNE] Erreur déclaration panne : Cannot read properties of undefined (reading 'id')
+[2025-05-07 09:54:03] ERROR: [PANNE] Erreur déclaration panne : Cannot read properties of undefined (reading 'id')
+[2025-05-12 00:55:40] ERROR: [PANNE] Erreur confirmation résolution panne : Panne validation failed: etat: `resolue` is not a valid enum value for path `etat`.
+[2025-05-12 00:58:58] ERROR: [PANNE] Erreur confirmation résolution panne : Panne validation failed: etat: `resolue` is not a valid enum value for path `etat`.
+[2025-05-12 11:51:36] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 11:52:56] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 11:56:56] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 11:57:33] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 12:00:13] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 12:02:47] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 12:04:11] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 12:06:37] ERROR: [PIECE] Erreur création pièce : Piece validation failed: etat: Path `etat` is required.
+[2025-05-12 12:08:18] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 13:41:15] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 13:41:51] ERROR: [DEMANDE] Erreur création demande : Demande validation failed: pieces.0.pieceId: Path `pieceId` is required., pieces.1.pieceId: Path `pieceId` is required.
+[2025-05-12 14:07:44] ERROR: [DEMANDE] Erreur création demande : sendEmail is not defined
+[2025-05-12 17:05:28] ERROR: [DEMANDE] Erreur récupération demandes : Cannot populate path `pieces.pieceId` because it is not in your schema. Set the `strictPopulate` option to false to override.
+[2025-05-12 17:05:28] ERROR: [DEMANDE] Erreur récupération demandes : Cannot populate path `pieces.pieceId` because it is not in your schema. Set the `strictPopulate` option to false to override.
+[2025-05-12 17:14:00] ERROR: [DEMANDE] Erreur récupération demandes : Cannot read properties of undefined (reading '_id')
+[2025-05-12 17:14:00] ERROR: [DEMANDE] Erreur récupération demandes : Cannot read properties of undefined (reading '_id')
+[2025-05-12 17:18:33] ERROR: [DEMANDE] Erreur récupération demandes : Cannot populate path `pieces.pieceId` because it is not in your schema. Set the `strictPopulate` option to false to override.
+[2025-05-12 17:18:33] ERROR: [DEMANDE] Erreur récupération demandes : Cannot populate path `pieces.pieceId` because it is not in your schema. Set the `strictPopulate` option to false to override.
+[2025-05-12 17:22:56] ERROR: [DEMANDE] Erreur récupération demandes : Cannot populate path `pieces.pieceId` because it is not in your schema. Set the `strictPopulate` option to false to override.
+[2025-05-12 17:22:56] ERROR: [DEMANDE] Erreur récupération demandes : Cannot populate path `pieces.pieceId` because it is not in your schema. Set the `strictPopulate` option to false to override.
+[2025-05-12 17:38:18] ERROR: [DEMANDE] Erreur récupération demandes : Cannot read properties of null (reading '_id')
+[2025-05-12 17:38:18] ERROR: [DEMANDE] Erreur récupération demandes : Cannot read properties of null (reading '_id')
+[2025-05-12 19:43:08] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-12 19:43:08] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-12 19:45:10] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-12 19:45:10] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-12 19:47:43] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-12 19:47:43] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-12 22:56:51] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-12 22:56:51] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-12 23:11:50] ERROR: [INTERVENTION] Error assigning technician: technician is not defined
+[2025-05-13 02:04:27] ERROR: [INTERVENTION] Erreur création rapport : Cast to ObjectId failed for value "681d34f046c437f8aa840f6d\t" (type string) at path "_id" for model "Intervention"
+[2025-05-13 02:06:33] ERROR: [INTERVENTION] Erreur création rapport : Intervention validation failed: rapport: Cast to string failed for value "{
+  piecesUtilisees: [ { nom: 'kkk', quantite: 3 } ],
+  observations: 'hhhh',
+  dateCreation: 2025-05-13T00:06:33.058Z
+}" (type Object) at path "rapport", status: `terminée` is not a valid enum value for path `status`.
+[2025-05-13 02:08:37] ERROR: [INTERVENTION] Erreur création rapport : Intervention validation failed: rapport: Cast to string failed for value "{
+  piecesUtilisees: [ { nom: 'kkk', quantite: 3 } ],
+  observations: 'hhh',
+  dateCreation: 2025-05-13T00:08:37.615Z
+}" (type Object) at path "rapport"
+[2025-05-13 02:10:18] ERROR: [INTERVENTION] Erreur création rapport : Intervention validation failed: status: `terminée` is not a valid enum value for path `status`.
+[2025-05-13 02:19:33] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-13 02:19:33] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-13 13:49:25] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-13 13:49:25] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-13 14:15:16] ERROR: [DEMANDE] Erreur validation demande : Demande validation failed: status: `validée` is not a valid enum value for path `status`., pieces.0.piece: Path `piece` is required.
+[2025-05-13 14:15:17] ERROR: [DEMANDE] Erreur validation demande : Demande validation failed: status: `validée` is not a valid enum value for path `status`., pieces.0.piece: Path `piece` is required.
+[2025-05-13 14:15:18] ERROR: [DEMANDE] Erreur rejet demande : Demande validation failed: status: `rejetée` is not a valid enum value for path `status`., pieces.0.piece: Path `piece` is required.
+[2025-05-13 14:15:19] ERROR: [DEMANDE] Erreur validation demande : Demande validation failed: status: `validée` is not a valid enum value for path `status`., pieces.0.piece: Path `piece` is required.
+[2025-05-13 14:15:48] ERROR: [DEMANDE] Erreur validation demande : Demande validation failed: status: `validée` is not a valid enum value for path `status`., pieces.0.piece: Path `piece` is required.
+[2025-05-13 14:15:49] ERROR: [DEMANDE] Erreur validation demande : Demande validation failed: status: `validée` is not a valid enum value for path `status`., pieces.0.piece: Path `piece` is required.
+[2025-05-13 14:33:28] ERROR: [DEMANDE] Erreur validation demande : Demande validation failed: status: `validée` is not a valid enum value for path `status`., pieces.0.piece: Path `piece` is required.
+[2025-05-13 14:33:29] ERROR: [DEMANDE] Erreur validation demande : Demande validation failed: status: `validée` is not a valid enum value for path `status`., pieces.0.piece: Path `piece` is required.
+[2025-05-13 14:33:44] ERROR: [DEMANDE] Erreur validation demande : Demande validation failed: status: `validée` is not a valid enum value for path `status`.
+[2025-05-13 14:34:36] ERROR: [DEMANDE] Erreur rejet demande : Demande validation failed: status: `rejetée` is not a valid enum value for path `status`.
+[2025-05-13 23:51:15] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-13 23:51:15] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 00:06:16] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 00:06:16] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 00:09:01] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 00:09:01] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:07:45] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:07:45] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:08:00] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:08:00] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:16:55] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:16:55] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:18:15] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:18:15] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:19:20] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:19:20] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:44:35] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 15:44:35] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 17:16:06] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 17:16:06] ERROR: [INTERVENTION] Erreur récupération tâches assignées : Cast to ObjectId failed for value "undefined" (type string) at path "technicien" for model "Intervention"
+[2025-05-14 20:56:47] ERROR: [MACHINE] Erreur création machine : Machine validation failed: dataSheet: Path `dataSheet` is required.
+[2025-05-15 01:37:38] ERROR: [RESET PASSWORD] Erreur serveur : Illegal arguments: undefined, string
+[2025-05-15 01:38:33] ERROR: [RESET PASSWORD] Erreur serveur : Illegal arguments: undefined, string
+[2025-05-15 02:28:51] ERROR: [INTERVENTION] Erreur lors de la définition du calendrier : No matching document found for id "681d34f046c437f8aa840f6d" version 0 modifiedPaths "scheduledDate"

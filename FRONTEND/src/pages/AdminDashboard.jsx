@@ -17,9 +17,9 @@ import {
   MdPerson,
   MdTableChart,
   MdAssignment,
-  MdCalendarMonth,
 } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
+import { BsCalendarEvent } from "react-icons/bs";
 
 const AdminDashboard = () => {
   // État pour suivre quelle page est sélectionnée
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
   // Définition des éléments du menu principal
   const menuItems = [
     { label: "Dashboard", icon: <MdDashboard size={24} /> },
-    { label: "Calendar", icon: <MdCalendarMonth size={24} /> },
+    { label: "Calendar", icon: <BsCalendarEvent size={24} /> },
     { label: "User Profile", icon: <MdPerson size={24} /> },
     { label: "User Management", icon: <IoDocumentText size={24} /> },
     { label: "Machine Management", icon: <IoDocumentText size={24} /> },

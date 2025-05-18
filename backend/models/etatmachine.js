@@ -1,7 +1,7 @@
 const MachineEnum = {
-    fonctionelle: "fonctionnelle",
-    enpanne: "en panne",
-    maintenance: "maintenance",
+    Fonctionelle: "Fonctionnelle",
+    Enpanne: "En panne",
+    Maintenance: "Maintenance",
   };
   
   export default MachineEnum;

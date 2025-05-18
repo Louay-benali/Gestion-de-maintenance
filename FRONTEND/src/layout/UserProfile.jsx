@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Profile from "../components/Profile";
 import PersonalInfo from "../components/PersonalInfo";
 import Address from "../components/Address";
 import EditInfo from "../components/EditInfo";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 const UserProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useAuth();
 
   const [userInfo, setUserInfo] = useState({
-    firstName: "Samira",
-    lastName: "Wasouf",
-    email: "Samira@emka-med.com",
-    phone: "+216 98798711",
-    bio: "Employer",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "+216 98798711", // Default phone as it might not be in the auth context
+    bio: "",
   });
 
   const [addressInfo, setAddressInfo] = useState({
@@ -21,6 +23,19 @@ const UserProfile = () => {
     City: "Monastir/Werdanine",
     Id: "#99079",
   });
+
+  // Update userInfo when user data changes in context
+  useEffect(() => {
+    if (user) {
+      setUserInfo({
+        firstName: user.prenom || "",
+        lastName: user.nom || "",
+        email: user.email || "",
+        phone: userInfo.phone, // Keep existing phone
+        bio: user.role || "", // Use role as bio for now
+      });
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

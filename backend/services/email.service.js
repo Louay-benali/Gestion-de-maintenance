@@ -9,13 +9,15 @@ const __dirname = path.dirname(__filename);
 
 // Création du transporteur avec Gmail SMTP
 const transporter = nodemailer.createTransport({
-  host: config.smtp.host,
-  port: config.smtp.port,
-  secure: false,
+  service: 'gmail',
   auth: {
     user: config.smtp.user,
     pass: config.smtp.pass,
   },
+  secure: true,
+  tls: {
+    rejectUnauthorized: false
+  }
 });
 
 // Fonction générique pour envoyer un mail

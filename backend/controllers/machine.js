@@ -24,18 +24,22 @@ export const createMachine = async (req, res) => {
 // Lire toutes les machines avec pagination
 export const getMachines = async (req, res) => {
   try {
-    // 1. Lire les paramètres de pagination (ou mettre des valeurs par défaut)
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
     const skip = (page - 1) * limit;
 
-    // 2. Récupérer les machines avec pagination
-    const machines = await Machine.find().skip(skip).limit(limit);
+    // Construction dynamique du filtre
+    const filter = {};
+    if (req.query.nomMachine) {
+      filter.nomMachine = { $regex: req.query.nomMachine, $options: "i" }; // recherche insensible à la casse
+    }
+    if (req.query.etat) {
+      filter.etat = req.query.etat;
+    }
 
-    // 3. Compter le nombre total de machines
-    const totalMachines = await Machine.countDocuments();
+    const machines = await Machine.find(filter).skip(skip).limit(limit);
+    const totalMachines = await Machine.countDocuments(filter);
 
-    // 4. Répondre avec les données paginées + infos
     res.status(200).json({
       results: machines,
       totalMachines,
@@ -44,14 +48,13 @@ export const getMachines = async (req, res) => {
       limit,
     });
 
-    logger.info(
-      `[MACHINE] Liste des machines récupérée (${machines.length}) avec pagination`
-    );
+    logger.info(`[MACHINE] Machines filtrées : ${machines.length} résultats`);
   } catch (error) {
     logger.error(`[MACHINE] Erreur récupération machines : ${error.message}`);
-    res
-      .status(500)
-      .json({ message: "Erreur lors de la récupération des machines", error });
+    res.status(500).json({
+      message: "Erreur lors de la récupération des machines",
+      error,
+    });
   }
 };
 
@@ -153,6 +156,55 @@ export const getMachineStatus = async (req, res) => {
     );
     res.status(500).json({
       message: "Erreur lors de la récupération du statut des machines",
+      error,
+    });
+  }
+};
+
+// Filtrer les machines par nom et état avec pagination
+export const filterMachines = async (req, res) => {
+  try {
+    const { nomMachine, etat, page = 1, limit = 5 } = req.query;
+
+    // Construire les filtres
+    let filters = {};
+    if (nomMachine) {
+      filters.nomMachine = { $regex: nomMachine, $options: "i" }; // Recherche insensible à la casse
+    }
+    if (etat) {
+      filters.etat = etat;
+    }
+
+    // Pagination
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    // Récupérer les machines filtrées
+    const machines = await Machine.find(filters)
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    // Compter le nombre total de machines correspondant aux filtres
+    const totalMachines = await Machine.countDocuments(filters);
+
+    res.status(200).json({
+      results: machines,
+      totalMachines,
+      totalPages: Math.ceil(totalMachines / limit),
+      page: parseInt(page),
+      limit: parseInt(limit),
+    });
+
+    logger.info(
+      `[MACHINE] ${
+        machines.length
+      } machines trouvées avec les filtres : ${JSON.stringify(filters)}`
+    );
+  } catch (error) {
+    logger.error(
+      `[MACHINE] Erreur lors du filtrage des machines : ${error.message}`
+    );
+    res.status(500).json({
+      message: "Erreur lors du filtrage des machines",
       error,
     });
   }

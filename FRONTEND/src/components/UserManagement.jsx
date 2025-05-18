@@ -1,39 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { MdEdit, MdDeleteForever, MdSecurity } from "react-icons/md";
+import Cookies from "js-cookie";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserManagement = () => {
   // State for users data
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john@example.com",
-      role: "Admin",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane@example.com",
-      role: "Manager",
-      status: "Active",
-    },
-    {
-      id: 3,
-      name: "Robert Brown",
-      email: "robert@example.com",
-      role: "User",
-      status: "Inactive",
-    },
-    {
-      id: 4,
-      name: "Sarah Wilson",
-      email: "sarah@example.com",
-      role: "Operator",
-      status: "Active",
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 5,
+    totalPages: 1,
+    totalUsers: 0,
+  });
 
   // Form states
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -46,15 +28,57 @@ const UserManagement = () => {
 
   // New user form data
   const [formData, setFormData] = useState({
-    name: "",
+    nom: "",
+    prenom: "",
     email: "",
-    password: "",
-    role: "User",
-    status: "Active",
+    motDePasse: "",
+    role: "operateur"
   });
 
-  // Available roles
-  const roles = ["Admin", "Manager", "Operator", "User"];
+  // Available roles from the backend enum
+  const roles = ["operateur", "technicien", "magasinier", "responsable", "admin"];
+
+  // Fetch users from backend
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://localhost:3001/user?page=${pagination.page}&limit=${pagination.limit}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      setUsers(data.results);
+      setPagination({
+        ...pagination,
+        totalPages: data.totalPages || 1,
+        totalUsers: data.totalUsers || 0,
+      });
+
+      setError(null);
+    } catch (err) {
+      setError(`Erreur de chargement des utilisateurs: ${err.message}`);
+      console.error("Failed to fetch users:", err);
+      toast.error("Erreur lors du chargement des utilisateurs");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load users on component mount and when pagination changes
+  useEffect(() => {
+    fetchUsers();
+  }, [pagination.page, pagination.limit]);
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -75,73 +99,189 @@ const UserManagement = () => {
   };
 
   // Add a new user
-  const handleAddUser = () => {
-    const newUser = {
-      id: users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1,
-      ...formData,
-    };
-    setUsers([...users, newUser]);
+  const handleAddUser = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        body: JSON.stringify({
+          nom: formData.nom,
+          prenom: formData.prenom,
+          email: formData.email,
+          motDePasse: formData.motDePasse,
+          role: formData.role
+        }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
     // Reset form
     setFormData({
-      name: "",
+        nom: "",
+        prenom: "",
       email: "",
-      password: "",
-      role: "User",
-      status: "Active",
+        motDePasse: "",
+        role: "operateur"
     });
+      
     setIsAddModalOpen(false);
+      toast.success("Utilisateur ajouté avec succès");
+      fetchUsers();
+    } catch (err) {
+      console.error("Failed to add user:", err);
+      toast.error(`Erreur lors de l'ajout: ${err.message}`);
+    }
   };
 
   // Update existing user
-  const handleUpdateUser = () => {
-    setUsers(
-      users.map((user) => (user.id === currentUser.id ? currentUser : user))
-    );
+  const handleUpdateUser = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/user/${currentUser._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        body: JSON.stringify({
+          nom: currentUser.nom,
+          prenom: currentUser.prenom,
+          email: currentUser.email,
+          role: currentUser.role
+        }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
     setIsEditModalOpen(false);
+      toast.success("Utilisateur mis à jour avec succès");
+      fetchUsers();
+    } catch (err) {
+      console.error("Failed to update user:", err);
+      toast.error(`Erreur lors de la mise à jour: ${err.message}`);
+    }
   };
 
   // Delete user
-  const handleDeleteUser = () => {
-    setUsers(users.filter((user) => user.id !== currentUser.id));
+  const handleDeleteUser = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/user/${currentUser._id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
     setIsDeleteModalOpen(false);
+      toast.success("Utilisateur supprimé avec succès");
+      fetchUsers();
+    } catch (err) {
+      console.error("Failed to delete user:", err);
+      toast.error(`Erreur lors de la suppression: ${err.message}`);
+    }
   };
 
-  // Update user roles/permissions
-  const handleUpdateRole = () => {
-    setUsers(
-      users.map((user) => (user.id === currentUser.id ? currentUser : user))
-    );
+  // Update user roles
+  const handleUpdateRole = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/user/${currentUser._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        body: JSON.stringify({
+          nom: currentUser.nom,
+          prenom: currentUser.prenom,
+          email: currentUser.email,
+          role: currentUser.role
+        }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
     setIsRoleModalOpen(false);
+      toast.success("Rôle mis à jour avec succès");
+      fetchUsers();
+    } catch (err) {
+      console.error("Failed to update role:", err);
+      toast.error(`Erreur lors de la mise à jour du rôle: ${err.message}`);
+    }
+  };
+
+  // Get translated role display name
+  const getRoleDisplayName = (role) => {
+    switch (role) {
+      case "operateur":
+        return "Opérateur";
+      case "technicien":
+        return "Technicien";
+      case "magasinier":
+        return "Magasinier";
+      case "responsable":
+        return "Responsable";
+      case "admin":
+        return "Administrateur";
+      default:
+        return role;
+    }
   };
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="p-6 flex justify-between items-center border-b border-gray-300">
-        <h2 className="text-xl font-semibold">User Management</h2>
+        <h2 className="text-xl font-semibold">Gestion des Utilisateurs</h2>
         <button
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center"
           onClick={() => setIsAddModalOpen(true)}
         >
-          <IoMdAdd className="mr-1" /> Add User
+          <IoMdAdd className="mr-1" /> Ajouter un Utilisateur
         </button>
       </div>
 
+      {/* Display error message if there is an error */}
+      {error && (
+        <div className="p-4 bg-red-50 text-red-700 border-b border-red-100">
+          <p>{error}</p>
+        </div>
+      )}
+
+      {/* Show loading state */}
+      {loading ? (
+        <div className="p-12 flex justify-center items-center">
+          <div className="text-gray-500">Chargement des utilisateurs...</div>
+        </div>
+      ) : (
+        <>
       {/* Users Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                User
+                    Utilisateur
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Email
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Role
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
+                    Rôle
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
@@ -150,22 +290,19 @@ const UserManagement = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {users.map((user) => (
-              <tr key={user.id}>
+                  <tr key={user._id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
                       <img
                         className="h-10 w-10 rounded-full"
-                        src={`https://ui-avatars.com/api/?name=${user.name.replace(
-                          " ",
-                          "+"
-                        )}&background=random`}
-                        alt={user.name}
+                            src={`https://ui-avatars.com/api/?name=${user.nom}+${user.prenom}&background=random`}
+                            alt={`${user.nom} ${user.prenom}`}
                       />
                     </div>
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">
-                        {user.name}
+                            {user.nom} {user.prenom}
                       </div>
                     </div>
                   </div>
@@ -174,18 +311,7 @@ const UserManagement = () => {
                   {user.email}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {user.role}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      user.status === "Active"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {user.status}
-                  </span>
+                      {getRoleDisplayName(user.role)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex space-x-2">
@@ -224,28 +350,68 @@ const UserManagement = () => {
         </table>
       </div>
 
+          {/* Pagination Controls */}
+          <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+            <div className="text-sm text-gray-700">
+              Page {pagination.page} sur {pagination.totalPages || 1}
+            </div>
+            <div className="flex space-x-2">
+              <button
+                className="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50"
+                disabled={pagination.page <= 1}
+                onClick={() => setPagination({...pagination, page: pagination.page - 1})}
+              >
+                Précédent
+              </button>
+              <button
+                className="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50"
+                disabled={pagination.page >= pagination.totalPages}
+                onClick={() => setPagination({...pagination, page: pagination.page + 1})}
+              >
+                Suivant
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Add User Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold mb-4">Add New User</h3>
+            <h3 className="text-lg font-semibold mb-4">Ajouter un Utilisateur</h3>
             <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nom
+                  </label>
+                  <input
+                    type="text"
+                    name="nom"
+                    value={formData.nom}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Dupont"
+                  />
+                </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name
+                    Prénom
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  value={formData.name}
+                    name="prenom"
+                    value={formData.prenom}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="John Doe"
+                    placeholder="Jean"
                 />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email Address
+                  Email
                 </label>
                 <input
                   type="email"
@@ -253,26 +419,25 @@ const UserManagement = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="john@example.com"
+                  placeholder="jean.dupont@example.com"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Password
+                  Mot de passe
                 </label>
                 <input
                   type="password"
-                  name="password"
-                  value={formData.password}
+                  name="motDePasse"
+                  value={formData.motDePasse}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="••••••••"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Role
+                  Rôle
                   </label>
                   <select
                     name="role"
@@ -282,25 +447,10 @@ const UserManagement = () => {
                   >
                     {roles.map((role) => (
                       <option key={role} value={role}>
-                        {role}
+                      {getRoleDisplayName(role)}
                       </option>
                     ))}
                   </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Status
-                  </label>
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                </div>
               </div>
             </div>
             <div className="mt-6 flex justify-end space-x-3">
@@ -308,13 +458,13 @@ const UserManagement = () => {
                 className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
                 onClick={() => setIsAddModalOpen(false)}
               >
-                Cancel
+                Annuler
               </button>
               <button
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 onClick={handleAddUser}
               >
-                Add User
+                Ajouter
               </button>
             </div>
           </div>
@@ -325,23 +475,37 @@ const UserManagement = () => {
       {isEditModalOpen && currentUser && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold mb-4">Edit User</h3>
+            <h3 className="text-lg font-semibold mb-4">Modifier l'Utilisateur</h3>
             <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nom
+                  </label>
+                  <input
+                    type="text"
+                    name="nom"
+                    value={currentUser.nom}
+                    onChange={handleCurrentUserChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name
+                    Prénom
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  value={currentUser.name}
+                    name="prenom"
+                    value={currentUser.prenom}
                   onChange={handleCurrentUserChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email Address
+                  Email
                 </label>
                 <input
                   type="email"
@@ -351,10 +515,9 @@ const UserManagement = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Role
+                  Rôle
                   </label>
                   <select
                     name="role"
@@ -364,25 +527,10 @@ const UserManagement = () => {
                   >
                     {roles.map((role) => (
                       <option key={role} value={role}>
-                        {role}
+                      {getRoleDisplayName(role)}
                       </option>
                     ))}
                   </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Status
-                  </label>
-                  <select
-                    name="status"
-                    value={currentUser.status}
-                    onChange={handleCurrentUserChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                </div>
               </div>
             </div>
             <div className="mt-6 flex justify-end space-x-3">
@@ -390,13 +538,13 @@ const UserManagement = () => {
                 className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
                 onClick={() => setIsEditModalOpen(false)}
               >
-                Cancel
+                Annuler
               </button>
               <button
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 onClick={handleUpdateUser}
               >
-                Save Changes
+                Enregistrer
               </button>
             </div>
           </div>
@@ -407,53 +555,50 @@ const UserManagement = () => {
       {isDeleteModalOpen && currentUser && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold mb-4">Delete User</h3>
+            <h3 className="text-lg font-semibold mb-4">Supprimer l'Utilisateur</h3>
             <p className="text-gray-700">
-              Are you sure you want to delete the user{" "}
-              <strong>{currentUser.name}</strong>? This action cannot be undone.
+              Êtes-vous sûr de vouloir supprimer l'utilisateur{" "}
+              <strong>{currentUser.nom} {currentUser.prenom}</strong> ? Cette action est irréversible.
             </p>
             <div className="mt-6 flex justify-end space-x-3">
               <button
                 className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
                 onClick={() => setIsDeleteModalOpen(false)}
               >
-                Cancel
+                Annuler
               </button>
               <button
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
                 onClick={handleDeleteUser}
               >
-                Delete User
+                Supprimer
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Role & Permissions Modal */}
+      {/* Role Modal */}
       {isRoleModalOpen && currentUser && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
             <h3 className="text-lg font-semibold mb-4">
-              Manage Roles & Permissions
+              Gérer le Rôle Utilisateur
             </h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  User
+                  Utilisateur
                 </label>
                 <div className="flex items-center p-2 border border-gray-300 rounded-md bg-gray-50">
                   <img
                     className="h-8 w-8 rounded-full mr-2"
-                    src={`https://ui-avatars.com/api/?name=${currentUser.name.replace(
-                      " ",
-                      "+"
-                    )}&background=random`}
-                    alt={currentUser.name}
+                    src={`https://ui-avatars.com/api/?name=${currentUser.nom}+${currentUser.prenom}&background=random`}
+                    alt={`${currentUser.nom} ${currentUser.prenom}`}
                   />
                   <div>
                     <div className="text-sm font-medium">
-                      {currentUser.name}
+                      {currentUser.nom} {currentUser.prenom}
                     </div>
                     <div className="text-xs text-gray-500">
                       {currentUser.email}
@@ -463,7 +608,7 @@ const UserManagement = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Role
+                  Rôle
                 </label>
                 <select
                   name="role"
@@ -473,204 +618,17 @@ const UserManagement = () => {
                 >
                   {roles.map((role) => (
                     <option key={role} value={role}>
-                      {role}
+                      {getRoleDisplayName(role)}
                     </option>
                   ))}
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Permissions
+                  Permissions associées
                 </label>
-                <div className="space-y-2">
-                  {/* Admin Permissions */}
-                  {currentUser.role === "Admin" && (
-                    <>
-                      <div className="flex items-center">
-                        <input
-                          id="perm1"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm1"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          Full System Access
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="perm2"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm2"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          User Management
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="perm3"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm3"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          Machine Management
-                        </label>
-                      </div>
-                    </>
-                  )}
-
-                  {/* Manager Permissions */}
-                  {currentUser.role === "Manager" && (
-                    <>
-                      <div className="flex items-center">
-                        <input
-                          id="perm1"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm1"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          View Dashboard
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="perm2"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm2"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          Manage Machine Status
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="perm3"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm3"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          View User Reports
-                        </label>
-                      </div>
-                    </>
-                  )}
-
-                  {/* Operator Permissions */}
-                  {currentUser.role === "Operator" && (
-                    <>
-                      <div className="flex items-center">
-                        <input
-                          id="perm1"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm1"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          View Dashboard
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="perm2"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm2"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          Monitor Machines
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="perm3"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm3"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          Report Issues
-                        </label>
-                      </div>
-                    </>
-                  )}
-
-                  {/* User Permissions */}
-                  {currentUser.role === "User" && (
-                    <>
-                      <div className="flex items-center">
-                        <input
-                          id="perm1"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm1"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          View Dashboard
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="perm2"
-                          type="checkbox"
-                          checked
-                          readOnly
-                          className="h-4 w-4 text-blue-600"
-                        />
-                        <label
-                          htmlFor="perm2"
-                          className="ml-2 text-sm text-gray-700"
-                        >
-                          View Own Profile
-                        </label>
-                      </div>
-                    </>
-                  )}
+                <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                  <p>Les permissions sont automatiquement attribuées selon le rôle sélectionné.</p>
                 </div>
               </div>
             </div>
@@ -679,18 +637,20 @@ const UserManagement = () => {
                 className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
                 onClick={() => setIsRoleModalOpen(false)}
               >
-                Cancel
+                Annuler
               </button>
               <button
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 onClick={handleUpdateRole}
               >
-                Update Permissions
+                Mettre à jour
               </button>
             </div>
           </div>
         </div>
       )}
+
+      <ToastContainer position="bottom-center" />
     </div>
   );
 };

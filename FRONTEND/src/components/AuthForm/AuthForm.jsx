@@ -1,20 +1,22 @@
-import React, { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import React, { useState, useEffect } from "react";
+import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import OverlayPanel from "./OverlayPanel";
 import Loader from "./Loader";
 import useAuth from "../../hooks/useAuth";
+import { useSearchParams } from "react-router-dom";
 
 const AuthForm = () => {
+  const [searchParams] = useSearchParams();
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
   const [signUpData, setSignUpData] = useState({
     nom: "",
     prenom: "",
     email: "",
     motDePasse: "",
-    role: "",
+    role: "operateur",
   });
   const [signInData, setSignInData] = useState({
     email: "",
@@ -22,6 +24,26 @@ const AuthForm = () => {
   });
 
   const { handleSignUp, handleSignIn, loading } = useAuth();
+
+  // Check for error parameters in the URL
+  useEffect(() => {
+    const error = searchParams.get('error');
+    if (error === 'auth_failed') {
+      toast.error("L'authentification Google a échoué. Veuillez réessayer ou utiliser une autre méthode de connexion.", {
+        position: "bottom-center",
+        autoClose: 5000,
+        theme: "light",
+        transition: Bounce,
+      });
+    } else if (error === 'user_not_found') {
+      toast.error("Utilisateur non trouvé. Veuillez vous inscrire d'abord.", {
+        position: "bottom-center",
+        autoClose: 5000,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  }, [searchParams]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 py-6 px-5">
@@ -78,10 +100,8 @@ const AuthForm = () => {
         />
       </div>
 
-      <ToastContainer />
-
       {/* CSS for animation */}
-      <style jsx>{`
+      <style jsx="true">{`
         .right-panel-active .opacity-0 {
           animation: show 0.6s;
         }

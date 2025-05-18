@@ -1,18 +1,25 @@
 import Intervention from "../models/intervention.js";
 import Machine from "../models/machine.js";
 import { Utilisateur } from "../models/user.js";
-import logger from "../utils/logger.js"; // Vérifie que le chemin est correct
+import logger from "../utils/logger.js";
 import mongoose from "mongoose";
+import { sendEmail } from "../services/email.service.js";
 
 // ✅ 1️⃣ Créer une nouvelle intervention
 export const creerIntervention = async (req, res) => {
   try {
-    const { technicien, machine, rapport, type, status } = req.body;
+    const { technicien, machine, rapport, type, status, dateDebut, dateFin } =
+      req.body;
 
+    // Vérification existence technicien
     const existingTechnicien = await Utilisateur.findById(technicien);
-    if (!existingTechnicien) {
-      logger.warn(`[INTERVENTION] technicien non trouvé : ID ${technicien}`);
-      return res.status(404).json({ message: "technicien non trouvé" });
+    if (!existingTechnicien || existingTechnicien.role !== "technicien") {
+      logger.warn(
+        `[INTERVENTION] Technicien non trouvé ou rôle invalide : ID ${technicien}`
+      );
+      return res
+        .status(404)
+        .json({ message: "Technicien non trouvé ou rôle invalide" });
     }
 
     // Vérification existence machine
@@ -22,12 +29,15 @@ export const creerIntervention = async (req, res) => {
       return res.status(404).json({ message: "Machine non trouvée" });
     }
 
+    // Création de l'intervention
     const nouvelleIntervention = new Intervention({
       technicien,
       machine,
       rapport,
       type,
-      status: status || "en cours", // Default to "en cours" if not provided
+      status: status || "En cours", // Par défaut "en cours"
+      dateDebut: dateDebut || new Date(), // Par défaut à la date actuelle
+      dateFin,
     });
 
     await nouvelleIntervention.save();
@@ -48,22 +58,18 @@ export const creerIntervention = async (req, res) => {
 // ✅ 2️⃣ Récupérer toutes les interventions avec pagination
 export const getAllInterventions = async (req, res) => {
   try {
-    // 1. Lire les paramètres de pagination (ou mettre des valeurs par défaut)
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
     const skip = (page - 1) * limit;
 
-    // 2. Récupérer les interventions avec pagination
     const interventions = await Intervention.find()
       .populate("technicien", "nom prenom email")
       .populate("machine", "nomMachine etat")
       .skip(skip)
       .limit(limit);
 
-    // 3. Compter le nombre total d'interventions
     const totalInterventions = await Intervention.countDocuments();
 
-    // 4. Répondre avec les données paginées + infos
     res.status(200).json({
       results: interventions,
       totalInterventions,
@@ -110,25 +116,7 @@ export const getInterventionById = async (req, res) => {
 // ✅ 4️⃣ Modifier une intervention
 export const updateIntervention = async (req, res) => {
   try {
-    const { machine, technicienNom, status } = req.body;
-
-    // Vérification existence technicien par son nom
-    const existingTechnicien = await Utilisateur.findOne({
-      nom: technicienNom,
-    });
-    if (!existingTechnicien) {
-      logger.warn(
-        `[INTERVENTION] Technicien non trouvé : Nom ${technicienNom}`
-      );
-      return res.status(404).json({ message: "Technicien non trouvé" });
-    }
-
-    // Vérification existence machine
-    const existingMachine = await Machine.findById(machine);
-    if (!existingMachine) {
-      logger.warn(`[INTERVENTION] Machine non trouvée : ID ${machine}`);
-      return res.status(404).json({ message: "Machine non trouvée" });
-    }
+    const { nomMachine, type, nomTechnicien, status } = req.body;
 
     const intervention = await Intervention.findById(req.params.id);
     if (!intervention) {
@@ -138,10 +126,39 @@ export const updateIntervention = async (req, res) => {
       return res.status(404).json({ message: "Intervention non trouvée." });
     }
 
-    // Mise à jour des champs
-    intervention.machine = machine || intervention.machine;
-    intervention.technicien = existingTechnicien._id || intervention.technicien;
-    intervention.status = status || intervention.status;
+    // Mise à jour des champs autorisés
+    if (nomMachine) {
+      const existingMachine = await Machine.findOne({ nomMachine });
+      if (!existingMachine) {
+        logger.warn(`[INTERVENTION] Machine non trouvée : ${nomMachine}`);
+        return res.status(404).json({ message: "Machine non trouvée" });
+      }
+      intervention.machine = existingMachine._id;
+    }
+
+    if (nomTechnicien) {
+      const existingTechnicien = await Utilisateur.findOne({
+        nom: nomTechnicien,
+        role: "technicien",
+      });
+      if (!existingTechnicien) {
+        logger.warn(
+          `[INTERVENTION] Technicien non trouvé ou rôle invalide : ${nomTechnicien}`
+        );
+        return res
+          .status(404)
+          .json({ message: "Technicien non trouvé ou rôle invalide" });
+      }
+      intervention.technicien = existingTechnicien._id;
+    }
+
+    if (type) {
+      intervention.type = type;
+    }
+
+    if (status) {
+      intervention.status = status;
+    }
 
     const interventionModifiee = await intervention.save();
     logger.info(`[INTERVENTION] Intervention mise à jour : ${req.params.id}`);
@@ -181,35 +198,29 @@ export const deleteIntervention = async (req, res) => {
 
 // ✅ 6️⃣ Filtrer les interventions avec pagination
 export const filterInterventions = async (req, res) => {
-  const { date, type, technician, page = 1, limit = 5 } = req.query; // Extract filters and pagination parameters
+  const { date, type, technician, page = 1, limit = 5 } = req.query;
 
   try {
-    // Build the filter object explicitly
     let filters = {};
-    if (date) filters.date = date; // Assuming 'date' is stored as a string or Date in the database
-    if (type) filters.type = type; // Map 'type' query parameter to the 'type' field in the database
+    if (date) filters.date = date;
+    if (type) filters.type = type;
     if (technician) {
-      // Validate that 'technician' is a valid ObjectId
       if (!mongoose.Types.ObjectId.isValid(technician)) {
         return res.status(400).json({ message: "Invalid technician ID." });
       }
-      filters.technicien = technician; // Add to filters if valid
+      filters.technicien = technician;
     }
 
-    // Pagination logic
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
-    // Query the database with the constructed filters and pagination
     const interventions = await Intervention.find(filters)
-      .populate("technicien", "nom prenom email") // Populate technician details
-      .populate("machine", "nomMachine etat") // Populate machine details
+      .populate("technicien", "nom prenom email")
+      .populate("machine", "nomMachine etat")
       .skip(skip)
       .limit(parseInt(limit));
 
-    // Count total interventions matching the filters
     const totalInterventions = await Intervention.countDocuments(filters);
 
-    // Log and return the filtered interventions with pagination info
     logger.info(
       `[INTERVENTION] ${
         interventions.length
@@ -230,94 +241,96 @@ export const filterInterventions = async (req, res) => {
   }
 };
 
-// ✅ 7️⃣ Définir un calendrier pour une intervention
-export const defineInterventionSchedule = async (req, res) => {
-  try {
-    const { interventionId, scheduledDate } = req.body;
-
-    // Validate input
-    if (!interventionId || !scheduledDate) {
-      return res
-        .status(400)
-        .json({ message: "Intervention ID and scheduled date are required." });
-    }
-
-    // Validate that interventionId is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(interventionId)) {
-      return res.status(400).json({ message: "Invalid Intervention ID." });
-    }
-
-    // Find the intervention
-    const intervention = await Intervention.findById(interventionId);
-    if (!intervention) {
-      return res.status(404).json({ message: "Intervention not found." });
-    }
-
-    // Update the intervention with the scheduled date
-    intervention.scheduledDate = scheduledDate;
-    await intervention.save();
-
-    res.status(200).json({
-      message: "Intervention schedule defined successfully.",
-      intervention,
-    });
-  } catch (error) {
-    logger.error(`[INTERVENTION] Error defining schedule: ${error.message}`);
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
 
 // ✅ 8️⃣ Assigner un technicien à une intervention
+
 export const assignTechnician = async (req, res) => {
   try {
-    const { interventionId, technicianId } = req.body;
+    const { interventionId, technicianNom } = req.body;
 
-    // Validate input
-    if (!interventionId || !technicianId) {
-      return res
-        .status(400)
-        .json({ message: "Intervention ID and Technician ID are required." });
+    if (!interventionId || !technicianNom) {
+      return res.status(400).json({
+        message: "Intervention ID and Technician name are required.",
+      });
     }
 
-    // Validate that interventionId and technicianId are valid ObjectIds
-    if (
-      !mongoose.Types.ObjectId.isValid(interventionId) ||
-      !mongoose.Types.ObjectId.isValid(technicianId)
-    ) {
-      return res
-        .status(400)
-        .json({ message: "Invalid Intervention ID or Technician ID." });
+    if (!mongoose.Types.ObjectId.isValid(interventionId)) {
+      return res.status(400).json({
+        message: "Invalid Intervention ID.",
+      });
     }
 
-    // Find the intervention
     const intervention = await Intervention.findById(interventionId);
     if (!intervention) {
       return res.status(404).json({ message: "Intervention not found." });
     }
 
-    // Find the technician
-    const technician = await Utilisateur.findById(technicianId);
-    if (!technician || technician.role !== "technicien") {
-      return res
-        .status(404)
-        .json({ message: "Technician not found or invalid role." });
+    // Recherche du technicien par son nom et prénom
+    // Supposons que technicianNom est au format "Nom Prénom" ou "Nom Prénom1 Prénom2"
+    const parts = technicianNom.split(' ');
+    
+    // Le premier élément est le nom, le reste forme le prénom composé
+    if (parts.length < 2) {
+      return res.status(400).json({ message: "Format de nom et prénom invalide. Utilisez le format 'Nom Prénom'" });
+    }
+    
+    const nom = parts[0];
+    const prenom = parts.slice(1).join(' '); // Combine tous les éléments restants en un seul prénom
+    
+    const technician = await Utilisateur.findOne({ 
+      nom: nom,
+      prenom: prenom,
+      role: "technicien"
+    });
+
+    if (!technician) {
+      return res.status(404).json({
+        message: `Technicien non trouvé : ${technicianNom} ou n'a pas le rôle 'technicien'.`,
+      });
     }
 
-    // Assign the technician to the intervention
-    intervention.technicien = technicianId;
+    if (
+      intervention.technicien &&
+      intervention.technicien.toString() === technician._id.toString()
+    ) {
+      return res.status(400).json({
+        message: "This intervention is already assigned to this technician.",
+      });
+    }
+
+
+
+    intervention.technicien = technician._id;
+    intervention.dateAssignation = new Date();
     await intervention.save();
+
+    // ✅ Envoi d'email au technicien
+    if (technician.email) {
+      const emailSubject = `Nouvelle intervention assignée - ID: ${intervention._id}`;
+      const emailBody = `
+        <h2>Nouvelle Intervention Assignée</h2>
+        <p><strong>Bonjour ${technician.prenom} ${technician.nom},</strong></p>
+        <p>Une nouvelle intervention vous a été assignée.</p>
+        <p><strong>ID de l'intervention :</strong> ${intervention._id}</p>
+        <p><strong>Date d'assignation :</strong> ${new Date().toLocaleString("fr-FR")}</p>
+        <p>Merci de la traiter dès que possible.</p>
+      `;
+
+      await sendEmail(technician.email, emailSubject, emailBody);
+      console.log(`[EMAIL] Notification envoyée au technicien : ${technician.email}`);
+    }
 
     res.status(200).json({
       message: "Technician assigned successfully.",
       intervention,
     });
   } catch (error) {
-    logger.error(`[INTERVENTION] Error assigning technician: ${error.message}`);
+    console.error(`[INTERVENTION] Error assigning technician: ${error.message}`);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
 // ✅ 1️⃣1️⃣ Consulter les tâches assignées
+
 export const getTachesAssignees = async (req, res) => {
   try {
     const { technicienId } = req.params;
@@ -368,7 +381,7 @@ export const getTachesAssignees = async (req, res) => {
 export const addObservation = async (req, res) => {
   try {
     const { id } = req.params;
-    const { observation, nomPiece } = req.body; // Include nomPiece in the request body
+    const { observation, nomPiece } = req.body;
 
     const intervention = await Intervention.findById(id);
     if (!intervention) {
@@ -383,9 +396,8 @@ export const addObservation = async (req, res) => {
       return res.status(400).json({ message: "Observation est requise" });
     }
 
-    // Add observation and part name to the intervention
     intervention.observations = intervention.observations || [];
-    intervention.observations.push({ observation, nomPiece }); // Store both observation and nomPiece
+    intervention.observations.push({ observation, nomPiece });
     await intervention.save();
 
     logger.info(
@@ -410,12 +422,12 @@ export const getTechnicianStatistics = async (req, res) => {
         $group: {
           _id: "$technicien",
           interventions: { $sum: 1 },
-          avgDelay: { $avg: "$delai" }, // Assuming 'delai' field exists in the schema
+          avgDelay: { $avg: "$delai" },
         },
       },
       {
         $lookup: {
-          from: "utilisateurs", // Collection name for technicians
+          from: "utilisateurs",
           localField: "_id",
           foreignField: "_id",
           as: "technicienDetails",
@@ -445,5 +457,182 @@ export const getTechnicianStatistics = async (req, res) => {
       `[INTERVENTION] Erreur récupération statistiques : ${error.message}`
     );
     res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
+
+// ✅ Créer un rapport d'intervention
+export const createRapportIntervention = async (req, res) => {
+  try {
+    const { idIntervention, nomPieces, observations } = req.body;
+
+    // Nettoyer et valider l'ID de l'intervention
+    const cleanedId = idIntervention.trim();
+    if (!mongoose.Types.ObjectId.isValid(cleanedId)) {
+      logger.warn(
+        `[INTERVENTION] ID d'intervention invalide : ${idIntervention}`
+      );
+      return res.status(400).json({ message: "ID d'intervention invalide" });
+    }
+
+    // Vérifier l'existence de l'intervention avec l'ID nettoyé
+    const intervention = await Intervention.findById(cleanedId);
+    if (!intervention) {
+      logger.warn(
+        `[INTERVENTION] Intervention non trouvée : ID ${idIntervention}`
+      );
+      return res.status(404).json({ message: "Intervention non trouvée" });
+    }
+
+    // Mettre à jour l'intervention avec le rapport en tant que chaîne JSON
+    intervention.rapport = JSON.stringify({
+      nomPieces: nomPieces || [],
+      observations: observations || "",
+      dateCreation: new Date(),
+    });
+
+    // Marquer l'intervention comme terminée
+    intervention.status = "Completé";
+    intervention.dateFin = new Date();
+
+    await intervention.save();
+
+    // Récupérer les responsables
+    const responsables = await Utilisateur.find({ role: "responsable" });
+
+    if (responsables && responsables.length > 0) {
+      // Préparer le contenu de l'email
+      const emailSubject = `Nouveau rapport d'intervention - ${idIntervention}`;
+      const piecesDetails = nomPieces
+        .map(
+          (piece) =>
+            `<tr>
+          <td>${piece.nom || "N/A"}</td>
+          <td>${piece.quantite || 0}</td>
+         </tr>`
+        )
+        .join("");
+
+      const emailBody = `
+        <h2>Nouveau rapport d'intervention</h2>
+        <p><strong>ID Intervention:</strong> ${idIntervention}</p>
+        <p><strong>Date de fin:</strong> ${new Date().toLocaleDateString()}</p>
+        <p><strong>Observations:</strong> ${observations}</p>
+        
+        <h3>Pièces utilisées:</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Pièce</th>
+              <th>Quantité</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${piecesDetails}
+          </tbody>
+        </table>
+      `;
+
+      // Envoyer l'email aux responsables
+      const responsablesEmails = responsables.map((resp) => resp.email);
+      await sendEmail(responsablesEmails, emailSubject, emailBody);
+
+      logger.info(
+        `[INTERVENTION] Rapport envoyé aux responsables pour l'intervention : ${idIntervention}`
+      );
+    }
+
+    logger.info(
+      `[INTERVENTION] Rapport créé pour l'intervention : ${idIntervention}`
+    );
+    res.status(200).json({
+      message: "Rapport d'intervention créé avec succès",
+      intervention,
+    });
+  } catch (error) {
+    logger.error(`[INTERVENTION] Erreur création rapport : ${error.message}`);
+    res.status(500).json({
+      message: "Erreur lors de la création du rapport",
+      error: error.message,
+    });
+  }
+};
+
+// ✅ Définir un calendrier d'intervention
+export const defineInterventionSchedule = async (req, res) => {
+  try {
+    const { interventionId, scheduledDate } = req.body;
+
+    // Validation des données
+    if (!interventionId || !scheduledDate) {
+      logger.warn(`[INTERVENTION] Données manquantes pour la planification`);
+      return res.status(400).json({ 
+        message: "L'ID de l'intervention et la date planifiée sont requis" 
+      });
+    }
+
+    // Vérifier que l'ID est valide
+    if (!mongoose.Types.ObjectId.isValid(interventionId)) {
+      logger.warn(`[INTERVENTION] ID d'intervention invalide : ${interventionId}`);
+      return res.status(400).json({ message: "ID d'intervention invalide" });
+    }
+
+    // Vérifier que l'intervention existe
+    const intervention = await Intervention.findById(interventionId);
+    if (!intervention) {
+      logger.warn(`[INTERVENTION] Intervention non trouvée : ID ${interventionId}`);
+      return res.status(404).json({ message: "Intervention non trouvée" });
+    }
+
+    // Convertir la date planifiée en objet Date
+    const scheduledDateTime = new Date(scheduledDate);
+    
+    // Mettre à jour l'intervention avec la date planifiée en utilisant findByIdAndUpdate
+    // pour éviter les problèmes de version
+    const updatedIntervention = await Intervention.findByIdAndUpdate(
+      interventionId,
+      { scheduledDate: scheduledDateTime },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedIntervention) {
+      logger.warn(`[INTERVENTION] Échec de mise à jour de l'intervention : ID ${interventionId}`);
+      return res.status(404).json({ message: "Échec de mise à jour de l'intervention" });
+    }
+    
+    // Si l'intervention a un technicien assigné, envoyer une notification
+    if (updatedIntervention.technicien) {
+      const technicien = await Utilisateur.findById(updatedIntervention.technicien);
+      
+      if (technicien && technicien.email) {
+        // Récupérer les informations de la machine
+        const machine = await Machine.findById(updatedIntervention.machine);
+        
+        const emailSubject = "Intervention planifiée";
+        const emailBody = `
+          <h2>Intervention planifiée</h2>
+          <p><strong>Bonjour ${technicien.prenom} ${technicien.nom},</strong></p>
+          <p>Une intervention a été planifiée pour vous.</p>
+          <p><strong>Date planifiée:</strong> ${scheduledDateTime.toLocaleDateString('fr-FR')} à ${scheduledDateTime.toLocaleTimeString('fr-FR')}</p>
+          <p><strong>Machine:</strong> ${machine ? machine.nomMachine : 'Non spécifiée'}</p>
+          <p><strong>Type d'intervention:</strong> ${updatedIntervention.type}</p>
+          <p>Merci de vous préparer pour cette intervention.</p>
+        `;
+        
+        await sendEmail(technicien.email, emailSubject, emailBody);
+        logger.info(`[INTERVENTION] Notification envoyée au technicien : ${technicien.email}`);
+      }
+    }
+    
+    logger.info(`[INTERVENTION] Calendrier défini pour l'intervention : ${interventionId}`);
+    res.status(200).json({
+      message: "Calendrier d'intervention défini avec succès",
+      intervention: updatedIntervention
+    });
+  } catch (error) {
+    logger.error(`[INTERVENTION] Erreur lors de la définition du calendrier : ${error.message}`);
+    res.status(500).json({ 
+      message: "Erreur lors de la définition du calendrier d'intervention", 
+      error: error.message 
+    });
   }
 };

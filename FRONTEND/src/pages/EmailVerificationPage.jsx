@@ -1,12 +1,8 @@
 import React from "react";
-import EmailVerification from "../components/EmailVerification/EmailVerification"; // Chemin corrigé
+import EmailVerification from "../components/EmailVerification/EmailVerification";
 
 const EmailVerificationPage = () => {
-  return (
-    <div>
-      <EmailVerification />
-    </div>
-  );
+  return <EmailVerification />;
 };
 
 export default EmailVerificationPage;

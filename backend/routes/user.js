@@ -11,7 +11,7 @@ import { authorize } from "../middleware/auth.js"; // Middleware d'autorisation
 const router = express.Router();
 
 // 📌 Routes CRUD pour les utilisateurs (réservé aux administrateurs)
-router.get("/", authorize(["admin"]), getAllUsers); // Obtenir tous les utilisateurs
+router.get("/", getAllUsers); // Obtenir tous les utilisateurs
 router.get("/:id", authorize(["admin"]), getUserById); // Obtenir un utilisateur par ID
 router.post("/", authorize(["admin"]), createUser); // Créer un utilisateur
 router.put("/:id", authorize(["admin"]), updateUser); // Mettre à jour un utilisateur

@@ -20,9 +20,9 @@ const demandeSchema = new mongoose.Schema(
     }, // User who made the request
     pieces: [
       {
-        pieceId: {
+        piece: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "PieceRechange",
+          ref: "Piece",
           required: true,
         },
         quantite: { type: Number, required: true },

@@ -1,9 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import UserDropdown from "./UserDropdown";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 const UserMenu = ({ isOpen, setIsOpen, closeAllDropdowns }) => {
   const menuRef = useRef(null);
+  const { user } = useAuth();
 
   // Effect to handle clicks outside of the component
   useEffect(() => {
@@ -24,6 +26,14 @@ const UserMenu = ({ isOpen, setIsOpen, closeAllDropdowns }) => {
     };
   }, [isOpen, closeAllDropdowns]);
 
+  // Génère les initiales de l'utilisateur pour l'avatar
+  const getUserInitials = () => {
+    if (user && user.prenom && user.nom) {
+      return `${user.prenom[0]}${user.nom[0]}`.toUpperCase();
+    }
+    return "UT"; // Utilisateur par défaut
+  };
+
   return (
     <div className="relative" ref={menuRef}>
       <button
@@ -32,14 +42,20 @@ const UserMenu = ({ isOpen, setIsOpen, closeAllDropdowns }) => {
         className="flex items-center rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <span className="sr-only">Open user menu</span>
-        <img
-          className="h-11 w-11 rounded-full"
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          alt="User Avatar"
-        />
+        {user && user.avatarUrl ? (
+          <img
+            className="h-11 w-11 rounded-full"
+            src={user.avatarUrl}
+            alt="User Avatar"
+          />
+        ) : (
+          <div className="h-11 w-11 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+            {getUserInitials()}
+          </div>
+        )}
         <button className="flex items-center justify-center pr-8 pl-4">
           <span className="text-[14px] font-normal text-[#344054] font-['Outfit',_sans-serif]">
-            Musharof
+            {user ? user.prenom : "Utilisateur"}
           </span>
           {isOpen ? (
             <RiArrowDropUpLine size={24} />
@@ -49,11 +65,7 @@ const UserMenu = ({ isOpen, setIsOpen, closeAllDropdowns }) => {
         </button>
       </button>
 
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-          <UserDropdown />
-        </div>
-      )}
+      {isOpen && <UserDropdown />}
     </div>
   );
 };

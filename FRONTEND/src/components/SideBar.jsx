@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import LogoAndTitle from "./LogoAndTitle";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { PiChatCircleDots } from "react-icons/pi";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Sidebar = ({
   setSelectedPage,
@@ -16,6 +17,28 @@ const Sidebar = ({
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const [showTooltip, setShowTooltip] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Set active item based on current path
+  useEffect(() => {
+    const path = location.pathname;
+    const currentPage = menuItems.find(item => 
+      item.link && path.includes(item.link)
+    );
+    
+    if (currentPage) {
+      setActiveItem(currentPage.label);
+      if (setSelectedPage) {
+        setSelectedPage(currentPage.label);
+      }
+    } else if (path === "/profile") {
+      setActiveItem("Profile");
+      if (setSelectedPage) {
+        setSelectedPage("Profile");
+      }
+    }
+  }, [location, menuItems, setSelectedPage]);
 
   // Close sidebar when clicking outside
   useEffect(() => {
@@ -33,9 +56,16 @@ const Sidebar = ({
     setIsOpen((v) => !v);
   };
 
-  const handleItemClick = (label) => {
+  const handleItemClick = (label, link) => {
     setActiveItem(label);
-    setSelectedPage(label); // ✅ Send information to parent
+    if (setSelectedPage) {
+      setSelectedPage(label);
+    }
+    
+    // Navigate if link is provided
+    if (link) {
+      navigate(link);
+    }
   };
 
   const handleMouseEnter = (e, label) => {
@@ -115,52 +145,101 @@ const Sidebar = ({
                 onMouseEnter={(e) => handleMouseEnter(e, item.label)}
                 onMouseLeave={handleMouseLeave}
               >
-                <a
-                  href="#"
-                  onClick={() => handleItemClick(item.label)}
-                  className={`
-                    ${
-                      isCollapsed && !sidebarToggle
-                        ? "p-2 flex justify-center"
-                        : "rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2"
-                    } 
-                    ${
-                      activeItem === item.label
-                        ? `${
-                            isCollapsed && !sidebarToggle
-                              ? "bg-blue-100 text-blue-500"
-                              : "text-blue-500 bg-gray-100"
-                          }`
-                        : "text-gray-500 hover:text-gray-600"
-                    } 
-                    ${
-                      isCollapsed && !sidebarToggle
-                        ? "hover:bg-blue-50 rounded-md"
-                        : "hover:bg-gray-100"
-                    }
-                  `}
-                >
-                  <div
-                    className={
-                      activeItem === item.label
-                        ? "text-blue-500"
-                        : "text-gray-500"
-                    }
+                {item.link ? (
+                  <Link
+                    to={item.link}
+                    onClick={() => handleItemClick(item.label, item.link)}
+                    className={`
+                      ${
+                        isCollapsed && !sidebarToggle
+                          ? "p-2 flex justify-center"
+                          : "rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2"
+                      } 
+                      ${
+                        activeItem === item.label
+                          ? `${
+                              isCollapsed && !sidebarToggle
+                                ? "bg-blue-100 text-blue-500"
+                                : "text-blue-500 bg-gray-100"
+                            }`
+                          : "text-gray-500 hover:text-gray-600"
+                      } 
+                      ${
+                        isCollapsed && !sidebarToggle
+                          ? "hover:bg-blue-50 rounded-md"
+                          : "hover:bg-gray-100"
+                      }
+                    `}
                   >
-                    {item.icon}
-                  </div>
-                  {showLabels && (
-                    <span
-                      className={`text-sm font-medium ${
+                    <div
+                      className={
                         activeItem === item.label
                           ? "text-blue-500"
-                          : "text-gray-600"
-                      }`}
+                          : "text-gray-500"
+                      }
                     >
-                      {item.label}
-                    </span>
-                  )}
-                </a>
+                      {item.icon}
+                    </div>
+                    {showLabels && (
+                      <span
+                        className={`text-sm font-medium ${
+                          activeItem === item.label
+                            ? "text-blue-500"
+                            : "text-gray-600"
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    )}
+                  </Link>
+                ) : (
+                  <a
+                    href="#"
+                    onClick={() => handleItemClick(item.label)}
+                    className={`
+                      ${
+                        isCollapsed && !sidebarToggle
+                          ? "p-2 flex justify-center"
+                          : "rounded-lg mr-4 ml-4 flex items-center gap-3 px-4 py-2"
+                      } 
+                      ${
+                        activeItem === item.label
+                          ? `${
+                              isCollapsed && !sidebarToggle
+                                ? "bg-blue-100 text-blue-500"
+                                : "text-blue-500 bg-gray-100"
+                            }`
+                          : "text-gray-500 hover:text-gray-600"
+                      } 
+                      ${
+                        isCollapsed && !sidebarToggle
+                          ? "hover:bg-blue-50 rounded-md"
+                          : "hover:bg-gray-100"
+                      }
+                    `}
+                  >
+                    <div
+                      className={
+                        activeItem === item.label
+                          ? "text-blue-500"
+                          : "text-gray-500"
+                      }
+                    >
+                      {item.icon}
+                    </div>
+                    {showLabels && (
+                      <span
+                        className={`text-sm font-medium ${
+                          activeItem === item.label
+                            ? "text-blue-500"
+                            : "text-gray-600"
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    )}
+                  </a>
+                )}
               </nav>
             ))}
 

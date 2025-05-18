@@ -8,19 +8,27 @@ import Task from "../components/Task";
 import Calendar from "../layout/Calender.jsx";
 import MachineTable from "../components/MachineTable";
 import InterventionTable from "../components/InterventionTable";
+import MaintenanceTable from "../components/MaintenanceTable";
 import UserProfile from "../layout/UserProfile.jsx";
 import RapportGeneral from "../components/RapportGeneral";
-import GestionnaireDemandes from "../layout/GestionnaireDemandes.jsx";
+import DemandesValRejTable from "../components/DemandesValRejTable.jsx";
+import AssignTech from "../components/AssignTech.jsx";
+import CreateTaskForm from "../components/CreateTaskForm";
+import CreateMaintenanceForm from "../components/CreateMaintenanceForm";
 
 import {
   MdDashboard,
   MdAssignment,
-  MdCalendarMonth,
   MdTableChart,
   MdPerson,
   MdAssessment,
-  MdCheckCircle, // Correct import for MdCheckCircle
+  MdCheckCircle,
+  MdAssignmentInd,
+  MdAddTask,
+  MdEngineering,
+  MdBuild,
 } from "react-icons/md";
+import { BsCalendarEvent } from "react-icons/bs";
 
 const ResponsableDashboard = () => {
   const [selectedPage, setSelectedPage] = useState("Dashboard");
@@ -29,9 +37,12 @@ const ResponsableDashboard = () => {
   // Main menu items
   const menuItems = [
     { label: "Dashboard", icon: <MdDashboard size={24} /> },
-    { label: "Calendar", icon: <MdCalendarMonth size={24} /> },
+    { label: "Calendar", icon: <BsCalendarEvent size={24} /> },
     { label: "Task", icon: <MdAssignment size={24} /> },
+    { label: "Créer Tâche", icon: <MdAddTask size={24} /> },
+    { label: "Planifier Maintenance", icon: <MdEngineering size={24} /> },
     { label: "Valider demandes", icon: <MdCheckCircle size={24} /> },
+    { label: "Assigner Technicien", icon: <MdAssignmentInd size={24} /> },
     { label: "Rapport Général", icon: <MdAssessment size={24} /> },
     { label: "User Profile", icon: <MdPerson size={24} /> },
   ];
@@ -40,6 +51,7 @@ const ResponsableDashboard = () => {
   const tableMenuItems = [
     { label: "Machine Table", icon: <MdTableChart size={24} /> },
     { label: "Intervention Table", icon: <MdTableChart size={24} /> },
+    { label: "Maintenance Table", icon: <MdTableChart size={24} /> },
   ];
 
   // Function to handle sidebar toggle
@@ -67,18 +79,26 @@ const ResponsableDashboard = () => {
         );
       case "Task":
         return <Task />;
+      case "Créer Tâche":
+        return <CreateTaskForm />;
+      case "Planifier Maintenance":
+        return <CreateMaintenanceForm />;
       case "Calendar":
         return <Calendar />;
       case "Machine Table":
         return <MachineTable />;
       case "Intervention Table":
         return <InterventionTable />;
+      case "Maintenance Table":
+        return <MaintenanceTable />;
       case "User Profile":
         return <UserProfile />;
       case "Rapport Général":
         return <RapportGeneral />;
-      case "Valider demandes": 
-        return <GestionnaireDemandes />;
+      case "Valider demandes":
+        return <DemandesValRejTable />;
+      case "Assigner Technicien":
+        return <AssignTech />;
       default:
         return <div>Page not found</div>;
     }

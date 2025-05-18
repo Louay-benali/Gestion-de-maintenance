@@ -29,12 +29,15 @@ const getStatusStyles = (status) => {
 const getInterventionTypeIcon = (type) => {
   // Convert type to lowercase for case-insensitive comparison
   const lowerType = type ? type.toLowerCase() : "";
-  
+
   switch (lowerType) {
     case "maintenance":
       return <Calendar size={16} className="text-blue-500" />;
     case "réparation":
+    case "reparation":
       return <Wrench size={16} className="text-orange-500" />;
+    default:
+      return <Wrench size={16} className="text-gray-500" />;
   }
 };
 
@@ -86,18 +89,22 @@ const InterventionTable = () => {
       const data = await response.json();
 
       // Process the data to match our component's needs
-      const processedData = data.results.map(intervention => ({
+      const processedData = data.results.map((intervention) => ({
         ...intervention,
         machineNom: intervention.machine?.nomMachine || "N/A",
-        technicienNom: intervention.technicien ? 
-          `${intervention.technicien.prenom} ${intervention.technicien.nom}` : "N/A",
-        formattedDate: new Date(intervention.createdAt).toLocaleDateString('fr-FR', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric'
-        })
+        technicienNom: intervention.technicien
+          ? `${intervention.technicien.prenom} ${intervention.technicien.nom}`
+          : "N/A",
+        formattedDate: new Date(intervention.createdAt).toLocaleDateString(
+          "fr-FR",
+          {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          }
+        ),
       }));
-      
+
       setInterventions(processedData);
       setPagination({
         ...pagination,
@@ -124,13 +131,29 @@ const InterventionTable = () => {
         },
         withCredentials: true,
       });
-      
+
       if (techResponse.ok) {
         const techData = await techResponse.json();
-        setTechniciensList(techData.map(tech => ({
-          id: tech._id,
-          nom: `${tech.prenom} ${tech.nom}`
-        })));
+        // Check if techData is an array before using map
+        if (Array.isArray(techData)) {
+          setTechniciensList(
+            techData.map((tech) => ({
+              id: tech._id,
+              nom: `${tech.prenom} ${tech.nom}`,
+            }))
+          );
+        } else if (techData && techData.results && Array.isArray(techData.results)) {
+          // Handle case where API returns {results: [...]} structure
+          setTechniciensList(
+            techData.results.map((tech) => ({
+              id: tech._id,
+              nom: `${tech.prenom} ${tech.nom}`,
+            }))
+          );
+        } else {
+          console.error('Unexpected techData format:', techData);
+          setTechniciensList([]);
+        }
       }
 
       // Fetch machines
@@ -140,13 +163,29 @@ const InterventionTable = () => {
         },
         withCredentials: true,
       });
-      
+
       if (machineResponse.ok) {
         const machineData = await machineResponse.json();
-        setMachinesList(machineData.results.map(machine => ({
-          id: machine._id,
-          nom: machine.nomMachine
-        })));
+        // Check if machineData has the expected structure before using map
+        if (machineData && machineData.results && Array.isArray(machineData.results)) {
+          setMachinesList(
+            machineData.results.map((machine) => ({
+              id: machine._id,
+              nom: machine.nomMachine,
+            }))
+          );
+        } else if (Array.isArray(machineData)) {
+          // Handle case where API returns array directly
+          setMachinesList(
+            machineData.map((machine) => ({
+              id: machine._id,
+              nom: machine.nomMachine,
+            }))
+          );
+        } else {
+          console.error('Unexpected machineData format:', machineData);
+          setMachinesList([]);
+        }
       }
     } catch (err) {
       console.error("Failed to fetch reference data:", err);
@@ -160,17 +199,29 @@ const InterventionTable = () => {
 
   // Filter interventions based on search and filters
   const filteredInterventions = interventions.filter((intervention) => {
-    const matchesSearch = searchTerm === "" || 
-      (intervention._id && intervention._id.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (intervention.machineNom && intervention.machineNom.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (intervention.technicienNom && intervention.technicienNom.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-    const matchesTypeFilter = filters.type === "" || 
-      (intervention.type && intervention.type.toLowerCase() === filters.type.toLowerCase());
-    
-    const matchesTechFilter = filters.technicien === "" || 
-      (intervention.technicien && intervention.technicien._id === filters.technicien);
-    
+    const matchesSearch =
+      searchTerm === "" ||
+      (intervention._id &&
+        intervention._id.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (intervention.machineNom &&
+        intervention.machineNom
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())) ||
+      (intervention.technicienNom &&
+        intervention.technicienNom
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()));
+
+    const matchesTypeFilter =
+      filters.type === "" ||
+      (intervention.type &&
+        intervention.type.toLowerCase() === filters.type.toLowerCase());
+
+    const matchesTechFilter =
+      filters.technicien === "" ||
+      (intervention.technicien &&
+        intervention.technicien._id === filters.technicien);
+
     return matchesSearch && matchesTypeFilter && matchesTechFilter;
   });
 
@@ -203,8 +254,8 @@ const InterventionTable = () => {
   const startEdit = (intervention) => {
     setEditingId(intervention._id);
     setEditValues({
-      machine: intervention.machine?._id || "",
-      technicien: intervention.technicien?._id || "",
+      machine: intervention.machineNom || "",
+      technicien: intervention.technicienNom || "",
       status: intervention.status || "En cours", // Default to "En cours" if status is null/undefined
       type: intervention.type || "Maintenance", // Default to "Maintenance" if type is null/undefined
     });
@@ -227,6 +278,20 @@ const InterventionTable = () => {
       // Format the type to match backend expectations
       const formattedType = formatTypeForBackend(editValues.type);
 
+      // Extract just the machine name from the full name (remove any ID or extra info)
+      const machineName = editValues.machine.split(' - ')[0];
+      
+      // Extract just the last name from the full technician name
+      // The backend expects just the 'nom' field, not the full name
+      const technicianName = editValues.technicien.split(' ').pop();
+
+      console.log('Sending update with:', {
+        nomMachine: machineName,
+        nomTechnicien: technicianName,
+        type: formattedType,
+        status: editValues.status
+      });
+
       const response = await fetch(`http://localhost:3001/intervention/${id}`, {
         method: "PUT",
         headers: {
@@ -234,16 +299,17 @@ const InterventionTable = () => {
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },
         body: JSON.stringify({
-          machine: editValues.machine,
-          technicien: editValues.technicien,
-          status: editValues.status,
+          nomMachine: machineName,
+          nomTechnicien: technicianName,
           type: formattedType,
+          status: editValues.status,
         }),
         credentials: "include",
       });
 
       if (!response.ok) {
-        throw new Error(`API response error: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(`API response error: ${response.status} - ${errorData.message || ''}`);
       }
 
       // Refresh the data
@@ -258,25 +324,193 @@ const InterventionTable = () => {
   // Format the displayed type with proper capitalization
   const formatTypeDisplay = (type) => {
     if (!type) return "N/A";
-    
+
     // Format type for display with first letter capitalized
-    const formattedType = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
-    
+    const formattedType =
+      type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
+
     // Handle special case for "Réparation"
     if (formattedType.toLowerCase() === "reparation") {
       return "Réparation";
     }
-    
+
     return formattedType;
+  };
+
+  // Render a card for mobile view of an intervention
+  const renderInterventionCard = (intervention) => {
+    if (editingId === intervention._id) {
+      return (
+        <div
+          key={intervention._id}
+          className="p-4 border rounded-lg mb-4 bg-white dark:bg-gray-800 shadow-sm"
+        >
+          <div className="flex justify-between items-start mb-3">
+            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              ID: {intervention._id}
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => saveEdit(intervention._id)}
+                className="p-1 rounded bg-green-100 text-green-600 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50"
+                title="Enregistrer"
+              >
+                <Save size={16} />
+              </button>
+              <button
+                onClick={cancelEdit}
+                className="p-1 rounded bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+                title="Annuler"
+              >
+                <XCircle size={16} />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3">
+            <div>
+              <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
+                Machine
+              </label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200"
+                value={editValues.machine}
+                onChange={(e) =>
+                  setEditValues({ ...editValues, machine: e.target.value })
+                }
+                placeholder="Nom de la machine"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
+                Type
+              </label>
+              <select
+                className="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200"
+                value={editValues.type}
+                onChange={(e) =>
+                  setEditValues({ ...editValues, type: e.target.value })
+                }
+              >
+                <option value="Maintenance">Maintenance</option>
+                <option value="Réparation">Réparation</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
+                Technicien
+              </label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200"
+                value={editValues.technicien}
+                onChange={(e) =>
+                  setEditValues({ ...editValues, technicien: e.target.value })
+                }
+                placeholder="Nom du technicien"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
+                Status
+              </label>
+              <select
+                className="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200"
+                value={editValues.status}
+                onChange={(e) =>
+                  setEditValues({ ...editValues, status: e.target.value })
+                }
+              >
+                <option value="Completé">Completé</option>
+                <option value="En cours">En cours</option>
+                <option value="Reporté">Reporté</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        key={intervention._id}
+        className="p-4 border rounded-lg mb-4 bg-white dark:bg-gray-800 shadow-sm"
+      >
+        <div className="flex justify-between items-start mb-3">
+          <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            ID: {intervention._id}
+          </div>
+          <button
+            onClick={() => startEdit(intervention)}
+            className="p-1 rounded bg-blue-100 text-blue-600 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
+            title="Modifier"
+          >
+            <MdEdit size={18} />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-3">
+          <div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              Machine
+            </div>
+            <div className="text-sm font-medium dark:text-gray-300">
+              {intervention.machineNom}
+            </div>
+          </div>
+
+          <div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">Date</div>
+            <div className="text-sm font-medium dark:text-gray-300">
+              {intervention.formattedDate}
+            </div>
+          </div>
+
+          <div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">Type</div>
+            <div className="flex items-center gap-2 text-sm font-medium dark:text-gray-300">
+              {getInterventionTypeIcon(intervention.type)}
+              <span>{formatTypeDisplay(intervention.type)}</span>
+            </div>
+          </div>
+
+          <div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              Status
+            </div>
+            <p
+              className={`${getStatusStyles(
+                intervention.status
+              )} inline-block rounded-full px-2 py-0.5 text-theme-xs font-medium mt-1`}
+            >
+              {mapInterventionStateToStatus(intervention.status)}
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            Technicien
+          </div>
+          <div className="text-sm font-medium dark:text-gray-300">
+            {intervention.technicienNom}
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
     <div className="border py-4 rounded-3xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-      <div className="px-5 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="px-4 md:px-5 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 className="text-xl font-semibold dark:text-white">
           Historique des Interventions
         </h1>
-        <div className="flex gap-2 justify-end w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <SearchInput
             className="w-full sm:w-48 md:w-72"
             placeholder="Rechercher..."
@@ -284,7 +518,7 @@ const InterventionTable = () => {
             onChange={handleSearch}
           />
           <button
-            className={`border p-2 rounded-lg sm:w-24 flex flex-row gap-2 items-center justify-center transition-colors ${
+            className={`border p-2 rounded-lg flex flex-row gap-2 items-center justify-center transition-colors ${
               showFilters
                 ? "bg-blue-100 border-blue-300 text-blue-700 dark:bg-blue-900 dark:border-blue-700 dark:text-blue-300"
                 : "border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-gray-200"
@@ -292,16 +526,16 @@ const InterventionTable = () => {
             onClick={() => setShowFilters(!showFilters)}
           >
             <Filter size={18} />
-            Filtrer
+            <span className="sm:inline">Filtrer</span>
           </button>
         </div>
       </div>
 
       {/* Filter section */}
       {showFilters && (
-        <div className="px-5 pb-4 border-t border-gray-200 dark:border-gray-700 pt-4">
-          <div className="flex flex-wrap gap-4 items-center">
-            <div className="flex flex-col gap-1 min-w-40">
+        <div className="px-4 md:px-5 pb-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+          <div className="flex flex-col md:flex-row flex-wrap gap-4 md:items-center">
+            <div className="flex flex-col gap-1 w-full sm:w-auto">
               <label className="text-sm text-gray-600 dark:text-gray-300">
                 Type d'intervention
               </label>
@@ -318,7 +552,7 @@ const InterventionTable = () => {
               </select>
             </div>
 
-            <div className="flex flex-col gap-1 min-w-40">
+            <div className="flex flex-col gap-1 w-full sm:w-auto">
               <label className="text-sm text-gray-600 dark:text-gray-300">
                 Technicien
               </label>
@@ -340,7 +574,7 @@ const InterventionTable = () => {
 
             {isAnyFilterActive && (
               <button
-                className="mt-6 flex items-center gap-1 text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+                className="flex items-center gap-1 text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 mt-2 md:mt-6"
                 onClick={resetFilters}
               >
                 <X size={14} />
@@ -351,7 +585,7 @@ const InterventionTable = () => {
         </div>
       )}
 
-      <div className="border-t border-gray-200 dark:border-gray-700 pt-6 pb-3 px-7">
+      <div className="border-t border-gray-200 dark:border-gray-700 pt-6 pb-3 px-4 md:px-7">
         {loading ? (
           <div className="flex justify-center p-8">
             <p className="dark:text-gray-300">Chargement des données...</p>
@@ -362,9 +596,10 @@ const InterventionTable = () => {
           </div>
         ) : (
           <>
-            <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-              <div className="max-w-full overflow-x-auto custom-scrollbar">
-                <table className="w-full min-w-[1102px]">
+            {/* Desktop View - Table */}
+            <div className="hidden md:block overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-100 dark:border-gray-700">
                       <th className="px-5 py-3 text-left sm:px-6 text-gray-600 dark:text-gray-300 text-theme-xs">
@@ -402,7 +637,8 @@ const InterventionTable = () => {
                           </td>
                           <td className="px-5 py-4 sm:px-6">
                             {editingId === intervention._id ? (
-                              <select
+                              <input
+                                type="text"
                                 className="border border-gray-300 dark:border-gray-600 rounded p-1 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 w-full"
                                 value={editValues.machine}
                                 onChange={(e) =>
@@ -411,14 +647,8 @@ const InterventionTable = () => {
                                     machine: e.target.value,
                                   })
                                 }
-                              >
-                                <option value="">Sélectionner une machine</option>
-                                {machinesList.map((machine) => (
-                                  <option key={machine.id} value={machine.id}>
-                                    {machine.nom}
-                                  </option>
-                                ))}
-                              </select>
+                                placeholder="Nom de la machine"
+                              />
                             ) : (
                               <div className="flex items-center gap-3">
                                 <span className="block text-theme-xs dark:text-gray-300">
@@ -453,7 +683,8 @@ const InterventionTable = () => {
                           </td>
                           <td className="px-5 py-4 sm:px-6">
                             {editingId === intervention._id ? (
-                              <select
+                              <input
+                                type="text"
                                 className="border border-gray-300 dark:border-gray-600 rounded p-1 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 w-full"
                                 value={editValues.technicien}
                                 onChange={(e) =>
@@ -462,14 +693,8 @@ const InterventionTable = () => {
                                     technicien: e.target.value,
                                   })
                                 }
-                              >
-                                <option value="">Sélectionner un technicien</option>
-                                {techniciensList.map((tech) => (
-                                  <option key={tech.id} value={tech.id}>
-                                    {tech.nom}
-                                  </option>
-                                ))}
-                              </select>
+                                placeholder="Nom du technicien"
+                              />
                             ) : (
                               <span className="text-theme-sm dark:text-gray-300">
                                 {intervention.technicienNom}
@@ -501,7 +726,9 @@ const InterventionTable = () => {
                                   intervention.status
                                 )} inline-block rounded-full px-2 py-0.5 text-theme-xs font-medium`}
                               >
-                                {mapInterventionStateToStatus(intervention.status)}
+                                {mapInterventionStateToStatus(
+                                  intervention.status
+                                )}
                               </p>
                             )}
                           </td>
@@ -541,7 +768,8 @@ const InterventionTable = () => {
                           colSpan="7"
                           className="px-5 py-8 text-center text-gray-500 dark:text-gray-400"
                         >
-                          Aucune intervention trouvée avec les critères sélectionnés
+                          Aucune intervention trouvée avec les critères
+                          sélectionnés
                         </td>
                       </tr>
                     )}
@@ -550,9 +778,23 @@ const InterventionTable = () => {
               </div>
             </div>
 
+            {/* Mobile View - Cards */}
+            <div className="md:hidden">
+              {filteredInterventions.length > 0 ? (
+                filteredInterventions.map((intervention) =>
+                  renderInterventionCard(intervention)
+                )
+              ) : (
+                <div className="p-6 text-center text-gray-500 dark:text-gray-400">
+                  Aucune intervention trouvée avec les critères sélectionnés
+                </div>
+              )}
+            </div>
+
             <div className="flex justify-between items-center mt-6">
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                Affichage de {filteredInterventions.length} sur {pagination.totalInterventions} interventions
+                Affichage de {filteredInterventions.length} sur{" "}
+                {pagination.totalInterventions} interventions
               </div>
               <div className="flex items-center gap-2">
                 <button

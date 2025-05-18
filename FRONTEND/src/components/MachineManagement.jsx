@@ -1,47 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 import {
   MdEdit,
   MdDeleteForever,
   MdSettingsApplications,
 } from "react-icons/md";
+import Cookies from "js-cookie";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MachineManagement = () => {
   // State for machines data
-  const [machines, setMachines] = useState([
-    {
-      id: 1,
-      name: "Machine 01",
-      serialNumber: "SN-001-2025",
-      type: "CNC",
-      status: "Operational",
-      location: "Floor 1",
-    },
-    {
-      id: 2,
-      name: "Machine 02",
-      serialNumber: "SN-002-2025",
-      type: "Laser Cutter",
-      status: "Maintenance",
-      location: "Floor 2",
-    },
-    {
-      id: 3,
-      name: "Machine 03",
-      serialNumber: "SN-003-2025",
-      type: "3D Printer",
-      status: "Offline",
-      location: "Floor 1",
-    },
-    {
-      id: 4,
-      name: "Machine 04",
-      serialNumber: "SN-004-2025",
-      type: "Assembly",
-      status: "Operational",
-      location: "Floor 3",
-    },
-  ]);
+  const [machines, setMachines] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 5,
+    totalPages: 1,
+    totalMachines: 0,
+  });
 
   // Form states
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -54,27 +32,55 @@ const MachineManagement = () => {
 
   // New machine form data
   const [formData, setFormData] = useState({
-    name: "",
-    serialNumber: "",
-    type: "CNC",
-    status: "Operational",
-    location: "Floor 1",
+    nomMachine: "",
+    dataSheet: "",
+    etat: "Fonctionnelle",
   });
 
-  // Available machine types
-  const machineTypes = [
-    "CNC",
-    "Laser Cutter",
-    "3D Printer",
-    "Assembly",
-    "Packaging",
-  ];
+  // Available machine statuses
+  const statuses = ["Fonctionnelle", "En panne", "Maintenance"];
 
-  // Available statuses
-  const statuses = ["Operational", "Maintenance", "Offline", "Standby"];
+  // Fetch machines from backend
+  const fetchMachines = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://localhost:3001/machine?page=${pagination.page}&limit=${pagination.limit}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+          credentials: "include",
+        }
+      );
 
-  // Available locations
-  const locations = ["Floor 1", "Floor 2", "Floor 3", "Warehouse"];
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      setMachines(data.results);
+      setPagination({
+        ...pagination,
+        totalPages: data.totalPages || 1,
+        totalMachines: data.totalMachines || 0,
+      });
+
+      setError(null);
+    } catch (err) {
+      setError(`Erreur de chargement des données: ${err.message}`);
+      console.error("Failed to fetch machines:", err);
+      toast.error("Erreur lors du chargement des machines");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load machines on component mount and when pagination changes
+  useEffect(() => {
+    fetchMachines();
+  }, [pagination.page, pagination.limit]);
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -95,63 +101,135 @@ const MachineManagement = () => {
   };
 
   // Add a new machine
-  const handleAddMachine = () => {
-    const newMachine = {
-      id:
-        machines.length > 0
-          ? Math.max(...machines.map((machine) => machine.id)) + 1
-          : 1,
-      ...formData,
-    };
-    setMachines([...machines, newMachine]);
-    // Reset form
-    setFormData({
-      name: "",
-      serialNumber: "",
-      type: "CNC",
-      status: "Operational",
-      location: "Floor 1",
-    });
-    setIsAddModalOpen(false);
+  const handleAddMachine = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/machine", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        body: JSON.stringify({
+          nomMachine: formData.nomMachine,
+          dataSheet: formData.dataSheet,
+          etat: formData.etat
+        }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
+      // Reset form
+      setFormData({
+        nomMachine: "",
+        dataSheet: "",
+        etat: "Fonctionnelle",
+      });
+      
+      setIsAddModalOpen(false);
+      toast.success("Machine ajoutée avec succès");
+      fetchMachines();
+    } catch (err) {
+      console.error("Failed to add machine:", err);
+      toast.error(`Erreur lors de l'ajout: ${err.message}`);
+    }
   };
 
   // Update existing machine
-  const handleUpdateMachine = () => {
-    setMachines(
-      machines.map((machine) =>
-        machine.id === currentMachine.id ? currentMachine : machine
-      )
-    );
-    setIsEditModalOpen(false);
+  const handleUpdateMachine = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/machine/${currentMachine._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        body: JSON.stringify({
+          nomMachine: currentMachine.nomMachine,
+          datasheet: currentMachine.dataSheet,
+          etat: currentMachine.etat
+        }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
+      setIsEditModalOpen(false);
+      toast.success("Machine mise à jour avec succès");
+      fetchMachines();
+    } catch (err) {
+      console.error("Failed to update machine:", err);
+      toast.error(`Erreur lors de la mise à jour: ${err.message}`);
+    }
   };
 
   // Delete machine
-  const handleDeleteMachine = () => {
-    setMachines(machines.filter((machine) => machine.id !== currentMachine.id));
-    setIsDeleteModalOpen(false);
+  const handleDeleteMachine = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/machine/${currentMachine._id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
+      setIsDeleteModalOpen(false);
+      toast.success("Machine supprimée avec succès");
+      fetchMachines();
+    } catch (err) {
+      console.error("Failed to delete machine:", err);
+      toast.error(`Erreur lors de la suppression: ${err.message}`);
+    }
   };
 
-  // Update machine settings
-  const handleUpdateSettings = () => {
-    setMachines(
-      machines.map((machine) =>
-        machine.id === currentMachine.id ? currentMachine : machine
-      )
-    );
-    setIsSettingsModalOpen(false);
+  // Update machine settings (status)
+  const handleUpdateSettings = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/machine/${currentMachine._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        body: JSON.stringify({
+          nomMachine: currentMachine.nomMachine,
+          datasheet: currentMachine.dataSheet,
+          etat: currentMachine.etat
+        }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`API response error: ${response.status}`);
+      }
+
+      setIsSettingsModalOpen(false);
+      toast.success("Paramètres mis à jour avec succès");
+      fetchMachines();
+    } catch (err) {
+      console.error("Failed to update settings:", err);
+      toast.error(`Erreur lors de la mise à jour des paramètres: ${err.message}`);
+    }
   };
 
   // Get status color
   const getStatusColor = (status) => {
     switch (status) {
-      case "Operational":
+      case "Fonctionnelle":
         return "bg-green-100 text-green-800";
+      case "En panne":
+        return "bg-red-100 text-red-800";
       case "Maintenance":
         return "bg-yellow-100 text-yellow-800";
-      case "Offline":
-        return "bg-red-100 text-red-800";
-      case "Standby":
-        return "bg-blue-100 text-blue-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -169,103 +247,130 @@ const MachineManagement = () => {
         </button>
       </div>
 
-      {/* Machines Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Machine
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Serial Number
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Type
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Location
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {machines.map((machine) => (
-              <tr key={machine.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-gray-200 rounded-md">
-                      <MdSettingsApplications
-                        size={24}
-                        className="text-gray-600"
-                      />
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        {machine.name}
+      {/* Display error message if there is an error */}
+      {error && (
+        <div className="p-4 bg-red-50 text-red-700 border-b border-red-100">
+          <p>{error}</p>
+        </div>
+      )}
+
+      {/* Show loading state */}
+      {loading ? (
+        <div className="p-12 flex justify-center items-center">
+          <div className="text-gray-500">Loading machines...</div>
+        </div>
+      ) : (
+        <>
+          {/* Machines Table */}
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Machine
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Datasheet
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {machines.map((machine) => (
+                  <tr key={machine._id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-gray-200 rounded-md">
+                          <MdSettingsApplications
+                            size={24}
+                            className="text-gray-600"
+                          />
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {machine.nomMachine}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {machine.serialNumber}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {machine.type}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
-                      machine.status
-                    )}`}
-                  >
-                    {machine.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {machine.location}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <div className="flex space-x-2">
-                    <button
-                      className="text-gray-600 hover:text-blue-900"
-                      onClick={() => {
-                        setCurrentMachine(machine);
-                        setIsEditModalOpen(true);
-                      }}
-                    >
-                      <MdEdit size={20} />
-                    </button>
-                    <button
-                      className="text-red-600 hover:text-red-900"
-                      onClick={() => {
-                        setCurrentMachine(machine);
-                        setIsDeleteModalOpen(true);
-                      }}
-                    >
-                      <MdDeleteForever size={20} />
-                    </button>
-                    <button
-                      className="text-green-600 hover:text-green-900"
-                      onClick={() => {
-                        setCurrentMachine(machine);
-                        setIsSettingsModalOpen(true);
-                      }}
-                    >
-                      <MdSettingsApplications size={20} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {machine.dataSheet}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
+                          machine.etat
+                        )}`}
+                      >
+                        {machine.etat}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <div className="flex space-x-2">
+                        <button
+                          className="text-gray-600 hover:text-blue-900"
+                          onClick={() => {
+                            setCurrentMachine(machine);
+                            setIsEditModalOpen(true);
+                          }}
+                        >
+                          <MdEdit size={20} />
+                        </button>
+                        <button
+                          className="text-red-600 hover:text-red-900"
+                          onClick={() => {
+                            setCurrentMachine(machine);
+                            setIsDeleteModalOpen(true);
+                          }}
+                        >
+                          <MdDeleteForever size={20} />
+                        </button>
+                        <button
+                          className="text-green-600 hover:text-green-900"
+                          onClick={() => {
+                            setCurrentMachine(machine);
+                            setIsSettingsModalOpen(true);
+                          }}
+                        >
+                          <MdSettingsApplications size={20} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+            <div className="text-sm text-gray-700">
+              Showing page {pagination.page} of {pagination.totalPages || 1}
+            </div>
+            <div className="flex space-x-2">
+              <button
+                className="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50"
+                disabled={pagination.page <= 1}
+                onClick={() => setPagination({...pagination, page: pagination.page - 1})}
+              >
+                Previous
+              </button>
+              <button
+                className="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50"
+                disabled={pagination.page >= pagination.totalPages}
+                onClick={() => setPagination({...pagination, page: pagination.page + 1})}
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Add Machine Modal */}
       {isAddModalOpen && (
@@ -279,8 +384,8 @@ const MachineManagement = () => {
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="nomMachine"
+                  value={formData.nomMachine}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Machine 01"
@@ -288,66 +393,30 @@ const MachineManagement = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Serial Number
+                  Datasheet
                 </label>
                 <input
                   type="text"
-                  name="serialNumber"
-                  value={formData.serialNumber}
+                  name="dataSheet"
+                  value={formData.dataSheet}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="SN-XXX-XXXX"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Machine Type
-                  </label>
-                  <select
-                    name="type"
-                    value={formData.type}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    {machineTypes.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Status
-                  </label>
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    {statuses.map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Location
+                  Status
                 </label>
                 <select
-                  name="location"
-                  value={formData.location}
+                  name="etat"
+                  value={formData.etat}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
-                  {locations.map((location) => (
-                    <option key={location} value={location}>
-                      {location}
+                  {statuses.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
                     </option>
                   ))}
                 </select>
@@ -383,73 +452,37 @@ const MachineManagement = () => {
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  value={currentMachine.name}
+                  name="nomMachine"
+                  value={currentMachine.nomMachine}
                   onChange={handleCurrentMachineChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Serial Number
+                  Datasheet
                 </label>
                 <input
                   type="text"
-                  name="serialNumber"
-                  value={currentMachine.serialNumber}
+                  name="dataSheet"
+                  value={currentMachine.dataSheet}
                   onChange={handleCurrentMachineChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Machine Type
-                  </label>
-                  <select
-                    name="type"
-                    value={currentMachine.type}
-                    onChange={handleCurrentMachineChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    {machineTypes.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Status
-                  </label>
-                  <select
-                    name="status"
-                    value={currentMachine.status}
-                    onChange={handleCurrentMachineChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    {statuses.map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Location
+                  Status
                 </label>
                 <select
-                  name="location"
-                  value={currentMachine.location}
+                  name="etat"
+                  value={currentMachine.etat}
                   onChange={handleCurrentMachineChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
-                  {locations.map((location) => (
-                    <option key={location} value={location}>
-                      {location}
+                  {statuses.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
                     </option>
                   ))}
                 </select>
@@ -480,7 +513,7 @@ const MachineManagement = () => {
             <h3 className="text-lg font-semibold mb-4">Delete Machine</h3>
             <p className="text-gray-700">
               Are you sure you want to delete the machine{" "}
-              <strong>{currentMachine.name}</strong>? This action cannot be
+              <strong>{currentMachine.nomMachine}</strong>? This action cannot be
               undone.
             </p>
             <div className="mt-6 flex justify-end space-x-3">
@@ -520,10 +553,10 @@ const MachineManagement = () => {
                   </div>
                   <div className="ml-2">
                     <div className="text-sm font-medium">
-                      {currentMachine.name}
+                      {currentMachine.nomMachine}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {currentMachine.serialNumber}
+                      {currentMachine.dataSheet}
                     </div>
                   </div>
                 </div>
@@ -533,8 +566,8 @@ const MachineManagement = () => {
                   Status
                 </label>
                 <select
-                  name="status"
-                  value={currentMachine.status}
+                  name="etat"
+                  value={currentMachine.etat}
                   onChange={handleCurrentMachineChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
@@ -546,29 +579,13 @@ const MachineManagement = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Location
-                </label>
-                <select
-                  name="location"
-                  value={currentMachine.location}
-                  onChange={handleCurrentMachineChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                >
-                  {locations.map((location) => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Maintenance Log
                 </label>
                 <textarea
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 h-24"
                   placeholder="Enter maintenance notes here..."
+                  disabled={true}
                 ></textarea>
               </div>
             </div>
@@ -589,6 +606,8 @@ const MachineManagement = () => {
           </div>
         </div>
       )}
+
+      <ToastContainer position="bottom-center" />
     </div>
   );
 };

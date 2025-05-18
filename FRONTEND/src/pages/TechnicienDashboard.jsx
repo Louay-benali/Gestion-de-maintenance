@@ -6,17 +6,22 @@ import StatisticsSection from "../components/StatisticsSection";
 import RevenueCard from "../components/RevenueCard";
 import MachineTable from "../components/MachineTable";
 import UserProfile from "../layout/UserProfile.jsx";
-import Task from "../components/Task.jsx";
+import TechnicienTasks from "../components/TechnicienTasks";
 import Calendar from "../layout/Calender.jsx";
-import InterventionTable from "../components/InterventionTable.jsx";
+import InterventionTech from "../components/InterventionTech.jsx";
+import MaintenanceTable from "../components/MaintenanceTable";
 import CreerRapportIntervention from "../components/CreerRapportIntervention.jsx";
-import { MdInventory } from "react-icons/md";
+import { MdInventory, MdAssignment } from "react-icons/md";
 import { MdDashboard, MdTableChart } from "react-icons/md";
 import { BsCalendarEvent } from "react-icons/bs";
 import { FiUser } from "react-icons/fi";
-import { AiOutlineSchedule } from "react-icons/ai";
 import { TbForms } from "react-icons/tb";
+import { IoDocumentText } from "react-icons/io5";
 import DemanderPieces from "../components/DemanderPieces.jsx";
+import PanneTable from "../components/PanneTable.jsx";
+import PiecesStockTable from "../components/PiecesStockTable.jsx";
+import DemandePieceTech from "../components/DemandePieceTech.jsx";
+import DeclarePanneForm from "../components/DeclarePanneForm.jsx";
 
 const TechnicienDashboard = () => {
   // State for tracking which page is selected
@@ -38,8 +43,9 @@ const TechnicienDashboard = () => {
       icon: <FiUser size={24} />,
       label: "UserProfile",
     },
+    { label: "Déclarer Panne", icon: <IoDocumentText size={24} /> },
     {
-      icon: <AiOutlineSchedule size={24} />,
+      icon: <MdAssignment size={24} />,
       label: "Task",
     },
     {
@@ -61,6 +67,22 @@ const TechnicienDashboard = () => {
     {
       icon: <MdTableChart size={24} />,
       label: "Intervention Table",
+    },
+    {
+      icon: <MdTableChart size={24} />,
+      label: "Maintenance Table",
+    },
+    {
+      icon: <MdTableChart size={24} />,
+      label: "Panne Table",
+    },
+    {
+      icon: <MdTableChart size={24} />,
+      label: "Stock Table",
+    },
+    {
+      icon: <MdTableChart size={24} />,
+      label: "Demandes Table",
     },
   ];
 
@@ -93,15 +115,25 @@ const TechnicienDashboard = () => {
       case "Machine Table":
         return <MachineTable />;
       case "Intervention Table":
-        return <InterventionTable />;
+        return <InterventionTech />;
+      case "Maintenance Table":
+        return <MaintenanceTable />;
       case "Creer Rapport":
         return <CreerRapportIntervention />;
       case "Task":
-        return <Task />;
+        return <TechnicienTasks />;
       case "Calendar":
         return <Calendar />;
       case "Demande Pièces":
         return <DemanderPieces />;
+      case "Panne Table":
+        return <PanneTable />;
+      case "Stock Table":
+        return <PiecesStockTable />;
+      case "Demandes Table":
+        return <DemandePieceTech />;
+      case "Déclarer Panne":
+        return <DeclarePanneForm />;
       case "Chat":
         return <div>Chat Component</div>; // Placeholder for Chat
       default:

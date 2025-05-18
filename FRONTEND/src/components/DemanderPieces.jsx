@@ -1,437 +1,225 @@
-import React, { useState } from "react";
-import { FiPackage, FiCalendar, FiAlertCircle, FiSearch } from "react-icons/fi";
-import { IoCloseOutline } from "react-icons/io5";
+import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { toast, Bounce } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loader from "../components/AuthForm/Loader";
 
-const DemanderPieces = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const DemandePiece = () => {
+  const [loading, setLoading] = useState(false);
+  const [pieces, setPieces] = useState([]);
   const [formData, setFormData] = useState({
-    partName: "",
-    partReference: "",
-    quantity: "",
-    urgency: "normal",
-    neededDate: "",
-    machineId: "",
-    reason: "",
+    description: "",
+    pieces: [{ nomPiece: "", quantite: "" }],
   });
-  const [requests, setRequests] = useState([
-    {
-      id: 1,
-      partName: "Courroie de transmission",
-      partReference: "CT-2023-45B",
-      quantity: 2,
-      urgency: "high",
-      neededDate: "2025-05-10",
-      machineId: "M-2045",
-      status: "pending",
-      requestDate: "2025-04-20",
-    },
-    {
-      id: 2,
-      partName: "Filtre hydraulique",
-      partReference: "FH-389-A2",
-      quantity: 5,
-      urgency: "normal",
-      neededDate: "2025-05-15",
-      machineId: "M-1078",
-      status: "approved",
-      requestDate: "2025-04-18",
-    },
-    {
-      id: 3,
-      partName: "Joint d'étanchéité",
-      partReference: "JE-567-C",
-      quantity: 10,
-      urgency: "low",
-      neededDate: "2025-05-30",
-      machineId: "M-3092",
-      status: "delivered",
-      requestDate: "2025-04-10",
-    },
-  ]);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newRequest = {
-      id: requests.length + 1,
-      ...formData,
-      status: "pending",
-      requestDate: new Date().toISOString().split("T")[0],
+  
+  // Charger la liste des pièces au chargement du composant
+  useEffect(() => {
+    const fetchPieces = async () => {
+      try {
+        const token = Cookies.get("accessToken");
+        
+        // Récupérer les pièces
+        const response = await axios.get(
+          "http://localhost:3001/piece",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            withCredentials: true
+          }
+        );
+        
+        setPieces(response.data.results || []);
+      } catch (error) {
+        console.error("Erreur lors du chargement des pièces:", error);
+        toast.error("Impossible de charger la liste des pièces", {
+          position: "bottom-center",
+          autoClose: 3000,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
     };
-    setRequests([...requests, newRequest]);
-    setFormData({
-      partName: "",
-      partReference: "",
-      quantity: "",
-      urgency: "normal",
-      neededDate: "",
-      machineId: "",
-      reason: "",
-    });
-    setIsModalOpen(false);
+
+    fetchPieces();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const getStatusBadgeClass = (status) => {
-    switch (status) {
-      case "pending":
-        return "bg-yellow-100 text-yellow-800";
-      case "approved":
-        return "bg-blue-100 text-blue-800";
-      case "delivered":
-        return "bg-green-100 text-green-800";
-      case "rejected":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
+  const handlePieceChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedPieces = [...formData.pieces];
+    updatedPieces[index][name] = value;
+    setFormData((prev) => ({ ...prev, pieces: updatedPieces }));
+  };
+
+  const addPiece = () => {
+    setFormData((prev) => ({
+      ...prev,
+      pieces: [...prev.pieces, { nomPiece: "", quantite: "" }],
+    }));
+  };
+
+  const removePiece = (index) => {
+    const updatedPieces = formData.pieces.filter((_, i) => i !== index);
+    setFormData((prev) => ({ ...prev, pieces: updatedPieces }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    if (!formData.description || formData.pieces.length === 0) {
+      toast.error("La description et les pièces sont requises", {
+        position: "bottom-center",
+        autoClose: 2000,
+        theme: "light",
+        transition: Bounce,
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await axios.post(
+        "http://localhost:3001/demande",
+        {
+          description: formData.description,
+          pieces: formData.pieces.map((p) => ({
+            nomPiece: p.nomPiece,
+            quantite: parseInt(p.quantite),
+          })),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      toast.success("Demande créée avec succès", {
+        position: "bottom-center",
+        autoClose: 2000,
+        theme: "light",
+        transition: Bounce,
+      });
+
+      // Reset form
+      setFormData({
+        description: "",
+        pieces: [{ nomPiece: "", quantite: "" }],
+      });
+    } catch (error) {
+      console.error("Erreur détaillée:", error.response || error);
+      const msg =
+        error.response?.data?.message || "Erreur de connexion au serveur";
+
+      toast.error(`Erreur : ${msg}`, {
+        position: "bottom-center",
+        autoClose: 2000,
+        theme: "light",
+        transition: Bounce,
+      });
+    } finally {
+      setLoading(false);
     }
   };
-
-  const getUrgencyBadgeClass = (urgency) => {
-    switch (urgency) {
-      case "high":
-        return "bg-red-100 text-red-800";
-      case "normal":
-        return "bg-blue-100 text-blue-800";
-      case "low":
-        return "bg-green-100 text-green-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  const filteredRequests = requests.filter(
-    (request) =>
-      request.partName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.partReference.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.machineId.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          Demande de Pièces
+    <>
+      {loading && <Loader />}
+      <div className="max-w-4xl mx-auto border border-gray-300 p-10 bg-white rounded-3xl">
+        <h1 className="pb-6 text-2xl font-bold text-gray-700">
+          Créer une Demande de Pièces
         </h1>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center gap-2"
-        >
-          <FiPackage />
-          Nouvelle Demande
-        </button>
-      </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              name="description"
+              rows="4"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Détaillez votre demande..."
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+              required
+            />
+          </div>
 
-      {/* Search bar */}
-      <div className="mb-6 relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <FiSearch className="text-gray-400" />
-        </div>
-        <input
-          type="text"
-          className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Rechercher une pièce, référence ou machine..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
-      {/* Requests table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Pièce
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Machine
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Quantité
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Urgence
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Date Nécessaire
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Statut
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {filteredRequests.map((request) => (
-              <tr key={request.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex flex-col">
-                    <div className="text-sm font-medium text-gray-900">
-                      {request.partName}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {request.partReference}
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {request.machineId}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {request.quantity}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getUrgencyBadgeClass(
-                      request.urgency
-                    )}`}
-                  >
-                    {request.urgency === "high"
-                      ? "Urgente"
-                      : request.urgency === "normal"
-                      ? "Normale"
-                      : "Basse"}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(request.neededDate).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(
-                      request.status
-                    )}`}
-                  >
-                    {request.status === "pending"
-                      ? "En attente"
-                      : request.status === "approved"
-                      ? "Approuvée"
-                      : request.status === "delivered"
-                      ? "Livrée"
-                      : "Rejetée"}
-                  </span>
-                </td>
-              </tr>
-            ))}
-            {filteredRequests.length === 0 && (
-              <tr>
-                <td
-                  colSpan="6"
-                  className="px-6 py-4 text-center text-sm text-gray-500"
+          <div>
+            <label className="block mb-4 text-sm font-medium text-gray-700">
+              Pièces demandées
+            </label>
+            {formData.pieces.map((pieceItem, index) => (
+              <div key={index} className="flex items-center gap-4 mb-3">
+                <select
+                  name="nomPiece"
+                  value={pieceItem.nomPiece}
+                  onChange={(e) => handlePieceChange(index, e)}
+                  className="flex-1 h-10 px-3 border border-gray-300 rounded-md text-sm"
+                  required
                 >
-                  Aucune demande trouvée
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Modal for new request */}
-      {isModalOpen && (
-        <>
-          {/* Backdrop avec effet de flou */}
-          <div className="fixed inset-0 backdrop-blur-sm bg-white/30 z-40"></div>
-
-          {/* Modal content */}
-          <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md pointer-events-auto">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">
-                  Nouvelle Demande de Pièce
-                </h2>
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <IoCloseOutline />
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Nom de la Pièce
-                  </label>
-                  <input
-                    type="text"
-                    name="partName"
-                    value={formData.partName}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Référence
-                  </label>
-                  <input
-                    type="text"
-                    name="partReference"
-                    value={formData.partReference}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Quantité
-                    </label>
-                    <input
-                      type="number"
-                      name="quantity"
-                      value={formData.quantity}
-                      onChange={handleInputChange}
-                      min="1"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-700 font-medium mb-2">
-                      ID Machine
-                    </label>
-                    <input
-                      type="text"
-                      name="machineId"
-                      value={formData.machineId}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Urgence
-                  </label>
-                  <div className="flex gap-4">
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="urgency"
-                        value="low"
-                        checked={formData.urgency === "low"}
-                        onChange={handleInputChange}
-                        className="mr-2"
-                      />
-                      Basse
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="urgency"
-                        value="normal"
-                        checked={formData.urgency === "normal"}
-                        onChange={handleInputChange}
-                        className="mr-2"
-                      />
-                      Normale
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="urgency"
-                        value="high"
-                        checked={formData.urgency === "high"}
-                        onChange={handleInputChange}
-                        className="mr-2"
-                      />
-                      <span className="flex items-center gap-1">
-                        Urgente
-                        <FiAlertCircle className="text-red-500" />
-                      </span>
-                    </label>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    <div className="flex items-center gap-2">
-                      <FiCalendar />
-                      Date Nécessaire
-                    </div>
-                  </label>
-                  <input
-                    type="date"
-                    name="neededDate"
-                    value={formData.neededDate}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Raison / Commentaire
-                  </label>
-                  <textarea
-                    name="reason"
-                    value={formData.reason}
-                    onChange={handleInputChange}
-                    rows="3"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  ></textarea>
-                </div>
-
-                <div className="flex justify-end gap-2 mt-6">
+                  <option value="">Sélectionner une pièce</option>
+                  {pieces.map((p) => (
+                    <option key={p._id} value={p.nomPiece}>
+                      {p.nomPiece} (Qté disponible: {p.quantite})
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="number"
+                  name="quantite"
+                  min={1}
+                  value={pieceItem.quantite}
+                  onChange={(e) => handlePieceChange(index, e)}
+                  placeholder="Quantité"
+                  className="w-24 h-10 px-3 border border-gray-300 rounded-md text-sm"
+                  required
+                />
+                {index > 0 && (
                   <button
                     type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                    onClick={() => removePiece(index)}
+                    className="text-red-600 hover:text-red-800 text-sm"
                   >
-                    Annuler
+                    Supprimer
                   </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                  >
-                    Soumettre la Demande
-                  </button>
-                </div>
-              </form>
-            </div>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addPiece}
+              className="text-blue-600 hover:underline text-sm"
+            >
+              + Ajouter une pièce
+            </button>
           </div>
-        </>
-      )}
-    </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Envoyer la demande
+          </button>
+        </form>
+        <ToastContainer/>
+      </div>
+    </>
   );
 };
 
-export default DemanderPieces;
+export default DemandePiece;

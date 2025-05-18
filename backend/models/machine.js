@@ -6,7 +6,7 @@ const machineSchema = new mongoose.Schema({
     dataSheet : {type: String , required: true},
     etat: {
       type: String,
-      enum: [MachineEnum.fonctionelle, MachineEnum.enpanne, MachineEnum.maintenance],
+      enum: [MachineEnum.Fonctionelle, MachineEnum.Enpanne, MachineEnum.Maintenance],
       required: true,
     },
   });

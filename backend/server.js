@@ -14,6 +14,8 @@ import pieceRoutes from "./routes/piece.js";
 import utilisateurRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
 import demandeRoutes from "./routes/demande.js";
+import tacheRoutes from "./routes/Tache.js";
+import maintenanceRoutes from "./routes/maintenance.js";
 
 dotenv.config();
 
@@ -58,6 +60,8 @@ app.use("/machine", machineRoutes);
 app.use("/intervention", interventionRoutes);
 app.use("/commande", commandeRoutes);
 app.use("/demande", demandeRoutes);
+app.use("/tache", tacheRoutes);
+app.use("/maintenance", maintenanceRoutes);
 
 app.use(errorHandler);
 

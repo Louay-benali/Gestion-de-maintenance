@@ -5,10 +5,11 @@ import QuickStats from "../components/QuickStats";
 import StatisticsSection from "../components/StatisticsSection";
 import CommandeTable from "../components/CommandeTable";
 import UserProfile from "../layout/UserProfile.jsx";
-import StockManager from "../components/StockManager.jsx";
-import DemandePiecesTable from "../components/DemandePiecesTable.jsx";
+import DemandesValRejTable from "../components/DemandesValRejTable.jsx";
 import PasserCommandeForm from "../components/PasserCommandeForm.jsx";
 import RevenueCard from "../components/RevenueCard.jsx";
+import StockManagement from "../components/StockManagement.jsx";
+import PieceManagement from "../components/PiecesManagement.jsx";
 
 // Importation des icônes nécessaires
 import {
@@ -17,10 +18,9 @@ import {
   MdTableChart,
   MdInventory,
   MdShoppingCart,
-  MdAssignment,
+  MdCheckCircle,
   MdAssessment,
 } from "react-icons/md";
-import StockTable from "../components/StockTable.jsx";
 
 const MagasinierDashboard = () => {
   // État pour suivre quelle page est sélectionnée
@@ -34,17 +34,13 @@ const MagasinierDashboard = () => {
     { label: "Dashboard", icon: <MdDashboard size={24} /> },
     { label: "Gérer Stock", icon: <MdInventory size={24} /> },
     { label: "Commandes", icon: <MdShoppingCart size={24} /> },
-    { label: "Demandes de Pièces", icon: <MdAssignment size={24} /> },
+    { label: "Valider demandes", icon: <MdCheckCircle size={24} /> },
     { label: "Rapports", icon: <MdAssessment size={24} /> },
     { label: "User Profile", icon: <MdPerson size={24} /> },
   ];
 
   // Définition des éléments du menu de table
   const tableMenuItems = [
-    {
-      icon: <MdTableChart size={24} />,
-      label: "Stock Table",
-    },
     {
       icon: <MdTableChart size={24} />,
       label: "Commandes Table",
@@ -70,15 +66,15 @@ const MagasinierDashboard = () => {
         );
 
       case "Gérer Stock":
-        return <StockManager />;
+        return <PieceManagement />;
       case "Commandes":
         return <PasserCommandeForm />;
       case "Commandes Table":
         return <CommandeTable />;
-      case "Demandes de Pièces":
-        return <DemandePiecesTable />;
-      case "Stock Table":
-        return <StockTable />;
+      case "Valider demandes":
+        return <DemandesValRejTable />;
+      case "Pièces Table":
+        return <PieceManagement />;
       case "User Profile":
         return <UserProfile />;
       default:

@@ -63,6 +63,22 @@ const SignUpForm = ({ data, setData, onSubmit }) => {
         className="bg-gray-100 border-none py-2 px-4 my-1 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-[#3b80aa]"
       />
 
+      <input
+        type="tel"
+        placeholder="Téléphone"
+        value={data.telephone}
+        onChange={(e) => setData({ ...data, telephone: e.target.value })}
+        className="bg-gray-100 border-none py-2 px-4 my-1 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-[#3b80aa]"
+      />
+
+      <input
+        type="text"
+        placeholder="Adresse"
+        value={data.adresse}
+        onChange={(e) => setData({ ...data, adresse: e.target.value })}
+        className="bg-gray-100 border-none py-2 px-4 my-1 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-[#3b80aa]"
+      />
+
       <button
         type="submit"
         className="rounded-full border border-[#3b80aa] bg-[#3b80aa] text-white text-xs font-bold py-3 px-12 uppercase tracking-wider mt-4 hover:bg-[#35729a] active:scale-95 transition duration-100"

@@ -42,6 +42,8 @@ export const AuthProvider = ({ children }) => {
                 nom: userData.nom || '',
                 prenom: userData.prenom || '',
                 email: userData.email || '',
+                telephone: userData.telephone || '',
+                adresse: userData.adresse || '',
                 role: userData.role || ''
               });
             }

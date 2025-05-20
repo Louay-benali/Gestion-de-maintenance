@@ -93,9 +93,9 @@ const Sidebar = ({
     <>
       <aside
         ref={sidebarRef}
-        className={`sticky top-0 ${
-          isCollapsed && !sidebarToggle ? "w-22" : "w-72"
-        } bg-white border-r border-gray-200 flex flex-col overflow-y-auto font-style transition-all duration-300`}
+        className={`fixed md:sticky top-0 ${
+          isCollapsed && !sidebarToggle ? "w-16 md:w-22" : "w-64 md:w-72"
+        } h-screen bg-white border-r border-gray-200 flex flex-col overflow-y-auto font-style transition-all duration-300 z-20`}
         onMouseEnter={() => {
           if (isCollapsed) setSidebarToggle(true);
         }}

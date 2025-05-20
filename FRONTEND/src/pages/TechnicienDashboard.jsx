@@ -78,7 +78,7 @@ const TechnicienDashboard = () => {
     },
     {
       icon: <MdTableChart size={24} />,
-      label: "Stock Table",
+      label: "Pièces Table",
     },
     {
       icon: <MdTableChart size={24} />,
@@ -128,7 +128,7 @@ const TechnicienDashboard = () => {
         return <DemanderPieces />;
       case "Panne Table":
         return <PanneTable />;
-      case "Stock Table":
+      case "Pièces Table":
         return <PiecesStockTable />;
       case "Demandes Table":
         return <DemandePieceTech />;

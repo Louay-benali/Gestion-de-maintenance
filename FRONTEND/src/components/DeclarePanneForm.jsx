@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { toast, Bounce } from "react-toastify";
 import { ToastContainer } from "react-toastify";
@@ -10,14 +10,75 @@ import axios from "axios";
 const DeclarePanneForm = () => {
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+  const [responsables, setResponsables] = useState([]);
+  const [machines, setMachines] = useState([]);
   const [panneData, setState] = useState({
-    nomMachine: "",
-    responsableNom: "",
+    machine: "", // Changé de nomMachine à machine pour l'ID de la machine
+    responsable: "", // Changé de responsableNom à responsable pour l'ID du responsable
     description: "",
     dateDeclaration: new Date().toISOString().split('T')[0],
   });
 
+  // Charger la liste des responsables au chargement du composant
+  useEffect(() => {
+    const fetchResponsables = async () => {
+      try {
+        const token = Cookies.get("accessToken");
+        
+        // Récupérer les utilisateurs
+        const response = await axios.get(
+          "http://localhost:3001/user",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            withCredentials: true
+          }
+        );
+        
+        // Vérifier la structure de la réponse et extraire les responsables
+        const userData = response.data;
+        if (userData && userData.results && Array.isArray(userData.results)) {
+          // Filtrer pour ne garder que les responsables
+          const responsablesList = userData.results.filter(user => user.role === 'responsable');
+          setResponsables(responsablesList);
+        } else {
+          console.error("Format de réponse inattendu pour les utilisateurs:", userData);
+          setResponsables([]);
+        }
+        
+        // Récupérer les machines
+        const machineResponse = await axios.get(
+          "http://localhost:3001/machine",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            withCredentials: true
+          }
+        );
+        
+        // Vérifier la structure de la réponse et extraire les machines
+        const machineData = machineResponse.data;
+        if (machineData && machineData.results && Array.isArray(machineData.results)) {
+          setMachines(machineData.results);
+        } else {
+          console.error("Format de réponse inattendu pour les machines:", machineData);
+          setMachines([]);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des responsables:", error);
+        toast.error("Impossible de charger la liste des responsables", {
+          position: "bottom-center",
+          autoClose: 3000,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    };
 
+    fetchResponsables();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,29 +89,23 @@ const DeclarePanneForm = () => {
       setValidationErrors(prev => ({ ...prev, [name]: null }));
     }
     
-    // Validate responsable name format
-    if (name === 'responsableNom' && value.trim() !== '') {
-      const nameParts = value.trim().split(' ');
-      if (nameParts.length < 2) {
-        setValidationErrors(prev => ({ 
-          ...prev, 
-          responsableNom: "Format invalide. Utilisez le format 'Nom Prénom'"
-        }));
-      } else {
-        setValidationErrors(prev => ({ ...prev, responsableNom: null }));
-      }
-    }
+    // Nous n'avons plus besoin de valider le format du nom du responsable
+    // car nous utilisons maintenant une liste déroulante
   };
 
   const validateForm = () => {
     const errors = {};
     
-    // Vérifier le format du nom du responsable
-    if (panneData.responsableNom) {
-      const nameParts = panneData.responsableNom.trim().split(' ');
-      if (nameParts.length < 2) {
-        errors.responsableNom = "Format invalide. Utilisez le format 'Nom Prénom'";
-      }
+    if (!panneData.responsable) {
+      errors.responsable = "Veuillez sélectionner un responsable";
+    }
+    
+    if (!panneData.machine) {
+      errors.machine = "Veuillez sélectionner une machine";
+    }
+    
+    if (!panneData.description) {
+      errors.description = "Veuillez fournir une description de la panne";
     }
     
     setValidationErrors(errors);
@@ -96,8 +151,8 @@ const DeclarePanneForm = () => {
   
       // Réinitialiser le formulaire mais conserver la date actuelle
       setState({
-        nomMachine: "",
-        responsableNom: "",
+        machine: "",
+        responsable: "",
         description: "",
         dateDeclaration: new Date().toISOString().split('T')[0],
       });
@@ -131,38 +186,56 @@ const DeclarePanneForm = () => {
                 <label className="mb-1.5 block text-sm font-medium text-gray-700">
                   Machine
                 </label>
-                <input
-                  type="text"
-                  name="nomMachine"
-                  value={panneData.nomMachine}
+                <select
+                  name="machine"
+                  value={panneData.machine}
                   onChange={handleChange}
-                  placeholder="Entrez le nom de la machine"
-                  className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
                   required
-                />
-                {validationErrors.nomMachine && (
+                  className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
+                >
+                  <option value="">Sélectionner une machine</option>
+                  {Array.isArray(machines) && machines.length > 0 ? (
+                    machines.map((machine) => (
+                      <option key={machine._id} value={machine._id}>
+                        {machine.nomMachine}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">Aucune machine disponible</option>
+                  )}
+                </select>
+                {validationErrors.machine && (
                   <div className="mt-1 text-xs text-red-500">
-                    {validationErrors.nomMachine}
+                    {validationErrors.machine}
                   </div>
                 )}
               </div>
 
               <div className="w-full px-2.5 xl:w-1/2">
                 <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Responsable (Nom Prénom)
+                  Responsable
                 </label>
-                <input
-                  type="text"
-                  name="responsableNom"
-                  value={panneData.responsableNom}
+                <select
+                  name="responsable"
+                  value={panneData.responsable}
                   onChange={handleChange}
-                  placeholder="Entrez le nom et prénom du responsable"
-                  className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
                   required
-                />
-                {validationErrors.responsableNom && (
+                  className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
+                >
+                  <option value="">Sélectionner un responsable</option>
+                  {Array.isArray(responsables) && responsables.length > 0 ? (
+                    responsables.map((resp) => (
+                      <option key={resp._id} value={resp._id}>
+                        {resp.nom} {resp.prenom}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">Aucun responsable disponible</option>
+                  )}
+                </select>
+                {validationErrors.responsable && (
                   <div className="mt-1 text-xs text-red-500">
-                    {validationErrors.responsableNom}
+                    {validationErrors.responsable}
                   </div>
                 )}
               </div>

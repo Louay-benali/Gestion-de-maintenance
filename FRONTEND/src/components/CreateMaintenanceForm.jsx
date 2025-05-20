@@ -11,14 +11,14 @@ const CreateMaintenanceForm = () => {
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [machines, setMachines] = useState([]);
+  const [techniciens, setTechniciens] = useState([]);
   const [maintenanceData, setMaintenanceData] = useState({
     titre: "",
     description: "",
     datePlanifiee: "",
-    nomTechnicien: "",
+    technicien: "", // Changé de nomTechnicien à technicien pour l'ID du technicien
     Machine: "",
-    typeMaintenance: "Préventive",
-    observations: ""
+    typeMaintenance: "Préventive"
   });
 
   // Charger la liste des machines au chargement du composant
@@ -38,7 +38,36 @@ const CreateMaintenanceForm = () => {
           }
         );
         
-        setMachines(machineResponse.data.results);
+        // Vérifier la structure de la réponse et extraire les machines
+        const machineData = machineResponse.data;
+        if (machineData && machineData.results && Array.isArray(machineData.results)) {
+          setMachines(machineData.results);
+        } else {
+          console.error("Format de réponse inattendu pour les machines:", machineData);
+          setMachines([]);
+        }
+
+        // Récupérer les techniciens
+        const technicienResponse = await axios.get(
+          "http://localhost:3001/user",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            withCredentials: true
+          }
+        );
+        
+        // Vérifier la structure de la réponse et extraire les techniciens
+        const techData = technicienResponse.data;
+        if (techData && techData.results && Array.isArray(techData.results)) {
+          // Filtrer pour ne garder que les techniciens
+          const techniciensList = techData.results.filter(user => user.role === 'technicien');
+          setTechniciens(techniciensList);
+        } else {
+          console.error("Format de réponse inattendu pour les techniciens:", techData);
+          setTechniciens([]);
+        }
       } catch (error) {
         console.error("Erreur lors du chargement des données:", error);
         toast.error("Impossible de charger les données nécessaires", {
@@ -61,30 +90,21 @@ const CreateMaintenanceForm = () => {
     if (validationErrors[name]) {
       setValidationErrors(prev => ({ ...prev, [name]: null }));
     }
-    
-    // Validate nomTechnicien format
-    if (name === 'nomTechnicien' && value.trim() !== '') {
-      const nameParts = value.trim().split(' ');
-      if (nameParts.length < 2) {
-        setValidationErrors(prev => ({ 
-          ...prev, 
-          nomTechnicien: "Format invalide. Utilisez le format 'Nom Prénom'"
-        }));
-      } else {
-        setValidationErrors(prev => ({ ...prev, nomTechnicien: null }));
-      }
-    }
   };
   
   const validateForm = () => {
     const errors = {};
     
-    // Vérifier le format du nom du technicien
-    if (maintenanceData.nomTechnicien) {
-      const nameParts = maintenanceData.nomTechnicien.trim().split(' ');
-      if (nameParts.length < 2) {
-        errors.nomTechnicien = "Format invalide. Utilisez le format 'Nom Prénom'";
-      }
+    if (!maintenanceData.technicien) {
+      errors.technicien = "Veuillez sélectionner un technicien";
+    }
+    
+    if (!maintenanceData.Machine) {
+      errors.Machine = "Veuillez sélectionner une machine";
+    }
+    
+    if (!maintenanceData.datePlanifiee) {
+      errors.datePlanifiee = "Veuillez définir une date planifiée";
     }
     
     setValidationErrors(errors);
@@ -108,51 +128,41 @@ const CreateMaintenanceForm = () => {
     setLoading(true);
     
     try {
-      const token = Cookies.get("accessToken");
-      
-      // Conversion des formats pour l'API
-      const formData = {
-        ...maintenanceData,
-        Machine: [maintenanceData.Machine], // Convertir en tableau pour l'API
-        datePlanifiee: new Date(maintenanceData.datePlanifiee).toISOString()
-      };
-      
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:3001/maintenance",
-        formData,
+        maintenanceData,
         {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
           },
-          withCredentials: true
+          withCredentials: true,
         }
       );
-      
-      toast.success("Maintenance planifiée avec succès!", {
+  
+      console.log("Maintenance créée avec succès :", response.data);
+  
+      toast.success("Maintenance planifiée avec succès !", {
         position: "bottom-center",
-        autoClose: 3000,
+        autoClose: 2000,
         theme: "light",
         transition: Bounce,
       });
-      
+  
       // Réinitialiser le formulaire
       setMaintenanceData({
         titre: "",
         description: "",
         datePlanifiee: "",
-        nomTechnicien: "",
+        technicien: "",
         Machine: "",
         typeMaintenance: "Préventive",
-        observations: ""
       });
       
       // Réinitialiser les erreurs de validation
       setValidationErrors({});
-      
-    } catch (error) {
-      console.error("Erreur lors de la création de la maintenance:", error);
-      const errorMsg = error.response?.data?.message || "Erreur lors de la création";
-      toast.error(`Erreur: ${errorMsg}`, {
+    } catch (err) {
+      const msg = err.response?.data.message || "Erreur serveur";
+      toast.error(`Erreur : ${msg}`, {
         position: "bottom-center",
         autoClose: 3000,
         theme: "light",
@@ -166,156 +176,163 @@ const CreateMaintenanceForm = () => {
   return (
     <>
       {loading && <Loader />}
-      <div className="max-w-3xl mx-auto border border-gray-300 p-10 bg-white rounded-3xl">
-        <h1 className="pb-6 text-2xl font-bold text-gray-700 font-style">
-          Planifier une maintenance
-        </h1>
-        <div className="p-5 space-y-6 border-t bg-white dark:border-gray-300 sm:p-6">
-          <form onSubmit={handleSubmit}>
-            <div className="-mx-2.5 flex flex-wrap gap-y-5">
-              {/* Titre */}
-              <div className="w-full px-2.5">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Titre
-                </label>
-                <input
-                  type="text"
-                  name="titre"
-                  value={maintenanceData.titre}
-                  onChange={handleChange}
-                  required
-                  placeholder="Titre de la maintenance"
-                  className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-400 placeholder:text-gray-300 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-                />
-              </div>
+      <div className="w-full max-w-3xl mx-auto px-3 sm:px-0">
+        <div className="border border-gray-300 p-4 sm:p-6 md:p-10 bg-white rounded-xl sm:rounded-2xl md:rounded-3xl shadow-sm">
+          <h1 className="pb-4 sm:pb-6 text-xl sm:text-2xl font-bold text-gray-700 font-style">
+            Planifier une Maintenance
+          </h1>
+          <div className="p-3 sm:p-5 space-y-4 sm:space-y-6 border-t bg-white dark:border-gray-300">
+            <form onSubmit={handleSubmit}>
+              <div className="-mx-2.5 flex flex-wrap gap-y-3 sm:gap-y-5">
+                <div className="w-full px-2.5">
+                  <label className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
+                    Titre
+                  </label>
+                  <input
+                    type="text"
+                    name="titre"
+                    value={maintenanceData.titre}
+                    onChange={handleChange}
+                    placeholder="Titre de la maintenance"
+                    className="h-10 sm:h-11 w-full rounded-md sm:rounded-lg border border-gray-300 bg-transparent px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 focus:border-blue-500 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/10"
+                    required
+                  />
+                </div>
 
-              {/* Champ texte pour le technicien */}
-              <div className="w-full px-2.5 xl:w-1/2">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Technicien (Nom Prénom)
-                </label>
-                <input
-                  type="text"
-                  name="nomTechnicien"
-                  value={maintenanceData.nomTechnicien}
-                  onChange={handleChange}
-                  placeholder="Entrez le nom et prénom du technicien"
-                  className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-                  required
-                />
-                {validationErrors.nomTechnicien && (
-                  <div className="mt-1 text-xs text-red-500">
-                    {validationErrors.nomTechnicien}
-                  </div>
-                )}
-              </div>
+                <div className="w-full px-2.5 sm:w-1/2">
+                  <label className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
+                    Technicien
+                  </label>
+                  <select
+                    name="technicien"
+                    value={maintenanceData.technicien}
+                    onChange={handleChange}
+                    required
+                    className="h-10 sm:h-11 w-full rounded-md sm:rounded-lg border border-gray-300 bg-transparent px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 focus:border-blue-500 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/10"
+                  >
+                    <option value="">Sélectionner un technicien</option>
+                    {Array.isArray(techniciens) && techniciens.length > 0 ? (
+                      techniciens.map((tech) => (
+                        <option key={tech._id} value={tech._id}>
+                          {tech.nom} {tech.prenom}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">Aucun technicien disponible</option>
+                    )}
+                  </select>
+                  {validationErrors.technicien && (
+                    <div className="mt-1 text-xs text-red-500">
+                      {validationErrors.technicien}
+                    </div>
+                  )}
+                </div>
 
-              {/* Sélection de la Machine */}
-              <div className="w-full px-2.5 xl:w-1/2">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Machine
-                </label>
-                <select
-                  name="Machine"
-                  value={maintenanceData.Machine}
-                  onChange={handleChange}
-                  required
-                  className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-                >
-                  <option value="">Sélectionner une machine</option>
-                  {machines.map((machine) => (
-                    <option key={machine._id} value={machine._id}>
-                      {machine.nomMachine}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                <div className="w-full px-2.5 sm:w-1/2">
+                  <label className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
+                    Machine
+                  </label>
+                  <select
+                    name="Machine"
+                    value={maintenanceData.Machine}
+                    onChange={handleChange}
+                    required
+                    className="h-10 sm:h-11 w-full rounded-md sm:rounded-lg border border-gray-300 bg-transparent px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 focus:border-blue-500 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/10"
+                  >
+                    <option value="">Sélectionner une machine</option>
+                    {Array.isArray(machines) && machines.length > 0 ? (
+                      machines.map((machine) => (
+                        <option key={machine._id} value={machine._id}>
+                          {machine.nomMachine}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">Aucune machine disponible</option>
+                    )}
+                  </select>
+                  {validationErrors.Machine && (
+                    <div className="mt-1 text-xs text-red-500">
+                      {validationErrors.Machine}
+                    </div>
+                  )}
+                </div>
 
-              {/* Type de maintenance */}
-              <div className="w-full px-2.5 xl:w-1/2">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Type de maintenance
-                </label>
-                <select
-                  name="typeMaintenance"
-                  value={maintenanceData.typeMaintenance}
-                  onChange={handleChange}
-                  required
-                  className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-                >
-                  <option value="Préventive">Préventive</option>
-                  <option value="Corrective">Corrective</option>
-                  <option value="Prédictive">Prédictive</option>
-                </select>
-              </div>
+                {/* Type de maintenance */}
+                <div className="w-full px-2.5 sm:w-1/2">
+                  <label className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
+                    Type de maintenance
+                  </label>
+                  <select
+                    name="typeMaintenance"
+                    value={maintenanceData.typeMaintenance}
+                    onChange={handleChange}
+                    required
+                    className="h-10 sm:h-11 w-full rounded-md sm:rounded-lg border border-gray-300 bg-transparent px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 focus:border-blue-500 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/10"
+                  >
+                    <option value="Préventive">Préventive</option>
+                    <option value="Corrective">Corrective</option>
+                    <option value="Prédictive">Prédictive</option>
+                  </select>
+                </div>
 
-              {/* Date planifiée */}
-              <div className="w-full px-2.5 xl:w-1/2">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Date planifiée
-                </label>
-                <input
-                  type="datetime-local"
-                  name="datePlanifiee"
-                  value={maintenanceData.datePlanifiee}
-                  onChange={handleChange}
-                  required
-                  className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-                />
-              </div>
-              
-              {/* Description */}
-              <div className="w-full px-2.5">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Description
-                </label>
-                <textarea
-                  name="description"
-                  rows="5"
-                  placeholder="Description détaillée de la maintenance à effectuer..."
-                  value={maintenanceData.description}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-400 placeholder:text-gray-300 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-                  style={{ minHeight: "120px" }}
-                />
-              </div>
+                {/* Date planifiée */}
+                <div className="w-full px-2.5 sm:w-1/2">
+                  <label className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
+                    Date planifiée
+                  </label>
+                  <input
+                    type="datetime-local"
+                    name="datePlanifiee"
+                    value={maintenanceData.datePlanifiee}
+                    onChange={handleChange}
+                    required
+                    className="h-10 sm:h-11 w-full rounded-md sm:rounded-lg border border-gray-300 bg-transparent px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 focus:border-blue-500 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/10"
+                  />
+                  {validationErrors.datePlanifiee && (
+                    <div className="mt-1 text-xs text-red-500">
+                      {validationErrors.datePlanifiee}
+                    </div>
+                  )}
+                </div>
+                
+                {/* Description */}
+                <div className="w-full px-2.5">
+                  <label className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
+                    Description
+                  </label>
+                  <textarea
+                    name="description"
+                    rows="4"
+                    placeholder="Description détaillée de la maintenance à effectuer..."
+                    value={maintenanceData.description}
+                    onChange={handleChange}
+                    required
+                    className="w-full rounded-md sm:rounded-lg border border-gray-300 bg-transparent px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/10"
+                    style={{ minHeight: "100px" }}
+                  />
+                </div>
 
-              {/* Observations */}
-              <div className="w-full px-2.5">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Observations
-                </label>
-                <textarea
-                  name="observations"
-                  rows="3"
-                  placeholder="Instructions ou observations supplémentaires (optionnel)..."
-                  value={maintenanceData.observations}
-                  onChange={handleChange}
-                  className="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-400 placeholder:text-gray-300 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-                />
+                {/* Bouton de soumission */}
+                <div className="w-full px-2.5 flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-white rounded-md ${
+                      loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 transition-colors"
+                    }`}
+                  >
+                    {loading ? "Création en cours..." : "Planifier la maintenance"}
+                    {!loading && <MdEngineering size={18} className="hidden sm:block" />}
+                  </button>
+                </div>
               </div>
-
-              {/* Bouton de soumission */}
-              <div className="w-full px-2.5 flex justify-end">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-white rounded-md ${
-                    loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 transition-colors"
-                  }`}
-                >
-                  {loading ? "Création en cours..." : "Planifier la maintenance"}
-                  {!loading && <MdEngineering size={20} />}
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
+          <ToastContainer />
         </div>
-        <ToastContainer />
       </div>
     </>
   );
 };
 
-export default CreateMaintenanceForm; 
+export default CreateMaintenanceForm;

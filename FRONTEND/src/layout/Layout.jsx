@@ -55,18 +55,22 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar
-        setSelectedPage={setSelectedPage}
-        menuItems={getMenuItems()}
-        isCollapsed={isSidebarCollapsed}
-      />
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
+      {/* Sidebar - hidden on mobile by default, shown on medium screens and up */}
+      <div className={`${isSidebarCollapsed ? 'hidden md:block' : 'w-full md:w-auto'} transition-all duration-300`}>
+        <Sidebar
+          setSelectedPage={setSelectedPage}
+          menuItems={getMenuItems()}
+          isCollapsed={isSidebarCollapsed}
+        />
+      </div>
 
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen w-full">
         <NavBarDashboard
           onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          isSidebarCollapsed={isSidebarCollapsed}
         />
-        <main className="flex-1 p-4 sm:p-6 overflow-auto">
+        <main className="flex-1 p-3 sm:p-4 md:p-6 overflow-auto">
           {children}
         </main>
       </div>
@@ -74,4 +78,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout; 
+export default Layout;

@@ -16,7 +16,7 @@ import {
   MdDashboard,
   MdPerson,
   MdTableChart,
-  MdAssignment,
+  MdInventory,
 } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
 import { BsCalendarEvent } from "react-icons/bs";

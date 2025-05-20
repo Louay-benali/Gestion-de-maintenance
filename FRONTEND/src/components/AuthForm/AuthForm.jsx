@@ -16,6 +16,8 @@ const AuthForm = () => {
     prenom: "",
     email: "",
     motDePasse: "",
+    telephone: "",
+    adresse: "",
     role: "operateur",
   });
   const [signInData, setSignInData] = useState({

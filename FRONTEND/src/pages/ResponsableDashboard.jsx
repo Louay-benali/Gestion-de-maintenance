@@ -4,7 +4,6 @@ import Sidebar from "../components/SideBar";
 import QuickStats from "../components/QuickStats";
 import StatisticsSection from "../components/StatisticsSection";
 import RevenueCard from "../components/RevenueCard";
-import Task from "../components/Task";
 import Calendar from "../layout/Calender.jsx";
 import MachineTable from "../components/MachineTable";
 import InterventionTable from "../components/InterventionTable";
@@ -12,13 +11,12 @@ import MaintenanceTable from "../components/MaintenanceTable";
 import UserProfile from "../layout/UserProfile.jsx";
 import RapportGeneral from "../components/RapportGeneral";
 import DemandesValRejTable from "../components/DemandesValRejTable.jsx";
-import AssignTech from "../components/AssignTech.jsx";
-import CreateTaskForm from "../components/CreateTaskForm";
-import CreateMaintenanceForm from "../components/CreateMaintenanceForm";
+import CreateTaskForm from "../components/CreateTaskForm.jsx";
+import CreateMaintenanceForm from "../components/CreateMaintenanceForm.jsx";
+import CreateInterventionForm from "../components/CreateInterventionForm.jsx";
 
 import {
   MdDashboard,
-  MdAssignment,
   MdTableChart,
   MdPerson,
   MdAssessment,
@@ -38,11 +36,10 @@ const ResponsableDashboard = () => {
   const menuItems = [
     { label: "Dashboard", icon: <MdDashboard size={24} /> },
     { label: "Calendar", icon: <BsCalendarEvent size={24} /> },
-    { label: "Task", icon: <MdAssignment size={24} /> },
     { label: "Créer Tâche", icon: <MdAddTask size={24} /> },
     { label: "Planifier Maintenance", icon: <MdEngineering size={24} /> },
+    { label: "Créer Intervention", icon: <MdBuild size={24} /> },
     { label: "Valider demandes", icon: <MdCheckCircle size={24} /> },
-    { label: "Assigner Technicien", icon: <MdAssignmentInd size={24} /> },
     { label: "Rapport Général", icon: <MdAssessment size={24} /> },
     { label: "User Profile", icon: <MdPerson size={24} /> },
   ];
@@ -77,12 +74,12 @@ const ResponsableDashboard = () => {
             </div>
           </div>
         );
-      case "Task":
-        return <Task />;
       case "Créer Tâche":
         return <CreateTaskForm />;
       case "Planifier Maintenance":
         return <CreateMaintenanceForm />;
+      case "Créer Intervention":
+        return <CreateInterventionForm />;
       case "Calendar":
         return <Calendar />;
       case "Machine Table":
@@ -97,8 +94,6 @@ const ResponsableDashboard = () => {
         return <RapportGeneral />;
       case "Valider demandes":
         return <DemandesValRejTable />;
-      case "Assigner Technicien":
-        return <AssignTech />;
       default:
         return <div>Page not found</div>;
     }

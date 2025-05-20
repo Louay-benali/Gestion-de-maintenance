@@ -22,8 +22,7 @@ const CreateTaskForm = () => {
     priorite: "",
     deadline: "",
     interventionLiee: "",
-    pieces: [],
-    observations: ""
+    pieces: []
   });
 
   // Types de tâches prédéfinis
@@ -181,8 +180,7 @@ const CreateTaskForm = () => {
         deadline: taskData.deadline || null,
         // Envoyer l'ID de l'intervention directement sans transformation
         interventionLiee: taskData.interventionLiee && taskData.interventionLiee.trim() !== "" ? taskData.interventionLiee : null,
-        pieces: taskData.pieces || [],
-        observations: taskData.observations || ""
+        pieces: taskData.pieces || []
       };
 
       console.log("Données envoyées au serveur:", formattedData);
@@ -218,8 +216,7 @@ const CreateTaskForm = () => {
         priorite: "",
         deadline: "",
         interventionLiee: "",
-        pieces: [],
-        observations: ""
+        pieces: []
       });
       
       // Réinitialiser les erreurs de validation
@@ -411,19 +408,7 @@ const CreateTaskForm = () => {
                 </div>
               </div>
 
-              <div className="w-full px-2.5">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Observations
-                </label>
-                <textarea
-                  name="observations"
-                  rows="3"
-                  placeholder="Observations supplémentaires..."
-                  value={taskData.observations}
-                  onChange={handleChange}
-                  className="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-400 placeholder:text-gray-300 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-                />
-              </div>
+
 
               <div className="w-full px-2.5 flex justify-end">
                 <button

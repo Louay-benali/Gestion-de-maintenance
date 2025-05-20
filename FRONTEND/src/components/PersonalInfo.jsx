@@ -1,7 +1,7 @@
 import React from "react";
 import { MdOutlineModeEdit } from "react-icons/md";
 
-const PersonalInfo = ({ firstName, lastName, email, phone, bio, onEdit }) => {
+const PersonalInfo = ({ firstName, lastName, email, phone, bio, role, onEdit }) => {
   const Labels = {
     personelInfo: "Personal Information",
     firstName: "First Name",
@@ -9,6 +9,7 @@ const PersonalInfo = ({ firstName, lastName, email, phone, bio, onEdit }) => {
     email: "Email Address",
     phone: "Phone",
     bio: "Biography",
+    role: "Role",
   };
 
   return (
@@ -51,10 +52,19 @@ const PersonalInfo = ({ firstName, lastName, email, phone, bio, onEdit }) => {
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500">
-                {Labels.bio}
+                {Labels.role}
               </p>
-              <p className="text-sm font-medium text-gray-800">{bio}</p>
+              <p className="text-sm font-medium text-gray-800">{role}</p>
             </div>
+
+            {bio && (
+              <div>
+                <p className="mb-2 text-xs leading-normal text-gray-500">
+                  {Labels.bio}
+                </p>
+                <p className="text-sm font-medium text-gray-800">{bio}</p>
+              </div>
+            )}
           </div>
         </div>
 

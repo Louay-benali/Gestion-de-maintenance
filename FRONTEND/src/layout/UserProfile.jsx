@@ -13,15 +13,17 @@ const UserProfile = () => {
     firstName: "",
     lastName: "",
     email: "",
-    phone: "+216 98798711", // Default phone as it might not be in the auth context
+    phone: "",
     bio: "",
+    role: "",
   });
 
   const [addressInfo, setAddressInfo] = useState({
-    PostalCode: "12345",
+    PostalCode: "",
     Country: "Tunisia",
-    City: "Monastir/Werdanine",
-    Id: "#99079",
+    City: "",
+    Id: "",
+    Address: "",
   });
 
   // Update userInfo when user data changes in context
@@ -31,9 +33,20 @@ const UserProfile = () => {
         firstName: user.prenom || "",
         lastName: user.nom || "",
         email: user.email || "",
-        phone: userInfo.phone, // Keep existing phone
-        bio: user.role || "", // Use role as bio for now
+        phone: user.telephone || "",
+        bio: "", // Can be updated later if needed
+        role: user.role || "",
       });
+      
+      // Update address info if address is available
+      if (user.adresse) {
+        setAddressInfo(prev => ({
+          ...prev,
+          City: user.adresse.includes("/") ? user.adresse.split("/")[0] : user.adresse,
+          Address: user.adresse,
+          Id: user.id || "",
+        }));
+      }
     }
   }, [user]);
 
@@ -60,7 +73,7 @@ const UserProfile = () => {
   return (
     <div className="py-2 mb-6 border border-gray-300 rounded-2xl bg-white lg:p-6 font-style">
       <h1 className="py-6 text-xl font-medium">Profile</h1>
-      <Profile Name={userInfo.firstName} City={addressInfo.City} Bio={userInfo.bio} />
+      <Profile Name={`${userInfo.firstName} ${userInfo.lastName}`} City={addressInfo.City} Bio={userInfo.role} />
       <PersonalInfo {...userInfo} onEdit={handleEdit} />
       <Address {...addressInfo} onEdit={handleEdit} />
       {isModalOpen && (

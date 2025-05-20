@@ -1,13 +1,14 @@
 import React from "react";
 import { MdOutlineModeEdit } from "react-icons/md";
 
-const Address = ({ PostalCode, Country, City, Id, onEdit }) => {
+const Address = ({ PostalCode, Country, City, Id, Address, onEdit }) => {
   const Labels = {
     address: "Address",
+    fullAddress: "Full Address",
     country: "Country",
     postalCode: "Postal Code",
     city: "City/State",
-    Id: "TAX ID",
+    Id: "User ID",
   };
 
   return (
@@ -21,23 +22,23 @@ const Address = ({ PostalCode, Country, City, Id, onEdit }) => {
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
             <div>
+              <p className="mb-2 text-xs text-gray-500">{Labels.fullAddress}</p>
+              <p className="text-sm font-medium text-gray-800">{Address || "Non spécifié"}</p>
+            </div>
+
+            <div>
               <p className="mb-2 text-xs text-gray-500">{Labels.country}</p>
               <p className="text-sm font-medium text-gray-800">{Country}</p>
             </div>
 
             <div>
-              <p className="mb-2 text-xs text-gray-500">{Labels.postalCode}</p>
-              <p className="text-sm font-medium text-gray-800">{PostalCode}</p>
-            </div>
-
-            <div>
               <p className="mb-2 text-xs text-gray-500">{Labels.city}</p>
-              <p className="text-sm font-medium text-gray-800">{City}</p>
+              <p className="text-sm font-medium text-gray-800">{City || "Non spécifié"}</p>
             </div>
 
             <div>
               <p className="mb-2 text-xs text-gray-500">{Labels.Id}</p>
-              <p className="text-sm font-medium text-gray-800">{Id}</p>
+              <p className="text-sm font-medium text-gray-800">{Id || "Non spécifié"}</p>
             </div>
           </div>
         </div>

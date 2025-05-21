@@ -9549,3 +9549,750 @@
 [2025-05-18 11:54:59] INFO: GET /auth/profile 304 - 6ms
 [2025-05-18 14:06:11] INFO: GET /auth/profile 200 - 4ms
 [2025-05-18 14:06:11] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 11:55:36] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 11:55:36] INFO: ✅ Connecté à MongoDB
+[2025-05-21 11:55:39] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 11:55:39] INFO: POST /auth/login 200 - 109ms
+[2025-05-21 11:55:43] INFO: GET /user 304 - 14ms
+[2025-05-21 11:55:43] INFO: GET /user 304 - 15ms
+[2025-05-21 11:55:43] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 11:55:43] INFO: GET /machine 304 - 19ms
+[2025-05-21 11:55:44] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 11:55:44] INFO: GET /machine 304 - 10ms
+[2025-05-21 11:55:51] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 11:55:51] INFO: POST /panne 404 - 7ms
+[2025-05-21 11:57:52] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 11:57:52] INFO: POST /panne 404 - 8ms
+[2025-05-21 11:58:12] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 11:58:12] INFO: POST /panne 404 - 7ms
+[2025-05-21 11:58:47] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 11:58:47] INFO: POST /panne 404 - 14ms
+[2025-05-21 12:05:04] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 12:05:04] INFO: ✅ Connecté à MongoDB
+[2025-05-21 12:05:09] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 12:05:09] INFO: POST /auth/login 200 - 110ms
+[2025-05-21 12:05:59] INFO: POST /auth/logout 200 - 8ms
+[2025-05-21 12:06:31] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-05-21 12:06:31] INFO: POST /auth/register 201 - 105ms
+[2025-05-21 12:07:06] INFO: [APPROVAL] Utilisateur approuvé avec succès : louaybenali133@gmail.com
+[2025-05-21 12:07:06] INFO: POST /auth/approve 200 - 9ms
+[2025-05-21 12:07:12] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 12:07:12] INFO: POST /auth/login 200 - 89ms
+[2025-05-21 12:07:31] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:07:31] INFO: GET /machine?page=1&limit=5 200 - 16ms
+[2025-05-21 12:07:31] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:07:31] INFO: GET /machine?page=1&limit=5 304 - 8ms
+[2025-05-21 12:07:35] INFO: GET /user 304 - 8ms
+[2025-05-21 12:07:35] INFO: GET /user 304 - 10ms
+[2025-05-21 12:07:35] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:07:35] INFO: GET /machine 200 - 10ms
+[2025-05-21 12:07:35] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:07:35] INFO: GET /machine 304 - 6ms
+[2025-05-21 12:07:41] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 12:07:41] INFO: POST /panne 404 - 14ms
+[2025-05-21 12:08:01] INFO: GET /auth/profile 200 - 3ms
+[2025-05-21 12:08:01] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 12:08:08] INFO: GET /user 304 - 4ms
+[2025-05-21 12:08:08] INFO: GET /user 304 - 5ms
+[2025-05-21 12:08:08] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:08:08] INFO: GET /machine 304 - 12ms
+[2025-05-21 12:08:08] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:08:08] INFO: GET /machine 304 - 6ms
+[2025-05-21 12:08:13] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 12:08:13] INFO: POST /panne 404 - 13ms
+[2025-05-21 12:09:29] INFO: GET /user 304 - 6ms
+[2025-05-21 12:09:29] INFO: GET /user 304 - 9ms
+[2025-05-21 12:09:29] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:09:29] INFO: GET /machine 304 - 8ms
+[2025-05-21 12:09:29] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:09:29] INFO: GET /machine 304 - 7ms
+[2025-05-21 12:09:35] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 12:09:35] INFO: POST /panne 404 - 11ms
+[2025-05-21 12:10:19] INFO: GET /tache/technicien?page=1&limit=5 304 - 11ms
+[2025-05-21 12:10:19] INFO: GET /tache/technicien?page=1&limit=5 304 - 8ms
+[2025-05-21 12:12:11] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:12:11] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:12:19] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:12:19] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:12:21] INFO: GET /tache/technicien?page=1&limit=5 401 - 2ms
+[2025-05-21 12:12:21] INFO: GET /tache/technicien?page=1&limit=5 401 - 3ms
+[2025-05-21 12:12:40] INFO: POST /auth/logout 200 - 8ms
+[2025-05-21 12:12:42] INFO: GET /auth/google 302 - 2ms
+[2025-05-21 12:13:19] WARN: [LOGIN] Mot de passe incorrect pour l'email: hamedgharbi55@gmail.com
+[2025-05-21 12:13:19] INFO: POST /auth/login 401 - 4ms
+[2025-05-21 12:13:50] INFO: [LOGIN] Connexion réussie: hamedgharbi55@gmail.com
+[2025-05-21 12:13:50] INFO: POST /auth/login 200 - 114ms
+[2025-05-21 12:13:55] INFO: GET /tache/technicien?page=1&limit=5 200 - 29ms
+[2025-05-21 12:13:55] INFO: GET /tache/technicien?page=1&limit=5 304 - 10ms
+[2025-05-21 12:16:51] INFO: GET /user 200 - 5ms
+[2025-05-21 12:16:51] INFO: GET /user 304 - 6ms
+[2025-05-21 12:16:51] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:16:51] INFO: GET /machine 304 - 7ms
+[2025-05-21 12:16:51] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:16:51] INFO: GET /machine 304 - 6ms
+[2025-05-21 12:16:53] INFO: GET /tache/technicien?page=1&limit=5 304 - 10ms
+[2025-05-21 12:16:53] INFO: GET /tache/technicien?page=1&limit=5 304 - 6ms
+[2025-05-21 12:16:56] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:16:56] INFO: GET /piece 304 - 11ms
+[2025-05-21 12:16:56] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:16:56] INFO: GET /piece 304 - 8ms
+[2025-05-21 12:16:57] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:16:57] INFO: GET /piece 304 - 10ms
+[2025-05-21 12:16:57] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:16:57] INFO: GET /piece 304 - 10ms
+[2025-05-21 12:16:59] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:16:59] INFO: GET /piece 304 - 15ms
+[2025-05-21 12:16:59] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:16:59] INFO: GET /piece 304 - 11ms
+[2025-05-21 12:17:15] INFO: [INTERVENTION] Rapport envoyé aux responsables pour l'intervention : 681d34f046c437f8aa840f6d
+[2025-05-21 12:17:15] INFO: [INTERVENTION] Rapport créé pour l'intervention : 681d34f046c437f8aa840f6d
+[2025-05-21 12:17:15] INFO: POST /intervention/rapport 200 - 47ms
+[2025-05-21 12:17:27] INFO: GET /user 304 - 7ms
+[2025-05-21 12:17:27] INFO: GET /user 304 - 7ms
+[2025-05-21 12:17:27] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:17:27] INFO: GET /machine 304 - 9ms
+[2025-05-21 12:17:27] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:17:27] INFO: GET /machine 304 - 6ms
+[2025-05-21 12:17:55] INFO: GET /user 304 - 14ms
+[2025-05-21 12:17:55] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 12:17:55] INFO: GET /intervention 200 - 28ms
+[2025-05-21 12:17:55] INFO: GET /user 304 - 13ms
+[2025-05-21 12:17:55] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 12:17:55] INFO: GET /intervention 304 - 23ms
+[2025-05-21 12:17:55] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:17:55] INFO: GET /machine 304 - 10ms
+[2025-05-21 12:17:55] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:17:55] INFO: GET /machine 304 - 11ms
+[2025-05-21 12:18:07] INFO: GET /tache/technicien?page=1&limit=5 304 - 6ms
+[2025-05-21 12:18:07] INFO: GET /tache/technicien?page=1&limit=5 304 - 6ms
+[2025-05-21 12:18:08] INFO: GET /user 304 - 4ms
+[2025-05-21 12:18:08] INFO: GET /user 304 - 4ms
+[2025-05-21 12:18:08] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:18:08] INFO: GET /machine 304 - 8ms
+[2025-05-21 12:18:08] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:18:08] INFO: GET /machine 304 - 6ms
+[2025-05-21 12:18:22] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:18:22] INFO: GET /piece 304 - 6ms
+[2025-05-21 12:18:22] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:18:22] INFO: GET /piece 304 - 8ms
+[2025-05-21 12:18:42] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:18:42] INFO: GET /demande/technicien/demandes?page=1&limit=5 200 - 8ms
+[2025-05-21 12:18:42] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:18:42] INFO: GET /demande/technicien/demandes?page=1&limit=5 304 - 7ms
+[2025-05-21 12:18:58] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:18:58] INFO: GET /demande/technicien/demandes?page=2&limit=5 200 - 11ms
+[2025-05-21 12:19:00] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:00] INFO: GET /demande/technicien/demandes?page=3&limit=5 200 - 11ms
+[2025-05-21 12:19:00] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:00] INFO: GET /demande/technicien/demandes?page=4&limit=5 200 - 5ms
+[2025-05-21 12:19:00] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:00] INFO: GET /demande/technicien/demandes?page=5&limit=5 200 - 12ms
+[2025-05-21 12:19:01] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:01] INFO: GET /demande/technicien/demandes?page=6&limit=5 200 - 5ms
+[2025-05-21 12:19:01] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:01] INFO: GET /demande/technicien/demandes?page=7&limit=5 200 - 8ms
+[2025-05-21 12:19:01] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:01] INFO: GET /demande/technicien/demandes?page=8&limit=5 200 - 6ms
+[2025-05-21 12:19:01] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:01] INFO: GET /demande/technicien/demandes?page=9&limit=5 200 - 7ms
+[2025-05-21 12:19:01] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:01] INFO: GET /demande/technicien/demandes?page=10&limit=5 200 - 10ms
+[2025-05-21 12:19:01] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:01] INFO: GET /demande/technicien/demandes?page=11&limit=5 200 - 10ms
+[2025-05-21 12:19:02] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:02] INFO: GET /demande/technicien/demandes?page=12&limit=5 200 - 9ms
+[2025-05-21 12:19:02] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:02] INFO: GET /demande/technicien/demandes?page=13&limit=5 200 - 10ms
+[2025-05-21 12:19:02] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:02] INFO: GET /demande/technicien/demandes?page=14&limit=5 200 - 9ms
+[2025-05-21 12:19:02] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:02] INFO: GET /demande/technicien/demandes?page=15&limit=5 200 - 10ms
+[2025-05-21 12:19:02] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:02] INFO: GET /demande/technicien/demandes?page=16&limit=5 200 - 10ms
+[2025-05-21 12:19:03] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:03] INFO: GET /demande/technicien/demandes?page=17&limit=5 200 - 11ms
+[2025-05-21 12:19:03] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:03] INFO: GET /demande/technicien/demandes?page=18&limit=5 200 - 8ms
+[2025-05-21 12:19:03] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:03] INFO: GET /demande/technicien/demandes?page=19&limit=5 200 - 11ms
+[2025-05-21 12:19:03] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:03] INFO: GET /demande/technicien/demandes?page=20&limit=5 200 - 9ms
+[2025-05-21 12:19:03] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:03] INFO: GET /demande/technicien/demandes?page=21&limit=5 200 - 8ms
+[2025-05-21 12:19:03] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:03] INFO: GET /demande/technicien/demandes?page=22&limit=5 200 - 8ms
+[2025-05-21 12:19:04] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:04] INFO: GET /demande/technicien/demandes?page=23&limit=5 200 - 13ms
+[2025-05-21 12:19:04] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:04] INFO: GET /demande/technicien/demandes?page=24&limit=5 200 - 8ms
+[2025-05-21 12:19:04] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:04] INFO: GET /demande/technicien/demandes?page=25&limit=5 200 - 8ms
+[2025-05-21 12:19:04] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:04] INFO: GET /demande/technicien/demandes?page=26&limit=5 200 - 11ms
+[2025-05-21 12:19:04] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:04] INFO: GET /demande/technicien/demandes?page=27&limit=5 200 - 10ms
+[2025-05-21 12:19:04] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:04] INFO: GET /demande/technicien/demandes?page=28&limit=5 200 - 6ms
+[2025-05-21 12:19:05] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:05] INFO: GET /demande/technicien/demandes?page=29&limit=5 200 - 5ms
+[2025-05-21 12:19:05] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:05] INFO: GET /demande/technicien/demandes?page=30&limit=5 200 - 5ms
+[2025-05-21 12:19:05] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:05] INFO: GET /demande/technicien/demandes?page=31&limit=5 200 - 9ms
+[2025-05-21 12:19:05] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:05] INFO: GET /demande/technicien/demandes?page=32&limit=5 200 - 11ms
+[2025-05-21 12:19:05] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:05] INFO: GET /demande/technicien/demandes?page=33&limit=5 200 - 8ms
+[2025-05-21 12:19:06] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:06] INFO: GET /demande/technicien/demandes?page=34&limit=5 200 - 13ms
+[2025-05-21 12:19:09] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:09] INFO: GET /demande/technicien/demandes?page=35&limit=5 200 - 17ms
+[2025-05-21 12:19:09] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:09] INFO: GET /demande/technicien/demandes?page=36&limit=5 200 - 12ms
+[2025-05-21 12:19:09] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:09] INFO: GET /demande/technicien/demandes?page=37&limit=5 200 - 16ms
+[2025-05-21 12:19:09] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:09] INFO: GET /demande/technicien/demandes?page=38&limit=5 200 - 16ms
+[2025-05-21 12:19:09] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (0) avec pagination
+[2025-05-21 12:19:09] INFO: GET /demande/technicien/demandes?page=39&limit=5 200 - 14ms
+[2025-05-21 12:19:10] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:19:10] INFO: GET /piece 304 - 9ms
+[2025-05-21 12:19:11] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:19:11] INFO: GET /piece 304 - 8ms
+[2025-05-21 12:19:19] INFO: [DEMANDE] Notification envoyée aux magasiniers pour la demande : 682da8a7da1d48010805e3df
+[2025-05-21 12:19:19] INFO: [DEMANDE] Nouvelle demande créée par l'utilisateur : louay
+[2025-05-21 12:19:19] INFO: POST /demande 201 - 27ms
+[2025-05-21 12:19:21] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (1) avec pagination
+[2025-05-21 12:19:21] INFO: GET /demande/technicien/demandes?page=1&limit=5 200 - 17ms
+[2025-05-21 12:19:21] INFO: [DEMANDE] Récupération des demandes du technicien 682da5a7da1d48010805e2b9 (1) avec pagination
+[2025-05-21 12:19:21] INFO: GET /demande/technicien/demandes?page=1&limit=5 304 - 13ms
+[2025-05-21 12:28:22] INFO: GET /demande/technicien/demandes?page=1&limit=5 403 - 8ms
+[2025-05-21 12:28:22] INFO: GET /demande/technicien/demandes?page=1&limit=5 403 - 6ms
+[2025-05-21 12:28:26] INFO: GET /user 304 - 9ms
+[2025-05-21 12:28:26] INFO: GET /user 304 - 19ms
+[2025-05-21 12:28:26] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:28:26] INFO: GET /machine 304 - 16ms
+[2025-05-21 12:28:26] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:28:26] INFO: GET /machine 304 - 14ms
+[2025-05-21 12:28:51] INFO: GET /auth/profile 200 - 3ms
+[2025-05-21 12:28:51] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:30:35] INFO: GET /user 200 - 5ms
+[2025-05-21 12:30:35] INFO: GET /user 304 - 4ms
+[2025-05-21 12:30:35] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:30:35] INFO: GET /machine 304 - 6ms
+[2025-05-21 12:30:35] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:30:35] INFO: GET /machine 304 - 4ms
+[2025-05-21 12:30:42] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 12:30:42] INFO: POST /panne 404 - 5ms
+[2025-05-21 12:33:01] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 12:33:01] INFO: ✅ Connecté à MongoDB
+[2025-05-21 12:34:48] INFO: GET /user 304 - 24ms
+[2025-05-21 12:34:48] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 12:34:48] INFO: GET /intervention 304 - 45ms
+[2025-05-21 12:34:48] INFO: GET /user 304 - 12ms
+[2025-05-21 12:34:48] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:34:48] INFO: GET /machine 304 - 15ms
+[2025-05-21 12:34:48] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 12:34:48] INFO: GET /intervention 304 - 23ms
+[2025-05-21 12:34:48] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:34:48] INFO: GET /machine 304 - 7ms
+[2025-05-21 12:34:48] INFO: GET /user 304 - 8ms
+[2025-05-21 12:34:48] INFO: GET /user 304 - 10ms
+[2025-05-21 12:34:48] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:34:48] INFO: GET /machine 304 - 12ms
+[2025-05-21 12:34:48] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:34:48] INFO: GET /machine 304 - 5ms
+[2025-05-21 12:34:56] ERROR: [PANNE] Erreur déclaration panne : Cast to ObjectId failed for value "MachineB" (type string) at path "_id" for model "Machine"
+[2025-05-21 12:34:56] INFO: POST /panne 500 - 9ms
+[2025-05-21 12:36:29] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 12:36:29] INFO: ✅ Connecté à MongoDB
+[2025-05-21 12:37:04] INFO: GET /user 304 - 26ms
+[2025-05-21 12:37:04] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:37:04] INFO: GET /machine 304 - 15ms
+[2025-05-21 12:37:46] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 12:37:46] INFO: ✅ Connecté à MongoDB
+[2025-05-21 12:38:48] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 12:38:49] INFO: ✅ Connecté à MongoDB
+[2025-05-21 12:39:15] INFO: GET /intervention 401 - 6ms
+[2025-05-21 12:39:15] INFO: GET /intervention 401 - 3ms
+[2025-05-21 12:39:15] INFO: GET /user 304 - 21ms
+[2025-05-21 12:39:15] INFO: GET /machine 401 - 2ms
+[2025-05-21 12:39:15] INFO: GET /user 304 - 8ms
+[2025-05-21 12:39:15] INFO: GET /machine 401 - 2ms
+[2025-05-21 12:39:16] INFO: GET /user 304 - 9ms
+[2025-05-21 12:39:16] INFO: GET /machine 401 - 2ms
+[2025-05-21 12:39:16] INFO: GET /user 304 - 9ms
+[2025-05-21 12:39:16] INFO: GET /machine 401 - 1ms
+[2025-05-21 12:40:43] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 12:40:44] INFO: ✅ Connecté à MongoDB
+[2025-05-21 12:40:56] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 12:40:56] INFO: ✅ Connecté à MongoDB
+[2025-05-21 12:41:17] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 12:41:17] INFO: ✅ Connecté à MongoDB
+[2025-05-21 12:45:37] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 12:45:37] INFO: ✅ Connecté à MongoDB
+[2025-05-21 12:45:48] INFO: GET /auth/profile 304 - 19ms
+[2025-05-21 12:45:48] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 12:45:49] INFO: GET /user 304 - 11ms
+[2025-05-21 12:45:49] INFO: GET /machine 401 - 5ms
+[2025-05-21 12:45:49] INFO: GET /user 304 - 15ms
+[2025-05-21 12:45:49] INFO: GET /machine 401 - 3ms
+[2025-05-21 12:46:00] INFO: POST /auth/logout 200 - 16ms
+[2025-05-21 12:46:06] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 12:46:06] INFO: POST /auth/login 200 - 156ms
+[2025-05-21 12:46:10] INFO: GET /user 304 - 7ms
+[2025-05-21 12:46:10] INFO: GET /user 304 - 10ms
+[2025-05-21 12:46:10] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:46:10] INFO: GET /machine 304 - 12ms
+[2025-05-21 12:46:10] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:46:10] INFO: GET /machine 304 - 8ms
+[2025-05-21 12:46:17] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 12:46:17] INFO: POST /panne 404 - 11ms
+[2025-05-21 12:46:28] WARN: [PANNE] Machine non trouvée : Nom undefined
+[2025-05-21 12:46:28] INFO: POST /panne 404 - 8ms
+[2025-05-21 12:49:07] INFO: GET /user 304 - 7ms
+[2025-05-21 12:49:07] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:49:07] INFO: GET /machine 304 - 12ms
+[2025-05-21 12:50:45] INFO: GET /user 304 - 6ms
+[2025-05-21 12:50:45] INFO: GET /user 304 - 6ms
+[2025-05-21 12:50:45] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:50:45] INFO: GET /machine 304 - 7ms
+[2025-05-21 12:50:45] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:50:45] INFO: GET /machine 304 - 7ms
+[2025-05-21 12:50:55] INFO: [PANNE] Alerte envoyée pour la panne déclarée sur la machine : MachineB
+[2025-05-21 12:50:55] INFO: [PANNE] Nouvelle panne déclarée : 682db00da122ae0297a405b6
+[2025-05-21 12:50:55] INFO: POST /panne 201 - 1964ms
+[2025-05-21 12:51:25] INFO: GET /user 304 - 11ms
+[2025-05-21 12:51:25] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 12:51:25] INFO: GET /intervention 304 - 21ms
+[2025-05-21 12:51:25] INFO: GET /user 304 - 11ms
+[2025-05-21 12:51:25] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:51:25] INFO: GET /machine 304 - 10ms
+[2025-05-21 12:51:25] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 12:51:25] INFO: GET /intervention 304 - 17ms
+[2025-05-21 12:51:25] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:51:25] INFO: GET /machine 304 - 5ms
+[2025-05-21 12:51:26] INFO: GET /user 304 - 6ms
+[2025-05-21 12:51:26] INFO: GET /user 304 - 6ms
+[2025-05-21 12:51:26] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:51:26] INFO: GET /machine 304 - 8ms
+[2025-05-21 12:51:26] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:51:26] INFO: GET /machine 304 - 7ms
+[2025-05-21 12:52:38] INFO: GET /auth/profile 404 - 3ms
+[2025-05-21 12:52:38] INFO: GET /auth/profile 404 - 2ms
+[2025-05-21 12:53:37] INFO: [REGISTER] Utilisateur enregistré: hamedgharbi55@gmail.com, code d'approbation envoyé.
+[2025-05-21 12:53:37] INFO: POST /auth/register 201 - 1565ms
+[2025-05-21 12:53:57] INFO: [APPROVAL] Utilisateur approuvé avec succès : hamedgharbi55@gmail.com
+[2025-05-21 12:53:57] INFO: POST /auth/approve 200 - 7ms
+[2025-05-21 12:54:11] INFO: [LOGIN] Connexion réussie: hamedgharbi55@gmail.com
+[2025-05-21 12:54:11] INFO: POST /auth/login 200 - 80ms
+[2025-05-21 12:54:28] INFO: GET /auth/profile 404 - 2ms
+[2025-05-21 12:54:28] INFO: GET /auth/profile 404 - 3ms
+[2025-05-21 12:54:58] INFO: [REGISTER] Utilisateur enregistré: louaybenali133@gmail.com, code d'approbation envoyé.
+[2025-05-21 12:54:58] INFO: POST /auth/register 201 - 1820ms
+[2025-05-21 12:55:10] INFO: [APPROVAL] Utilisateur approuvé avec succès : louaybenali133@gmail.com
+[2025-05-21 12:55:10] INFO: POST /auth/approve 200 - 7ms
+[2025-05-21 12:55:23] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 12:55:23] INFO: POST /auth/login 200 - 77ms
+[2025-05-21 12:56:00] INFO: GET /auth/profile 200 - 2ms
+[2025-05-21 12:56:00] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:56:16] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:56:16] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:56:17] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:56:17] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 12:56:19] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 12:56:19] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 12:56:58] INFO: POST /auth/logout 200 - 4ms
+[2025-05-21 12:57:10] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 12:57:10] INFO: POST /auth/login 200 - 82ms
+[2025-05-21 12:57:30] INFO: GET /user 200 - 4ms
+[2025-05-21 12:57:30] INFO: GET /user 304 - 7ms
+[2025-05-21 12:57:30] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:57:30] INFO: GET /machine 200 - 10ms
+[2025-05-21 12:57:30] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:57:30] INFO: GET /machine 304 - 10ms
+[2025-05-21 12:57:43] INFO: [PANNE] Alerte envoyée pour la panne déclarée sur la machine : MachineC
+[2025-05-21 12:57:43] INFO: [PANNE] Nouvelle panne déclarée : 682db1a1a122ae0297a40601
+[2025-05-21 12:57:43] INFO: POST /panne 201 - 6079ms
+[2025-05-21 12:58:47] INFO: GET /user 200 - 5ms
+[2025-05-21 12:58:47] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 12:58:47] INFO: GET /intervention 200 - 11ms
+[2025-05-21 12:58:47] INFO: GET /user 304 - 6ms
+[2025-05-21 12:58:47] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 12:58:47] INFO: GET /intervention 304 - 12ms
+[2025-05-21 12:58:47] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:58:47] INFO: GET /machine 200 - 10ms
+[2025-05-21 12:58:47] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:58:47] INFO: GET /machine 304 - 7ms
+[2025-05-21 12:58:51] INFO: GET /auth/profile 200 - 2ms
+[2025-05-21 12:58:51] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 12:58:55] INFO: GET /user 200 - 4ms
+[2025-05-21 12:58:55] INFO: GET /user 304 - 4ms
+[2025-05-21 12:58:55] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:58:55] INFO: GET /machine 304 - 11ms
+[2025-05-21 12:58:55] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 12:58:55] INFO: GET /machine 304 - 5ms
+[2025-05-21 12:59:02] INFO: [PANNE] Alerte envoyée pour la panne déclarée sur la machine : MachineC
+[2025-05-21 12:59:02] INFO: [PANNE] Nouvelle panne déclarée : 682db1f5a122ae0297a40626
+[2025-05-21 12:59:02] INFO: POST /panne 201 - 1582ms
+[2025-05-21 12:59:04] INFO: GET /tache/technicien?page=1&limit=5 200 - 10ms
+[2025-05-21 12:59:04] INFO: GET /tache/technicien?page=1&limit=5 304 - 5ms
+[2025-05-21 12:59:06] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:59:06] INFO: GET /piece 200 - 9ms
+[2025-05-21 12:59:06] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:59:06] INFO: GET /piece 304 - 6ms
+[2025-05-21 12:59:17] INFO: [INTERVENTION] Rapport envoyé aux responsables pour l'intervention : 681d34f046c437f8aa840f6d
+[2025-05-21 12:59:17] INFO: [INTERVENTION] Rapport créé pour l'intervention : 681d34f046c437f8aa840f6d
+[2025-05-21 12:59:18] INFO: POST /intervention/rapport 200 - 1338ms
+[2025-05-21 12:59:29] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:59:29] INFO: GET /piece 304 - 9ms
+[2025-05-21 12:59:29] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 12:59:29] INFO: GET /piece 304 - 8ms
+[2025-05-21 13:00:30] INFO: GET /auth/profile 200 - 2ms
+[2025-05-21 13:00:30] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 13:08:44] INFO: [DEMANDE] Notification envoyée aux magasiniers pour la demande : 682db3eba122ae0297a40643
+[2025-05-21 13:08:44] INFO: [DEMANDE] Nouvelle demande créée par l'utilisateur : hamed
+[2025-05-21 13:08:44] INFO: POST /demande 201 - 80694ms
+[2025-05-21 14:35:28] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 14:35:28] INFO: ✅ Connecté à MongoDB
+[2025-05-21 14:36:06] INFO: GET /auth/profile 304 - 20ms
+[2025-05-21 14:36:06] INFO: GET /auth/profile 304 - 4ms
+[2025-05-21 14:36:14] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 14:36:14] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 14:37:07] INFO: GET /piece 401 - 5ms
+[2025-05-21 14:37:07] INFO: GET /piece 401 - 2ms
+[2025-05-21 14:38:28] INFO: GET /auth/profile 304 - 4ms
+[2025-05-21 14:38:28] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 14:50:15] INFO: GET /auth/profile 304 - 4ms
+[2025-05-21 14:50:15] INFO: GET /auth/profile 304 - 5ms
+[2025-05-21 14:50:15] INFO: GET /auth/profile 304 - 6ms
+[2025-05-21 14:50:15] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 14:50:18] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 14:50:18] INFO: ✅ Connecté à MongoDB
+[2025-05-21 14:50:22] INFO: GET /auth/profile 304 - 13ms
+[2025-05-21 14:50:22] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 14:50:25] INFO: POST /auth/logout 200 - 13ms
+[2025-05-21 14:50:40] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 14:50:40] INFO: POST /auth/login 200 - 81ms
+[2025-05-21 14:55:46] INFO: GET /auth/profile 304 - 6ms
+[2025-05-21 14:55:46] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 14:55:47] INFO: GET /auth/profile 304 - 5ms
+[2025-05-21 14:55:47] INFO: GET /auth/profile 304 - 5ms
+[2025-05-21 14:55:49] INFO: GET /piece?page=1&limit=5 401 - 4ms
+[2025-05-21 14:55:49] INFO: GET /piece?page=1&limit=5 401 - 2ms
+[2025-05-21 14:55:54] INFO: GET /auth/profile 304 - 4ms
+[2025-05-21 14:55:54] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 14:56:09] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 14:56:09] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 14:58:12] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 14:58:12] INFO: POST /auth/login 200 - 86ms
+[2025-05-21 15:01:37] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 15:01:37] INFO: POST /auth/login 200 - 71ms
+[2025-05-21 15:13:51] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 15:13:51] INFO: POST /auth/login 200 - 74ms
+[2025-05-21 15:15:20] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:15:20] INFO: GET /machine 304 - 12ms
+[2025-05-21 15:15:20] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:15:20] INFO: GET /machine 304 - 10ms
+[2025-05-21 15:15:20] INFO: GET /maintenance 200 - 21ms
+[2025-05-21 15:15:20] INFO: GET /maintenance 304 - 9ms
+[2025-05-21 15:15:23] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:15:23] INFO: GET /machine 304 - 6ms
+[2025-05-21 15:15:23] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:15:23] INFO: GET /machine 304 - 9ms
+[2025-05-21 15:15:23] INFO: GET /user 200 - 5ms
+[2025-05-21 15:15:23] INFO: GET /user 304 - 5ms
+[2025-05-21 15:15:34] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:15:34] INFO: GET /machine 304 - 8ms
+[2025-05-21 15:15:34] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:15:34] INFO: GET /machine 304 - 8ms
+[2025-05-21 15:15:34] INFO: GET /maintenance 304 - 11ms
+[2025-05-21 15:15:34] INFO: GET /maintenance 304 - 8ms
+[2025-05-21 15:17:31] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 15:17:31] INFO: POST /auth/login 200 - 73ms
+[2025-05-21 15:17:34] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:17:34] INFO: GET /machine 304 - 6ms
+[2025-05-21 15:17:34] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:17:34] INFO: GET /machine 304 - 6ms
+[2025-05-21 15:17:34] INFO: GET /maintenance 304 - 10ms
+[2025-05-21 15:17:34] INFO: GET /maintenance 304 - 9ms
+[2025-05-21 15:17:57] INFO: POST /tache 404 - 7ms
+[2025-05-21 15:18:14] INFO: POST /tache 201 - 14ms
+[2025-05-21 15:18:42] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 15:18:42] INFO: POST /auth/login 200 - 73ms
+[2025-05-21 15:18:55] INFO: POST /auth/logout 200 - 10ms
+[2025-05-21 15:19:13] INFO: [LOGIN] Connexion réussie: hamedgharbi55@gmail.com
+[2025-05-21 15:19:13] INFO: POST /auth/login 200 - 73ms
+[2025-05-21 15:19:16] INFO: GET /tache/technicien?page=1&limit=5 200 - 11ms
+[2025-05-21 15:19:16] INFO: GET /tache/technicien?page=1&limit=5 304 - 7ms
+[2025-05-21 15:19:34] INFO: GET /maintenance?page=1&limit=5 200 - 10ms
+[2025-05-21 15:19:34] INFO: GET /maintenance?page=1&limit=5 304 - 8ms
+[2025-05-21 15:21:16] INFO: GET /user 200 - 5ms
+[2025-05-21 15:21:16] INFO: GET /user 304 - 4ms
+[2025-05-21 15:21:16] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:21:16] INFO: GET /machine 304 - 6ms
+[2025-05-21 15:21:16] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:21:16] INFO: GET /machine 304 - 8ms
+[2025-05-21 15:21:28] INFO: [PANNE] Alerte envoyée pour la panne déclarée sur la machine : MachineC
+[2025-05-21 15:21:28] INFO: [PANNE] Nouvelle panne déclarée : 682dd3564968a820d9efb11d
+[2025-05-21 15:21:28] INFO: POST /panne 201 - 1704ms
+[2025-05-21 15:21:31] INFO: GET /tache/technicien?page=1&limit=5 304 - 9ms
+[2025-05-21 15:21:31] INFO: GET /tache/technicien?page=1&limit=5 304 - 8ms
+[2025-05-21 15:21:32] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:21:32] INFO: GET /piece 304 - 8ms
+[2025-05-21 15:21:32] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:21:32] INFO: GET /piece 304 - 6ms
+[2025-05-21 15:21:47] INFO: [INTERVENTION] Rapport envoyé aux responsables pour l'intervention : 681d34f046c437f8aa840f6d
+[2025-05-21 15:21:47] INFO: [INTERVENTION] Rapport créé pour l'intervention : 681d34f046c437f8aa840f6d
+[2025-05-21 15:21:47] INFO: POST /intervention/rapport 200 - 2619ms
+[2025-05-21 15:21:49] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:21:49] INFO: GET /piece 304 - 6ms
+[2025-05-21 15:21:49] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:21:49] INFO: GET /piece 304 - 7ms
+[2025-05-21 15:21:57] WARN: [DEMANDE] Aucun magasinier trouvé pour envoyer la notification
+[2025-05-21 15:21:57] INFO: [DEMANDE] Nouvelle demande créée par l'utilisateur : hamed
+[2025-05-21 15:21:57] INFO: POST /demande 201 - 15ms
+[2025-05-21 15:22:00] INFO: [DEMANDE] Récupération des demandes du technicien 682db0b0a122ae0297a405d9 (2) avec pagination
+[2025-05-21 15:22:00] INFO: GET /demande/technicien/demandes?page=1&limit=5 200 - 11ms
+[2025-05-21 15:22:00] INFO: [DEMANDE] Récupération des demandes du technicien 682db0b0a122ae0297a405d9 (2) avec pagination
+[2025-05-21 15:22:00] INFO: GET /demande/technicien/demandes?page=1&limit=5 304 - 8ms
+[2025-05-21 15:26:16] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 15:26:16] INFO: ✅ Connecté à MongoDB
+[2025-05-21 15:26:36] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 15:26:36] INFO: POST /auth/login 200 - 104ms
+[2025-05-21 15:26:39] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:26:39] INFO: GET /machine 304 - 18ms
+[2025-05-21 15:26:39] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:26:39] INFO: GET /machine 304 - 13ms
+[2025-05-21 15:26:39] INFO: GET /maintenance 304 - 24ms
+[2025-05-21 15:26:39] INFO: GET /maintenance 304 - 9ms
+[2025-05-21 15:27:02] INFO: POST /tache 404 - 5ms
+[2025-05-21 15:27:06] INFO: POST /tache 201 - 18ms
+[2025-05-21 15:27:24] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 15:27:24] INFO: POST /auth/login 200 - 86ms
+[2025-05-21 15:27:47] INFO: POST /auth/logout 200 - 15ms
+[2025-05-21 15:28:01] INFO: [LOGIN] Connexion réussie: hamedgharbi55@gmail.com
+[2025-05-21 15:28:01] INFO: POST /auth/login 200 - 73ms
+[2025-05-21 15:28:03] INFO: GET /tache/technicien?page=1&limit=5 200 - 12ms
+[2025-05-21 15:28:03] INFO: GET /tache/technicien?page=1&limit=5 304 - 10ms
+[2025-05-21 15:28:18] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:28:18] INFO: GET /machine 304 - 9ms
+[2025-05-21 15:28:18] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:28:18] INFO: GET /machine 304 - 9ms
+[2025-05-21 15:28:18] INFO: GET /user 200 - 6ms
+[2025-05-21 15:28:18] INFO: GET /user 304 - 3ms
+[2025-05-21 15:28:35] INFO: POST /maintenance 500 - 4ms
+[2025-05-21 15:28:44] INFO: POST /maintenance 500 - 4ms
+[2025-05-21 15:29:03] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:29:03] INFO: GET /machine 304 - 6ms
+[2025-05-21 15:29:03] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:29:03] INFO: GET /machine 304 - 7ms
+[2025-05-21 15:29:03] INFO: GET /user 304 - 5ms
+[2025-05-21 15:29:03] INFO: GET /user 304 - 3ms
+[2025-05-21 15:29:18] INFO: [INTERVENTION] Intervention créée pour la machine 67fd2ceba6b39d8c0aba945d par technicien 682db0b0a122ae0297a405d9
+[2025-05-21 15:29:18] INFO: POST /intervention 201 - 9ms
+[2025-05-21 15:29:33] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:29:33] INFO: GET /demande?page=1&limit=5 200 - 16ms
+[2025-05-21 15:29:33] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:29:33] INFO: GET /demande?page=1&limit=5 304 - 8ms
+[2025-05-21 15:29:35] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:29:35] INFO: GET /demande?page=2&limit=5 200 - 7ms
+[2025-05-21 15:29:38] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:29:38] INFO: GET /demande?page=3&limit=5 200 - 8ms
+[2025-05-21 15:29:40] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:29:40] INFO: GET /demande?page=4&limit=5 200 - 10ms
+[2025-05-21 15:29:42] INFO: [DEMANDE] Demande validée : 682da8a7da1d48010805e3df
+[2025-05-21 15:29:42] INFO: PUT /demande/682da8a7da1d48010805e3df/valider 200 - 10ms
+[2025-05-21 15:29:42] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:29:42] INFO: GET /demande?page=4&limit=5 200 - 12ms
+[2025-05-21 15:29:55] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:29:55] INFO: GET /machine?page=1&limit=5 200 - 9ms
+[2025-05-21 15:29:55] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:29:55] INFO: GET /machine?page=1&limit=5 304 - 7ms
+[2025-05-21 15:29:56] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 15:29:56] INFO: ✅ Connecté à MongoDB
+[2025-05-21 15:30:02] INFO: [MACHINE] Machine mise à jour : 67fd2ceba6b39d8c0aba945d
+[2025-05-21 15:30:02] INFO: PUT /machine/67fd2ceba6b39d8c0aba945d 200 - 19ms
+[2025-05-21 15:30:02] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:30:02] INFO: GET /machine?page=1&limit=5 304 - 8ms
+[2025-05-21 15:30:06] INFO: [MACHINE] Machine mise à jour : 67fd2ceba6b39d8c0aba945d
+[2025-05-21 15:30:06] INFO: PUT /machine/67fd2ceba6b39d8c0aba945d 200 - 17ms
+[2025-05-21 15:30:06] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:30:06] INFO: GET /machine?page=1&limit=5 200 - 7ms
+[2025-05-21 15:30:11] INFO: GET /user 304 - 14ms
+[2025-05-21 15:30:11] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 15:30:11] INFO: GET /intervention?page=1&limit=5 200 - 25ms
+[2025-05-21 15:30:11] INFO: GET /user 304 - 10ms
+[2025-05-21 15:30:11] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:30:11] INFO: GET /machine 200 - 11ms
+[2025-05-21 15:30:11] INFO: [INTERVENTION] Récupération de toutes les interventions (5) avec pagination
+[2025-05-21 15:30:11] INFO: GET /intervention?page=1&limit=5 304 - 14ms
+[2025-05-21 15:30:11] INFO: [MACHINE] Machines filtrées : 3 résultats
+[2025-05-21 15:30:11] INFO: GET /machine 304 - 6ms
+[2025-05-21 15:30:12] INFO: GET /maintenance?page=1&limit=5 200 - 13ms
+[2025-05-21 15:30:12] INFO: GET /maintenance?page=1&limit=5 304 - 9ms
+[2025-05-21 15:30:17] INFO: PUT /maintenance/68287e9e14dbd1fcdb32828e 200 - 9ms
+[2025-05-21 15:30:18] INFO: GET /maintenance?page=1&limit=5 200 - 8ms
+[2025-05-21 15:30:44] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:30:44] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 15:30:49] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:30:49] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 15:30:52] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:30:52] INFO: GET /piece?page=1&limit=5 304 - 9ms
+[2025-05-21 15:30:52] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:30:52] INFO: GET /piece?page=1&limit=5 304 - 7ms
+[2025-05-21 15:31:02] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:31:02] INFO: GET /demande?page=1&limit=5 304 - 11ms
+[2025-05-21 15:31:02] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:31:02] INFO: GET /demande?page=1&limit=5 304 - 7ms
+[2025-05-21 15:31:07] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:31:07] INFO: GET /demande?page=1&limit=5 304 - 9ms
+[2025-05-21 15:31:07] INFO: [DEMANDE] Récupération de toutes les demandes (5) avec pagination
+[2025-05-21 15:31:07] INFO: GET /demande?page=1&limit=5 304 - 8ms
+[2025-05-21 15:50:56] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 15:50:56] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:51:07] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:51:07] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:51:40] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 15:51:40] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 15:53:03] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:53:03] INFO: GET /piece 304 - 9ms
+[2025-05-21 15:53:03] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:53:03] INFO: GET /piece 304 - 7ms
+[2025-05-21 15:53:20] ERROR: [COMMANDE] Erreur création commande : Commande validation failed: statut: `enattente` is not a valid enum value for path `statut`.
+[2025-05-21 15:53:20] INFO: POST /commande 500 - 19ms
+[2025-05-21 15:54:00] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:54:00] INFO: GET /piece 304 - 7ms
+[2025-05-21 15:54:00] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:54:00] INFO: GET /piece 304 - 5ms
+[2025-05-21 15:56:18] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:56:18] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:56:27] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:56:27] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:59:21] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 15:59:21] INFO: POST /auth/login 200 - 83ms
+[2025-05-21 15:59:29] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:59:29] INFO: GET /piece 304 - 7ms
+[2025-05-21 15:59:29] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 15:59:29] INFO: GET /piece 304 - 6ms
+[2025-05-21 15:59:56] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 15:59:56] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:00:16] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:00:16] INFO: GET /piece 304 - 7ms
+[2025-05-21 16:00:16] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:00:16] INFO: GET /piece 304 - 5ms
+[2025-05-21 16:00:32] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:00:32] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:00:35] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:00:35] INFO: GET /piece 304 - 6ms
+[2025-05-21 16:00:35] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:00:35] INFO: GET /piece 304 - 7ms
+[2025-05-21 16:01:04] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:01:04] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:02:02] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:02:02] INFO: GET /piece 304 - 6ms
+[2025-05-21 16:02:02] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:02:02] INFO: GET /piece 304 - 5ms
+[2025-05-21 16:02:14] ERROR: [COMMANDE] Erreur création commande : Commande validation failed: statut: `enattente` is not a valid enum value for path `statut`.
+[2025-05-21 16:02:14] INFO: POST /commande 500 - 7ms
+[2025-05-21 16:03:36] INFO: [COMMANDE] Nouvelle commande créée par 682db100a122ae0297a405e2
+[2025-05-21 16:03:36] INFO: POST /commande 201 - 12ms
+[2025-05-21 16:04:19] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:04:19] INFO: GET /piece 304 - 7ms
+[2025-05-21 16:04:19] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:04:19] INFO: GET /piece 304 - 7ms
+[2025-05-21 16:20:40] INFO: GET /auth/profile 304 - 3ms
+[2025-05-21 16:20:40] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:20:42] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:20:42] INFO: GET /piece 304 - 7ms
+[2025-05-21 16:20:42] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 16:20:42] INFO: GET /piece 304 - 6ms
+[2025-05-21 16:20:47] INFO: [COMMANDE] Nouvelle commande créée par 682db100a122ae0297a405e2
+[2025-05-21 16:20:47] INFO: POST /commande 201 - 5ms
+[2025-05-21 16:25:42] INFO: GET /commande?page=1 200 - 7ms
+[2025-05-21 16:26:33] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:26:33] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:39:03] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 16:39:03] INFO: POST /auth/login 200 - 72ms
+[2025-05-21 16:39:07] INFO: GET /commande?page=1 200 - 9ms
+[2025-05-21 16:39:07] INFO: GET /commande?page=1 200 - 8ms
+[2025-05-21 16:39:16] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:39:16] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:39:24] INFO: GET /commande?page=1 200 - 7ms
+[2025-05-21 16:39:24] INFO: GET /commande?page=1 200 - 10ms
+[2025-05-21 16:39:49] INFO: GET /auth/profile 304 - 1ms
+[2025-05-21 16:39:49] INFO: GET /auth/profile 304 - 2ms
+[2025-05-21 16:40:55] INFO: GET /commande?page=1 200 - 10ms
+[2025-05-21 16:40:55] INFO: GET /commande?page=1 200 - 9ms
+[2025-05-21 16:41:22] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 16:41:22] INFO: PUT /commande/682ddd386dbd7d018dc74b50/valider 500 - 5ms
+[2025-05-21 16:41:25] INFO: [COMMANDE] Commande récupérée : 682ddd386dbd7d018dc74b50
+[2025-05-21 16:41:25] INFO: GET /commande/682ddd386dbd7d018dc74b50 200 - 4ms
+[2025-05-21 16:41:34] INFO: [COMMANDE] Commande récupérée : 67fd413b1556d54f58b01f56
+[2025-05-21 16:41:34] INFO: GET /commande/67fd413b1556d54f58b01f56 200 - 3ms
+[2025-05-21 16:41:38] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 16:41:38] INFO: PUT /commande/682de13f6dbd7d018dc74b62/valider 500 - 4ms
+[2025-05-21 18:05:48] INFO: [LOGIN] Connexion réussie: louaybenali133@gmail.com
+[2025-05-21 18:05:48] INFO: POST /auth/login 200 - 100ms
+[2025-05-21 18:05:50] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 18:05:50] INFO: GET /piece?page=1&limit=5 304 - 10ms
+[2025-05-21 18:05:50] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 18:05:50] INFO: GET /piece?page=1&limit=5 304 - 8ms
+[2025-05-21 18:05:53] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 18:05:53] INFO: GET /piece 304 - 9ms
+[2025-05-21 18:05:53] INFO: [PIECE] Récupération de toutes les pièces (4) avec pagination
+[2025-05-21 18:05:53] INFO: GET /piece 304 - 6ms
+[2025-05-21 18:05:57] INFO: [COMMANDE] Nouvelle commande créée par 682db100a122ae0297a405e2
+[2025-05-21 18:05:57] INFO: POST /commande 201 - 16ms
+[2025-05-21 18:06:00] INFO: GET /commande?page=1 200 - 9ms
+[2025-05-21 18:06:00] INFO: GET /commande?page=1 200 - 6ms
+[2025-05-21 18:06:02] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:02] INFO: PUT /commande/682ddd386dbd7d018dc74b50/valider 500 - 15ms
+[2025-05-21 18:06:02] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:02] INFO: PUT /commande/682ddd386dbd7d018dc74b50/valider 500 - 12ms
+[2025-05-21 18:06:03] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:03] INFO: PUT /commande/682ddd386dbd7d018dc74b50/valider 500 - 15ms
+[2025-05-21 18:06:05] INFO: [COMMANDE] Commande récupérée : 682ddd386dbd7d018dc74b50
+[2025-05-21 18:06:05] INFO: GET /commande/682ddd386dbd7d018dc74b50 304 - 4ms
+[2025-05-21 18:06:06] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:06] INFO: PUT /commande/682ddd386dbd7d018dc74b50/valider 500 - 17ms
+[2025-05-21 18:06:10] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:10] INFO: PUT /commande/682ddd386dbd7d018dc74b50/valider 500 - 8ms
+[2025-05-21 18:06:22] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:22] INFO: PUT /commande/682ddd386dbd7d018dc74b50/valider 500 - 11ms
+[2025-05-21 18:07:34] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 18:07:34] INFO: ✅ Connecté à MongoDB
+[2025-05-21 18:08:32] INFO: [COMMANDE] Commande récupérée : 67fd4a3bad520d0423ce88c3
+[2025-05-21 18:08:32] INFO: GET /commande/67fd4a3bad520d0423ce88c3 200 - 39ms
+[2025-05-21 18:08:37] INFO: [COMMANDE] Commande récupérée : 682ddd386dbd7d018dc74b50
+[2025-05-21 18:08:37] INFO: GET /commande/682ddd386dbd7d018dc74b50 304 - 7ms
+[2025-05-21 18:08:39] INFO: [COMMANDE] Commande validée : 682ddd386dbd7d018dc74b50
+[2025-05-21 18:08:39] INFO: PUT /commande/682ddd386dbd7d018dc74b50/valider 200 - 18ms
+[2025-05-21 18:08:39] INFO: GET /commande?page=1 200 - 15ms
+[2025-05-21 18:08:44] INFO: [COMMANDE] Commande récupérée : 67fd4a3bad520d0423ce88c3
+[2025-05-21 18:08:44] INFO: GET /commande/67fd4a3bad520d0423ce88c3 200 - 18ms
+[2025-05-21 18:08:47] INFO: [COMMANDE] Commande récupérée : 67fd413b1556d54f58b01f56
+[2025-05-21 18:08:47] INFO: GET /commande/67fd413b1556d54f58b01f56 304 - 12ms
+[2025-05-21 18:08:49] INFO: [COMMANDE] Commande validée : 682de13f6dbd7d018dc74b62
+[2025-05-21 18:08:49] INFO: PUT /commande/682de13f6dbd7d018dc74b62/valider 200 - 25ms
+[2025-05-21 18:08:49] INFO: GET /commande?page=1 200 - 14ms
+[2025-05-21 18:11:57] INFO: 🚀 Serveur lancé sur http://localhost:3001
+[2025-05-21 18:11:57] INFO: ✅ Connecté à MongoDB
+[2025-05-21 18:22:56] INFO: [COMMANDE] Réception vérifiée pour la commande : 682ddd386dbd7d018dc74b50
+[2025-05-21 18:22:56] INFO: PUT /commande/682ddd386dbd7d018dc74b50/verifier-reception 200 - 64ms
+[2025-05-21 18:22:57] INFO: GET /commande?page=1 200 - 24ms
+[2025-05-21 18:22:59] INFO: [COMMANDE] Commande récupérée : 682de13f6dbd7d018dc74b62
+[2025-05-21 18:22:59] INFO: GET /commande/682de13f6dbd7d018dc74b62 200 - 23ms
+[2025-05-21 18:23:01] INFO: [COMMANDE] Réception vérifiée pour la commande : 682de13f6dbd7d018dc74b62
+[2025-05-21 18:23:01] INFO: PUT /commande/682de13f6dbd7d018dc74b62/verifier-reception 200 - 16ms
+[2025-05-21 18:23:01] INFO: GET /commande?page=1 200 - 15ms
+[2025-05-21 18:23:07] INFO: [COMMANDE] Commande validée : 682df9e56dbd7d018dc74ba0
+[2025-05-21 18:23:07] INFO: PUT /commande/682df9e56dbd7d018dc74ba0/valider 200 - 24ms
+[2025-05-21 18:23:07] INFO: GET /commande?page=1 200 - 12ms
+[2025-05-21 18:23:09] INFO: [COMMANDE] Commande récupérée : 682df9e56dbd7d018dc74ba0
+[2025-05-21 18:23:09] INFO: GET /commande/682df9e56dbd7d018dc74ba0 200 - 4ms
+[2025-05-21 18:23:14] INFO: [COMMANDE] Réception vérifiée pour la commande : 682df9e56dbd7d018dc74ba0
+[2025-05-21 18:23:14] INFO: PUT /commande/682df9e56dbd7d018dc74ba0/verifier-reception 200 - 7ms
+[2025-05-21 18:23:14] INFO: GET /commande?page=1 200 - 13ms
+[2025-05-21 18:23:36] INFO: [COMMANDE] Commande récupérée : 67fd413b1556d54f58b01f56
+[2025-05-21 18:23:36] INFO: GET /commande/67fd413b1556d54f58b01f56 304 - 13ms

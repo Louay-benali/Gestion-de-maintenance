@@ -145,7 +145,7 @@ export const deleteCommande = async (req, res) => {
 
 export const validerCommande = async (req, res) => {
   try {
-    const { idCommande } = req.params;
+    const idCommande = req.params.idCommande;
 
     const commande = await Commande.findById(idCommande);
     if (!commande) {
@@ -153,7 +153,7 @@ export const validerCommande = async (req, res) => {
       return res.status(404).json({ message: "Commande non trouvée." });
     }
 
-    commande.statut = "validee";
+    commande.statut = "Validée";
     await commande.save();
 
     logger.info(`[COMMANDE] Commande validée : ${idCommande}`);
@@ -174,7 +174,7 @@ export const validerCommande = async (req, res) => {
 // 📌 Vérifier la réception des pièces livrées
 export const verifierReceptionPieces = async (req, res) => {
   try {
-    const { idCommande } = req.params;
+    const idCommande = req.params.idCommande;
 
     const commande = await Commande.findById(idCommande);
     if (!commande) {
@@ -182,13 +182,8 @@ export const verifierReceptionPieces = async (req, res) => {
       return res.status(404).json({ message: "Commande non trouvée." });
     }
 
-    if (commande.status !== "livrée") {
-      logger.warn(`[COMMANDE] Commande non livrée : ${idCommande}`);
-      return res
-        .status(400)
-        .json({ message: "La commande n'est pas encore livrée." });
-    }
-
+    // Mettre à jour le statut de la commande à "Livrée"
+    commande.statut = "Livrée";
     commande.receptionVerifiee = true;
     await commande.save();
 

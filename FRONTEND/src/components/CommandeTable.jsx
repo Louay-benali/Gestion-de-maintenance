@@ -1,6 +1,10 @@
-import React, { useState } from "react";
-import { MdSearch, MdVisibility, MdCheck } from "react-icons/md";
+import React, { useState, useEffect } from "react";
+import { MdSearch, MdVisibility, MdCheck, MdRefresh } from "react-icons/md";
 import SearchInput from "../components/SearchInput.jsx";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CommandeTable = () => {
   // États pour la recherche et le filtrage
@@ -8,105 +12,172 @@ const CommandeTable = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedCommande, setSelectedCommande] = useState(null);
+  
+  // États pour les données et le chargement
+  const [commandes, setCommandes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  // Données simulées des commandes
-  const commandes = [
-    {
-      id: 1,
-      reference: "CMD-001",
-      date: "2025-04-28",
-      fournisseur: "AutomotiveParts",
-      montant: 256.75,
-      status: "en attente",
-      items: [
-        {
-          id: 1,
-          reference: "FH-12345",
-          name: "Filtre à huile",
-          quantity: 5,
-          price: 15.99,
-        },
-        {
-          id: 3,
-          reference: "JE-23456",
-          name: "Joints d'étanchéité",
-          quantity: 20,
-          price: 8.75,
-        },
-      ],
-    },
-    {
-      id: 2,
-      reference: "CMD-002",
-      date: "2025-04-30",
-      fournisseur: "MechTech",
-      montant: 390.5,
-      status: "livrée",
-      livraison: "2025-05-02",
-      items: [
-        {
-          id: 2,
-          reference: "CT-78901",
-          name: "Courroie de transmission",
-          quantity: 11,
-          price: 35.5,
-        },
-      ],
-    },
-    {
-      id: 3,
-      reference: "CMD-003",
-      date: "2025-05-01",
-      fournisseur: "BrakeSupreme",
-      montant: 452.0,
-      status: "en transit",
-      items: [
-        {
-          id: 4,
-          reference: "PF-34567",
-          name: "Plaquettes de frein",
-          quantity: 10,
-          price: 45.2,
-        },
-      ],
-    },
-    {
-      id: 4,
-      reference: "CMD-004",
-      date: "2025-05-02",
-      fournisseur: "ElectricPro",
-      montant: 723.0,
-      status: "en attente",
-      items: [
-        {
-          id: 6,
-          reference: "AM-56789",
-          name: "Alternateur",
-          quantity: 6,
-          price: 120.5,
-        },
-      ],
-    },
-  ];
+  // Charger les commandes depuis l'API
+  useEffect(() => {
+    const fetchCommandes = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const token = Cookies.get("accessToken");
+        const response = await axios.get(`http://localhost:3001/commande?page=${page}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          withCredentials: true
+        });
+        
+        if (response.data && response.data.results) {
+          setCommandes(response.data.results);
+          setTotalPages(response.data.totalPages || 1);
+        } else {
+          console.error("Format de réponse inattendu:", response.data);
+          setCommandes([]);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des commandes:", error);
+        setError("Impossible de charger les commandes");
+        setCommandes([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchCommandes();
+  }, [page, refreshTrigger]);
+  
+  // Récupérer les détails d'une commande
+  const fetchCommandeDetails = async (id) => {
+    try {
+      const token = Cookies.get("accessToken");
+      const response = await axios.get(`http://localhost:3001/commande/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        withCredentials: true
+      });
+      
+      return response.data;
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des détails de la commande ${id}:`, error);
+      toast.error("Impossible de récupérer les détails de la commande", {
+        position: "bottom-center",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      return null;
+    }
+  };
+
+
+  // Convertir le statut du backend au format d'affichage
+  const getDisplayStatus = (backendStatus) => {
+    switch (backendStatus) {
+      case "En attente":
+        return "en attente";
+      case "Validée":
+        return "en transit";
+      case "Livrée":
+        return "livrée";
+      default:
+        return backendStatus.toLowerCase();
+    }
+  };
+  
   // Filtrage des commandes
   const filteredCommandes = commandes.filter(
-    (commande) =>
-      (statusFilter === "all" || commande.status === statusFilter) &&
-      (commande.reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        commande.fournisseur.toLowerCase().includes(searchTerm.toLowerCase()))
+    (commande) => {
+      // Convertir le statut du backend au format d'affichage
+      const displayStatus = getDisplayStatus(commande.statut);
+      
+      return (statusFilter === "all" || displayStatus === statusFilter) &&
+        (commande._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         commande.fournisseur.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
   );
 
   // Fonction pour ouvrir le modal de détails
-  const handleViewDetails = (commande) => {
-    setSelectedCommande(commande);
-    setIsDetailsModalOpen(true);
+  const handleViewDetails = async (commande) => {
+    // Récupérer les détails complets de la commande depuis l'API
+    const commandeDetails = await fetchCommandeDetails(commande._id);
+    
+    if (commandeDetails) {
+      // Utiliser directement les détails de la commande du backend
+      setSelectedCommande(commandeDetails);
+      setIsDetailsModalOpen(true);
+    }
   };
 
-  // Fonction pour valider la réception d'une commande (simulée)
-  const handleConfirmDelivery = (id) => {
-    console.log(`Réception de la commande ${id} confirmée`);
-    // Logique pour mettre à jour le statut
+  // Fonction pour valider la réception d'une commande
+  const handleConfirmDelivery = async (id) => {
+    try {
+      const token = Cookies.get("accessToken");
+      await axios.put(`http://localhost:3001/commande/${id}/verifier-reception`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        withCredentials: true
+      });
+      
+      toast.success("Réception de la commande confirmée avec succès", {
+        position: "bottom-center",
+        autoClose: 2000,
+        theme: "light",
+        transition: Bounce,
+      });
+      
+      // Rafraîchir la liste des commandes
+      setRefreshTrigger(prev => prev + 1);
+    } catch (error) {
+      console.error(`Erreur lors de la confirmation de la réception de la commande ${id}:`, error);
+      toast.error("Impossible de confirmer la réception de la commande", {
+        position: "bottom-center",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+  
+  // Fonction pour valider une commande (changer son statut de "En attente" à "Validée")
+  const handleValidateOrder = async (id) => {
+    try {
+      const token = Cookies.get("accessToken");
+      await axios.put(`http://localhost:3001/commande/${id}/valider`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        withCredentials: true
+      });
+      
+      toast.success("Commande validée avec succès", {
+        position: "bottom-center",
+        autoClose: 2000,
+        theme: "light",
+        transition: Bounce,
+      });
+      
+      // Rafraîchir la liste des commandes
+      setRefreshTrigger(prev => prev + 1);
+    } catch (error) {
+      console.error(`Erreur lors de la validation de la commande ${id}:`, error);
+      toast.error("Impossible de valider la commande", {
+        position: "bottom-center",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
 
   // Fonction pour obtenir la classe de couleur en fonction du statut
@@ -157,59 +228,114 @@ const CommandeTable = () => {
       </div>
 
       {/* Tableau des commandes */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white">
-          <thead className="border-b border-b-gray-200 text-gray-700">
-            <tr>
-              <th className="py-3 px-4 text-left ">Référence</th>
-              <th className="py-3 px-4 text-left">Date</th>
-              <th className="py-3 px-4 text-left">Fournisseur</th>
-              <th className="py-3 px-4 text-left">Montant</th>
-              <th className="py-3 px-4 text-left">Statut</th>
-              <th className="py-3 px-4 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {filteredCommandes.map((commande) => (
-              <tr key={commande.id}>
-                <td className="py-3 px-4">{commande.reference}</td>
-                <td className="py-3 px-4">{commande.date}</td>
-                <td className="py-3 px-4">{commande.fournisseur}</td>
-                <td className="py-3 px-4">{commande.montant.toFixed(2)} €</td>
-                <td className="py-3 px-4">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColorClass(
-                      commande.status
-                    )}`}
-                  >
-                    {commande.status.charAt(0).toUpperCase() +
-                      commande.status.slice(1)}
-                  </span>
-                </td>
-                <td className="py-3 px-4">
-                  <div className="flex space-x-2">
-                    <button
-                      className="text-blue-500 hover:text-blue-700"
-                      onClick={() => handleViewDetails(commande)}
-                    >
-                      <MdVisibility size={20} />
-                    </button>
-                    {commande.status === "en transit" && (
-                      <button
-                        className="text-green-500 hover:text-green-700"
-                        onClick={() => handleConfirmDelivery(commande.id)}
+      {loading ? (
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      ) : error ? (
+        <div className="text-center py-8 text-red-500">{error}</div>
+      ) : (
+        <>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white">
+              <thead className="border-b border-b-gray-200 text-gray-700">
+                <tr>
+                  <th className="py-3 px-4 text-left ">ID</th>
+                  <th className="py-3 px-4 text-left">Date</th>
+                  <th className="py-3 px-4 text-left">Fournisseur</th>
+                  <th className="py-3 px-4 text-left">Magasinier</th>
+                  <th className="py-3 px-4 text-left">Statut</th>
+                  <th className="py-3 px-4 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {filteredCommandes.length > 0 ? filteredCommandes.map((commande) => (
+                  <tr key={commande._id}>
+                    <td className="py-3 px-4">{commande._id.substring(0, 8)}...</td>
+                    <td className="py-3 px-4">{new Date(commande.dateCommande).toLocaleDateString()}</td>
+                    <td className="py-3 px-4">{commande.fournisseur}</td>
+                    <td className="py-3 px-4">
+                      {commande.magasinier ? 
+                        `${commande.magasinier.nom} ${commande.magasinier.prenom}` : 
+                        "Non assigné"}
+                    </td>
+                    <td className="py-3 px-4">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColorClass(
+                          getDisplayStatus(commande.statut)
+                        )}`}
                       >
-                        <MdCheck size={20} />
-                      </button>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
+                        {commande.statut}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="flex space-x-2">
+                        <button
+                          className="text-blue-500 hover:text-blue-700"
+                          onClick={() => handleViewDetails(commande)}
+                          title="Voir les détails"
+                        >
+                          <MdVisibility size={20} />
+                        </button>
+                        {commande.statut === "Validée" && (
+                          <button
+                            className="text-green-500 hover:text-green-700"
+                            onClick={() => handleConfirmDelivery(commande._id)}
+                            title="Confirmer la réception"
+                          >
+                            <MdCheck size={20} />
+                          </button>
+                        )}
+                        {commande.statut === "En attente" && (
+                          <button
+                            className="text-amber-500 hover:text-amber-700"
+                            onClick={() => handleValidateOrder(commande._id)}
+                            title="Valider la commande"
+                          >
+                            <MdCheck size={20} />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                )) : (
+                  <tr>
+                    <td colSpan="6" className="py-4 text-center text-gray-500">
+                      Aucune commande trouvée
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-4">
+              <div className="flex space-x-2">
+                <button
+                  className="px-3 py-1 border rounded-md disabled:opacity-50"
+                  onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                  disabled={page === 1}
+                >
+                  Précédent
+                </button>
+                <span className="px-3 py-1 border rounded-md bg-gray-100">
+                  {page} / {totalPages}
+                </span>
+                <button
+                  className="px-3 py-1 border rounded-md disabled:opacity-50"
+                  onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={page === totalPages}
+                >
+                  Suivant
+                </button>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+      
       {filteredCommandes.length === 0 && (
         <div className="text-center py-4">
           <p className="text-gray-500">Aucune commande trouvée</p>
@@ -222,7 +348,7 @@ const CommandeTable = () => {
           <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">
-                Détails de la commande {selectedCommande.reference}
+                Détails de la commande {selectedCommande._id.substring(0, 8)}...
               </h3>
               <button
                 className="text-gray-500 hover:text-gray-700"
@@ -235,7 +361,7 @@ const CommandeTable = () => {
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <p className="text-sm text-gray-500">Date de commande</p>
-                <p>{selectedCommande.date}</p>
+                <p>{new Date(selectedCommande.dateCommande).toLocaleDateString()}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">Fournisseur</p>
@@ -245,82 +371,75 @@ const CommandeTable = () => {
                 <p className="text-sm text-gray-500">Statut</p>
                 <p
                   className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getStatusColorClass(
-                    selectedCommande.status
+                    getDisplayStatus(selectedCommande.statut)
                   )}`}
                 >
-                  {selectedCommande.status.charAt(0).toUpperCase() +
-                    selectedCommande.status.slice(1)}
+                  {selectedCommande.statut}
                 </p>
               </div>
-              {selectedCommande.livraison && (
-                <div>
-                  <p className="text-sm text-gray-500">Date de livraison</p>
-                  <p>{selectedCommande.livraison}</p>
-                </div>
-              )}
+              <div>
+                <p className="text-sm text-gray-500">Magasinier</p>
+                <p>
+                  {selectedCommande.magasinier ? 
+                    `${selectedCommande.magasinier.nom} ${selectedCommande.magasinier.prenom}` : 
+                    "Non assigné"}
+                </p>
+              </div>
             </div>
 
             <div className="mb-4">
               <h4 className="font-medium mb-2">Articles commandés</h4>
-              <table className="min-w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Référence
-                    </th>
-                    <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Nom
-                    </th>
-                    <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Quantité
-                    </th>
-                    <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Prix unitaire
-                    </th>
-                    <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Total
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {selectedCommande.items.map((item) => (
-                    <tr key={item.id}>
-                      <td className="py-2 px-3">{item.reference}</td>
-                      <td className="py-2 px-3">{item.name}</td>
-                      <td className="py-2 px-3">{item.quantity}</td>
-                      <td className="py-2 px-3">{item.price.toFixed(2)} €</td>
-                      <td className="py-2 px-3">
-                        {(item.price * item.quantity).toFixed(2)} €
-                      </td>
+              {selectedCommande.pieces && selectedCommande.pieces.length > 0 ? (
+                <table className="min-w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ID
+                      </th>
+                      <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Nom
+                      </th>
+                      <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Quantité
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-                <tfoot className="bg-gray-50">
-                  <tr>
-                    <td
-                      colSpan="4"
-                      className="py-2 px-3 text-right font-medium"
-                    >
-                      Total:
-                    </td>
-                    <td className="py-2 px-3 font-medium">
-                      {selectedCommande.montant.toFixed(2)} €
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {selectedCommande.pieces.map((piece) => (
+                      <tr key={piece._id}>
+                        <td className="py-2 px-3">{piece._id.substring(0, 8)}...</td>
+                        <td className="py-2 px-3">{piece.nomPiece}</td>
+                        <td className="py-2 px-3">{piece.quantite}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="text-gray-500 italic">Aucun article associé à cette commande</p>
+              )}
             </div>
 
             <div className="flex justify-end space-x-2">
-              {selectedCommande.status === "en transit" && (
+              {selectedCommande.statut === "Validée" && (
                 <button
                   className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                   onClick={() => {
-                    handleConfirmDelivery(selectedCommande.id);
+                    handleConfirmDelivery(selectedCommande._id);
                     setIsDetailsModalOpen(false);
                   }}
                 >
                   Confirmer la réception
+                </button>
+              )}
+              {selectedCommande.statut === "En attente" && (
+                <button
+                  className="bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600"
+                  onClick={() => {
+                    handleValidateOrder(selectedCommande._id);
+                    setIsDetailsModalOpen(false);
+                  }}
+                >
+                  Valider la commande
                 </button>
               )}
               <button

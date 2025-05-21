@@ -13,8 +13,8 @@ const DeclarePanneForm = () => {
   const [responsables, setResponsables] = useState([]);
   const [machines, setMachines] = useState([]);
   const [panneData, setState] = useState({
-    machine: "", // Changé de nomMachine à machine pour l'ID de la machine
-    responsable: "", // Changé de responsableNom à responsable pour l'ID du responsable
+    nomMachine: "", // Nom de la machine (pas l'ID)
+    responsableNom: "", // Nom complet du responsable (pas l'ID)
     description: "",
     dateDeclaration: new Date().toISOString().split('T')[0],
   });
@@ -88,20 +88,17 @@ const DeclarePanneForm = () => {
     if (validationErrors[name]) {
       setValidationErrors(prev => ({ ...prev, [name]: null }));
     }
-    
-    // Nous n'avons plus besoin de valider le format du nom du responsable
-    // car nous utilisons maintenant une liste déroulante
   };
 
   const validateForm = () => {
     const errors = {};
     
-    if (!panneData.responsable) {
-      errors.responsable = "Veuillez sélectionner un responsable";
+    if (!panneData.responsableNom) {
+      errors.responsableNom = "Veuillez sélectionner un responsable";
     }
     
-    if (!panneData.machine) {
-      errors.machine = "Veuillez sélectionner une machine";
+    if (!panneData.nomMachine) {
+      errors.nomMachine = "Veuillez sélectionner une machine";
     }
     
     if (!panneData.description) {
@@ -151,8 +148,8 @@ const DeclarePanneForm = () => {
   
       // Réinitialiser le formulaire mais conserver la date actuelle
       setState({
-        machine: "",
-        responsable: "",
+        nomMachine: "",
+        responsableNom: "",
         description: "",
         dateDeclaration: new Date().toISOString().split('T')[0],
       });
@@ -187,8 +184,8 @@ const DeclarePanneForm = () => {
                   Machine
                 </label>
                 <select
-                  name="machine"
-                  value={panneData.machine}
+                  name="nomMachine"
+                  value={panneData.nomMachine}
                   onChange={handleChange}
                   required
                   className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
@@ -196,7 +193,7 @@ const DeclarePanneForm = () => {
                   <option value="">Sélectionner une machine</option>
                   {Array.isArray(machines) && machines.length > 0 ? (
                     machines.map((machine) => (
-                      <option key={machine._id} value={machine._id}>
+                      <option key={machine._id} value={machine.nomMachine}>
                         {machine.nomMachine}
                       </option>
                     ))
@@ -204,9 +201,9 @@ const DeclarePanneForm = () => {
                     <option value="">Aucune machine disponible</option>
                   )}
                 </select>
-                {validationErrors.machine && (
+                {validationErrors.nomMachine && (
                   <div className="mt-1 text-xs text-red-500">
-                    {validationErrors.machine}
+                    {validationErrors.nomMachine}
                   </div>
                 )}
               </div>
@@ -216,8 +213,8 @@ const DeclarePanneForm = () => {
                   Responsable
                 </label>
                 <select
-                  name="responsable"
-                  value={panneData.responsable}
+                  name="responsableNom"
+                  value={panneData.responsableNom}
                   onChange={handleChange}
                   required
                   className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
@@ -225,7 +222,7 @@ const DeclarePanneForm = () => {
                   <option value="">Sélectionner un responsable</option>
                   {Array.isArray(responsables) && responsables.length > 0 ? (
                     responsables.map((resp) => (
-                      <option key={resp._id} value={resp._id}>
+                      <option key={resp._id} value={`${resp.nom} ${resp.prenom}`}>
                         {resp.nom} {resp.prenom}
                       </option>
                     ))
@@ -233,9 +230,9 @@ const DeclarePanneForm = () => {
                     <option value="">Aucun responsable disponible</option>
                   )}
                 </select>
-                {validationErrors.responsable && (
+                {validationErrors.responsableNom && (
                   <div className="mt-1 text-xs text-red-500">
-                    {validationErrors.responsable}
+                    {validationErrors.responsableNom}
                   </div>
                 )}
               </div>

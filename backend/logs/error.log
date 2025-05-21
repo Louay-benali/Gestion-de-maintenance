@@ -136,3 +136,14 @@
 [2025-05-15 01:37:38] ERROR: [RESET PASSWORD] Erreur serveur : Illegal arguments: undefined, string
 [2025-05-15 01:38:33] ERROR: [RESET PASSWORD] Erreur serveur : Illegal arguments: undefined, string
 [2025-05-15 02:28:51] ERROR: [INTERVENTION] Erreur lors de la définition du calendrier : No matching document found for id "681d34f046c437f8aa840f6d" version 0 modifiedPaths "scheduledDate"
+[2025-05-21 12:34:56] ERROR: [PANNE] Erreur déclaration panne : Cast to ObjectId failed for value "MachineB" (type string) at path "_id" for model "Machine"
+[2025-05-21 15:53:20] ERROR: [COMMANDE] Erreur création commande : Commande validation failed: statut: `enattente` is not a valid enum value for path `statut`.
+[2025-05-21 16:02:14] ERROR: [COMMANDE] Erreur création commande : Commande validation failed: statut: `enattente` is not a valid enum value for path `statut`.
+[2025-05-21 16:41:22] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 16:41:38] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:02] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:02] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:03] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:06] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:10] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.
+[2025-05-21 18:06:22] ERROR: [COMMANDE] Erreur validation commande : Commande validation failed: statut: `validee` is not a valid enum value for path `statut`.

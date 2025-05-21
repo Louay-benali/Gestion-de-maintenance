@@ -10,12 +10,42 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Function to check if token is expired
+  const isTokenExpired = (token) => {
+    if (!token) return true;
+    
+    try {
+      // Decode the JWT token
+      const payload = token.split('.')[1];
+      const decoded = atob(payload);
+      const userData = JSON.parse(decoded);
+      
+      // Check if expiration time exists and is in the past
+      if (userData && userData.exp) {
+        const expirationTime = userData.exp * 1000; // Convert to milliseconds
+        return Date.now() >= expirationTime;
+      }
+      
+      return true; // If no expiration found, consider it expired
+    } catch (error) {
+      console.error("Error checking token expiration:", error);
+      return true; // If there's an error, consider it expired
+    }
+  };
+
   // Check for existing token on mount and get user info
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const accessToken = Cookies.get('accessToken');
         if (accessToken) {
+          // Check if token is expired
+          if (isTokenExpired(accessToken)) {
+            console.log("Access token is expired, logging out");
+            logout();
+            return;
+          }
+          
           // Set default authorization header
           axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
           
@@ -62,6 +92,28 @@ export const AuthProvider = ({ children }) => {
     
     checkAuth();
   }, []);
+  
+  // Set up token expiration check interval
+  useEffect(() => {
+    // Check token expiration every minute
+    const tokenCheckInterval = setInterval(() => {
+      const accessToken = Cookies.get('accessToken');
+      
+      // If there's no token or user is not logged in, no need to check
+      if (!accessToken || !user) {
+        return;
+      }
+      
+      // If token is expired, log the user out
+      if (isTokenExpired(accessToken)) {
+        console.log("Access token expired during session, logging out");
+        logout();
+      }
+    }, 60000); // Check every minute
+    
+    // Clean up interval on unmount
+    return () => clearInterval(tokenCheckInterval);
+  }, [user]); // Re-create interval when user changes
 
   const login = (userData, tokens) => {
     // Set user in state
@@ -100,7 +152,8 @@ export const AuthProvider = ({ children }) => {
       login, 
       logout, 
       isAuthenticated,
-      loading 
+      loading,
+      isTokenExpired
     }}>
       {children}
     </AuthContext.Provider>

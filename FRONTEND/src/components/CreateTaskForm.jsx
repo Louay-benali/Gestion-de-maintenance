@@ -396,16 +396,6 @@ const CreateTaskForm = () => {
                   placeholder="Entrez l'ID de l'intervention"
                   className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
                 />
-                <div className="mt-2 text-xs text-gray-500">
-                  IDs disponibles:
-                  <ul className="mt-1 list-disc pl-5">
-                    {interventions.map((intervention) => (
-                      <li key={intervention._id}>
-                        {intervention.titre}: <span className="font-mono">{intervention._id}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </div>
 
 

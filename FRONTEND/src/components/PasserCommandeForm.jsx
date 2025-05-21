@@ -1,86 +1,73 @@
 import React, { useState, useEffect } from "react";
 import { MdAdd, MdRemove, MdShoppingCart } from "react-icons/md";
 import SearchInput from "./SearchInput";
-import axios from "axios"; // Assurez-vous d'installer axios via npm/yarn
-import Cookies from "js-cookie"; // Assurez-vous d'installer js-cookie via npm/yarn
+import axios from "axios";
+import Cookies from "js-cookie";
+import { toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../contexts/AuthContext";
 
-const PasserCommandeForm = ({ userId }) => {
+const PasserCommandeForm = () => {
+  // Récupérer l'utilisateur connecté
+  const { user } = useAuth();
+  
   // États du formulaire
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
-  const [fournisseur, setFournisseur] = useState("");
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [pieces, setPieces] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Données simulées pour le catalogue de pièces (à remplacer par une API dans une vraie application)
-  const catalogItems = [
-    {
-      id: 1,
-      reference: "FH-12345",
-      name: "Filtre à huile",
-      price: 15.99,
-      supplier: "AutomotiveParts",
-    },
-    {
-      id: 2,
-      reference: "CT-78901",
-      name: "Courroie de transmission",
-      price: 35.5,
-      supplier: "MechTech",
-    },
-    {
-      id: 3,
-      reference: "JE-23456",
-      name: "Joints d'étanchéité",
-      price: 8.75,
-      supplier: "SealMaster",
-    },
-    {
-      id: 4,
-      reference: "PF-34567",
-      name: "Plaquettes de frein",
-      price: 45.2,
-      supplier: "BrakeSupreme",
-    },
-    {
-      id: 5,
-      reference: "BA-45678",
-      name: "Batterie 12V",
-      price: 89.99,
-      supplier: "PowerCell",
-    },
-    {
-      id: 6,
-      reference: "AM-56789",
-      name: "Alternateur",
-      price: 120.5,
-      supplier: "ElectricPro",
-    },
-    {
-      id: 7,
-      reference: "HU-67890",
-      name: "Huile moteur 5W30",
-      price: 12.25,
-      supplier: "LubriTech",
-    },
-    {
-      id: 8,
-      reference: "ES-78901",
-      name: 'Essuie-glace 20"',
-      price: 18.5,
-      supplier: "VisibilityPlus",
-    },
-  ];
+  // Charger les pièces depuis l'API au chargement du composant
+  useEffect(() => {
+    const fetchPieces = async () => {
+      try {
+        const token = Cookies.get("accessToken");
+        const response = await axios.get("http://localhost:3001/piece", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          withCredentials: true
+        });
+        
+        if (response.data && response.data.results) {
+          setPieces(response.data.results);
+        } else {
+          console.error("Format de réponse inattendu:", response.data);
+          setPieces([]);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des pièces:", error);
+        toast.error("Impossible de charger les pièces", {
+          position: "bottom-center",
+          autoClose: 3000,
+          theme: "light",
+          transition: Bounce,
+        });
+        setPieces([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Liste des fournisseurs (unique)
-  const suppliers = [...new Set(catalogItems.map((item) => item.supplier))];
+    fetchPieces();
+  }, []);
+
+  // Transformer les pièces en format catalogue
+  const catalogItems = pieces.map(piece => ({
+    id: piece._id,
+    reference: piece._id.substring(0, 8),  // Utiliser une partie de l'ID comme référence
+    name: piece.nomPiece,
+    quantity: piece.quantite,
+    etat: piece.etat
+  }));
 
   // Filtrage des articles du catalogue
   const filteredItems = catalogItems.filter(
     (item) =>
-      (fournisseur === "" || item.supplier === fournisseur) &&
       (searchTerm === "" ||
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.reference.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -114,38 +101,23 @@ const PasserCommandeForm = ({ userId }) => {
     }
   };
 
-  // Calcul du total de la commande
-  const orderTotal = selectedItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+  // Calcul du total des quantités
+  const orderTotalQuantity = selectedItems.reduce(
+    (total, item) => total + item.quantity,
     0
   );
 
-  // Détermine le fournisseur principal pour la commande (si tous les articles sont du même fournisseur)
-  const determineMainSupplier = () => {
-    if (selectedItems.length === 0) return "";
-
-    const suppliers = selectedItems.map((item) => item.supplier);
-    const uniqueSuppliers = [...new Set(suppliers)];
-
-    // Si tous les articles sont du même fournisseur, utiliser ce fournisseur
-    if (uniqueSuppliers.length === 1) {
-      return uniqueSuppliers[0];
-    }
-
-    // Sinon, utiliser le fournisseur avec le plus d'articles
-    const supplierCounts = suppliers.reduce((acc, supplier) => {
-      acc[supplier] = (acc[supplier] || 0) + 1;
-      return acc;
-    }, {});
-
-    return Object.keys(supplierCounts).reduce((a, b) =>
-      supplierCounts[a] > supplierCounts[b] ? a : b
-    );
-  };
-
   // Fonction pour soumettre la commande au backend
   const handleSubmitOrder = async () => {
-    if (selectedItems.length === 0) return;
+    if (selectedItems.length === 0) {
+      toast.error("Veuillez sélectionner au moins un article", {
+        position: "bottom-center",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
 
     setIsLoading(true);
     setError(null);
@@ -155,9 +127,9 @@ const PasserCommandeForm = ({ userId }) => {
       const commandeResponse = await axios.post(
         "http://localhost:3001/commande",
         {
-          magasinier: userId,
-          fournisseur: determineMainSupplier(),
-          statut: "En attente",
+          magasinier: user.id,  // Utiliser l'ID de l'utilisateur connecté
+          fournisseur: "Fournisseur standard",  // Utiliser une valeur fixe puisque le modèle de pièce n'a pas de fournisseur
+          statut: "En attente",  // Utiliser les valeurs de l'enum StatutEnum (la valeur et non la clé)
         },
         {
           headers: {
@@ -169,32 +141,50 @@ const PasserCommandeForm = ({ userId }) => {
 
       const commandeId = commandeResponse.data.commande._id;
 
-      // Ici, vous pourriez ajouter une requête supplémentaire pour ajouter les articles à la commande
-      // Par exemple, si vous avez un modèle LigneCommande ou similar:
-      /*
-      for (const item of selectedItems) {
-        await axios.post('/api/lignes-commande', {
-          commande: commandeId,
-          article: item.id,
-          quantite: item.quantity,
-          prixUnitaire: item.price
-        });
-      }
-      */
+      // Comme il n'y a pas de modèle pour les lignes de commande,
+      // on pourrait stocker les informations dans localStorage pour référence future
+      const commandeDetails = {
+        id: commandeId,
+        date: new Date().toISOString(),
+        articles: selectedItems.map(item => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          etat: item.etat
+        })),
+        totalQuantity: orderTotalQuantity
+      };
+      
+      // Stocker les détails de la commande dans localStorage
+      const commandes = JSON.parse(localStorage.getItem("commandes") || "[]");
+      commandes.push(commandeDetails);
+      localStorage.setItem("commandes", JSON.stringify(commandes));
 
+      toast.success("Commande créée avec succès!", {
+        position: "bottom-center",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      
       setSuccessMessage("Commande créée avec succès!");
       setSelectedItems([]);
       setIsConfirmationModalOpen(false);
-
-      // Afficher le message de succès pendant 3 secondes
+      
+      // Effacer le message de succès après 3 secondes
       setTimeout(() => {
         setSuccessMessage("");
       }, 3000);
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          "Erreur lors de la création de la commande"
-      );
+      const errorMessage = err.response?.data?.message || "Erreur lors de la création de la commande";
+      
+      toast.error(errorMessage, {
+        position: "bottom-center",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      
       console.error("Erreur lors de la soumission de la commande:", err);
     } finally {
       setIsLoading(false);
@@ -234,18 +224,6 @@ const PasserCommandeForm = ({ userId }) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <select
-              className="px-3 py-2 rounded-lg border border-gray-300 bg-transparent text-sm shadow-theme-xs transition-colors duration-200 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-              value={fournisseur}
-              onChange={(e) => setFournisseur(e.target.value)}
-            >
-              <option value="">Tous les fournisseurs</option>
-              {suppliers.map((supplier, index) => (
-                <option key={index} value={supplier}>
-                  {supplier}
-                </option>
-              ))}
-            </select>
           </div>
 
           <div className="bg-white p-4 rounded-lg max-h-96 overflow-y-auto">
@@ -254,8 +232,8 @@ const PasserCommandeForm = ({ userId }) => {
                 <tr className="border-b border-gray-300 text-gray-700 ">
                   <th className="py-2 px-3 text-left ">Référence</th>
                   <th className="py-2 px-3 text-left">Nom</th>
-                  <th className="py-2 px-3 text-left">Prix</th>
-                  <th className="py-2 px-3 text-left">Fournisseur</th>
+                  <th className="py-2 px-3 text-left">Quantité</th>
+                  <th className="py-2 px-3 text-left">État</th>
                   <th className="py-2 px-3 text-center">Action</th>
                 </tr>
               </thead>
@@ -264,8 +242,8 @@ const PasserCommandeForm = ({ userId }) => {
                   <tr key={item.id}>
                     <td className="py-3 px-3">{item.reference}</td>
                     <td className="py-3 px-3">{item.name}</td>
-                    <td className="py-3 px-3">{item.price.toFixed(2)} €</td>
-                    <td className="py-3 px-3">{item.supplier}</td>
+                    <td className="py-3 px-3">{item.quantity}</td>
+                    <td className="py-3 px-3">{item.etat}</td>
                     <td className="py-3 px-3 text-center">
                       <button
                         className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600 inline-flex items-center justify-center"
@@ -309,7 +287,7 @@ const PasserCommandeForm = ({ userId }) => {
                       <p className="font-medium">{item.name}</p>
                       <p className="text-sm text-gray-600">{item.reference}</p>
                       <p className="text-sm">
-                        {item.price.toFixed(2)} € / unité
+                        Quantité disponible: {item.quantity} | État: {item.etat}
                       </p>
                     </div>
                     <div className="flex items-center">
@@ -338,9 +316,9 @@ const PasserCommandeForm = ({ userId }) => {
               </div>
 
               <div className="border-t border-gray-300 pt-4 mb-4">
-                <div className="flex justify-between font-semibold text-lg">
-                  <span>Total:</span>
-                  <span>{orderTotal.toFixed(2)} €</span>
+                <div className="flex justify-between font-medium text-lg mt-4">
+                  <span>Quantité totale :</span>
+                  <span>{orderTotalQuantity} pièces</span>
                 </div>
               </div>
 
@@ -381,7 +359,7 @@ const PasserCommandeForm = ({ userId }) => {
                 >
                   <span className="text-sm">{item.name}</span>
                   <span className="text-sm">
-                    {item.quantity} x {item.price.toFixed(2)} €
+                    Quantité: {item.quantity}
                   </span>
                 </div>
               ))}
@@ -389,12 +367,11 @@ const PasserCommandeForm = ({ userId }) => {
 
             <div className="border-t border-gray-300 pt-4 mb-4">
               <div className="flex justify-between font-semibold">
-                <span>Total:</span>
-                <span>{orderTotal.toFixed(2)} €</span>
+                <span>Quantité totale:</span>
+                <span>{orderTotalQuantity} pièces</span>
               </div>
               <div className="text-sm text-gray-600 mt-2">
-                Fournisseur principal:{" "}
-                {determineMainSupplier() || "Non spécifié"}
+                Fournisseur: Fournisseur standard
               </div>
             </div>
 

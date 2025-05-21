@@ -86,39 +86,28 @@ export const createMaintenance = async (req, res) => {
       titre,
       description,
       datePlanifiee,
-      Machine: machines,
+      Machine,
       typeMaintenance,
-      nomTechnicien,
+      technicien,
       observations
     } = req.body;
 
-    // Vérifier si le technicien existe par son nom et prénom
-    // Supposons que nomTechnicien est au format "Nom Prénom" ou "Nom Prénom1 Prénom2"
-    const parts = nomTechnicien.split(' ');
-    
-    // Le premier élément est le nom, le reste forme le prénom composé
-    if (parts.length < 2) {
-      return res.status(400).json({ message: "Format de nom et prénom invalide. Utilisez le format 'Nom Prénom'" });
-    }
-    
-    const nom = parts[0];
-    const prenom = parts.slice(1).join(' '); // Combine tous les éléments restants en un seul prénom
-    
-    const technicien = await Utilisateur.findOne({ 
-      nom: nom,
-      prenom: prenom
-    });
-    if (!technicien) {
-      return res.status(404).json({ message: `Technicien non trouvé : ${nomTechnicien}` });
+    // Vérifier si le technicien existe par son ID
+    const technicienExists = await Utilisateur.findById(technicien);
+    if (!technicienExists) {
+      return res.status(404).json({ message: `Technicien non trouvé avec l'ID: ${technicien}` });
     }
 
-    // Vérifier si les machines existent
-    if (machines && machines.length > 0) {
-      for (const machineId of machines) {
-        const machineExists = await Machine.findById(machineId);
-        if (!machineExists) {
-          return res.status(404).json({ message: `Machine ${machineId} non trouvée` });
-        }
+    // Vérifier si la machine existe
+    // Gérer le cas où Machine est un ID unique ou un tableau
+    const machineIds = Array.isArray(Machine) ? Machine : [Machine];
+    
+    for (const machineId of machineIds) {
+      if (!machineId) continue; // Ignorer les valeurs vides
+      
+      const machineExists = await Machine.findById(machineId);
+      if (!machineExists) {
+        return res.status(404).json({ message: `Machine ${machineId} non trouvée` });
       }
     }
 
@@ -126,9 +115,9 @@ export const createMaintenance = async (req, res) => {
       titre,
       description,
       datePlanifiee,
-      Machine: machines,
+      Machine: machineIds, // Utiliser le tableau d'IDs de machines
       typeMaintenance,
-      technicien: technicien._id, // Utiliser l'ID du technicien trouvé
+      technicien, // Utiliser directement l'ID du technicien
       observations,
       statut: "Planifiée"
     });
